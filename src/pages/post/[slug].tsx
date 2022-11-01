@@ -2,7 +2,7 @@ import { readdirSync, readFileSync } from "fs";
 import matter from "gray-matter";
 import path from "path";
 import { serialize } from "next-mdx-remote/serialize";
-import Post from "../../components/Post.component";
+import Post from "../../components/post.component";
 
 
 export default function PostPage({ data, content, mdxSource }: any) {

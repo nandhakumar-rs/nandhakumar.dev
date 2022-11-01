@@ -1,0 +1,69 @@
+---
+title: Functions for Beginners
+date: "August 4, 2021"
+description: Learn how to create and use functions, We'll learn what functions are, how to write functions, and how to use them.,   We'll learn what functions are, how to write functions, and how to use them.
+thumbnailUrl: "/javascript-functions-thumbnail.jpeg"
+tags: ["functions", "javascript"]
+---
+
+<div>
+  This is a blog post about <strong>functions</strong>. <br />
+  `We'll learn what functions are, how to write functions, and how to use them`.
+</div>
+
+***
+
+# This is a Markdown sub-heading
+
+## This is a Markdown sub-heading
+
+### This is a Markdown sub-heading
+
+#### This is a Markdown sub-heading
+
+##### This is a Markdown sub-heading
+
+###### This is a Markdown sub-heading
+
+`Highlighted`
+
+- asterisks for unordered items
+
+1. decimals and a dot for ordered items
+
+<CodeSnippet language="jsx">
+{
+`function HelloWorld({
+  greeting = "hello",
+  greeted = '"World"',
+  silent = false,
+  onMouseOver,
+}) {
+  if (!greeting) {
+    return null;
+  }
+
+  // TODO: Don't use random in render
+  let num = Math.floor(Math.random() * 1e7)
+    .toString()
+  return (
+    <div
+      className="HelloWorld"
+      title={'You are visitor number num'}
+      onMouseOver={onMouseOver}
+    >
+      <strong>
+        {greeting.slice(0, 1).toUpperCase() + greeting.slice(1).toLowerCase()}
+      </strong>
+      {greeting.endsWith(",") ? (
+        " "
+      ) : (
+        <span style={{ color: "grey" }}>", "</span>
+      )}
+      <em>{greeted}</em>
+      {silent ? "." : "!"}
+    </div>
+  );
+}`
+}
+</CodeSnippet>

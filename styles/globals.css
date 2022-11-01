@@ -1,0 +1,19 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: "DM Sans", sans-serif;
+}
+
+
+.syntax-h {
+  background: #1C2930 !important;
+
+ 
+}
+.syntax-h code {
+  background: #1C2930 !important;
+}

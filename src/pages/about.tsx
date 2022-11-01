@@ -35,9 +35,9 @@ export default function AboutPage() {
           over email and I am more active on twitter and instagram.
         </p>
       </section>
-      <section className="mt-16">
+      {/* <section className="mt-16">
         <p className="text-app-primary-100 text-2xl font-bold">{`FAQ's`}</p>
-      </section>
+      </section> */}
     </div>
   );
 }

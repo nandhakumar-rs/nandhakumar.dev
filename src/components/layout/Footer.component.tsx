@@ -29,7 +29,7 @@ const Footer = () => {
           <p>Made with ♥️ by Nandhakumar</p>
           <p>© 2022</p>
         </div>
-      </div>
+      </div> 
     </footer>
   );
 };

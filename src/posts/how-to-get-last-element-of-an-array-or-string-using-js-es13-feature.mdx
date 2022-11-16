@@ -1,0 +1,47 @@
+---
+title: How to get last element of an array or string using JS ES13 Feature
+date: 'Sept 6, 2022'
+description: Javascript ES13 has released in June 2022 and it has pretty cool new features one of them is at() method that can be used with strings and arrays.
+thumbnailUrl: '/javascript-functions-thumbnail.jpeg'
+tags: ['javascript']
+---
+
+Javascript ES13 has released in June 2022 and it has pretty cool new features one of them is at() method that can be used with strings and arrays.
+
+So, before ES13 if you want to find the last element of an array or string.
+
+You need to subtract 1 from the length of the array and string and the calculated value will be passed within [] to get the last element like this 👇
+
+# It's addictive
+
+I won't lie, doing this daily seems hectic and I really would not recommend it to everyone. But it's super addictive to me, it's become a daily routine, and I can't see myself not doing it.
+
+<CodeSnippet language="javascript">
+{
+`const name = "Sam";
+console.log(name[name.length - 1]) // "m"
+
+const names = ["Ram", "Sam"];
+console.log(names[names.length - 1]) // "Sam"
+`
+}
+</CodeSnippet>
+
+But now, after ES13 you can use at() method with negative indexes to get the elements in reverse order of a string or array like this 👇
+
+<CodeSnippet language="javascript">
+{
+`const name = "Sam";
+console.log(name.at(-1)) // "m"
+
+const names = ["Ram", "Sam"];
+console.log(names.at(-1)) // "Sam"
+`
+}
+</CodeSnippet>
+
+Simple right?
+
+Thanks for reading this article.
+
+Cheers ✌️

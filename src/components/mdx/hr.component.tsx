@@ -1,5 +1,5 @@
 const HR = (props: any) => {
-  return <hr className="h-px my-7 w-full bg-app-neutral-800" />;
+  return <hr className="my-7 w-full border-app-primary-500" />;
 };
 
 export default HR;

@@ -9,7 +9,7 @@ const Footer = () => {
       <div className=" max-w-screen-lg my-0 mx-auto max-md:mx-5 flex justify-between items-center ">
         <div className="flex gap-7">
           {CONSTANT.SOCIAL_LINKS.map((link, index) => (
-            <Link href={link.url} key={index}>
+            <Link href={link.url} key={index} target="_blank">
               <Icon name={link.icon as any} />
             </Link>
           ))}

@@ -15,11 +15,9 @@ export default function PostPage({ data, content, mdxSource }: any) {
 
 export const getStaticPaths = async () => {
   const files = readdirSync(path.join("src", "posts"));
-
   const paths = files.map((filename) => {
     return { params: { slug: filename.replace(".mdx", "") } };
   });
-
   return { paths, fallback: false };
 };
 

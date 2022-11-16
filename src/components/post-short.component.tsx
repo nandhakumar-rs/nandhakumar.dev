@@ -11,7 +11,7 @@ const PostShort = ({ data }: { data: any }) => {
           <div className="h-1 w-1 bg-app-neutral-700 rounded-full"></div>
           <p>5 min</p>
         </div>
-        <h1 className="text-app-primary-100 text-xl font-bold mt-1 group-hover:underline">
+        <h1 className="text-app-neutral-600 text-xl font-bold mt-1 group-hover:underline">
           {data.data.title}
         </h1>
         <p className="text-app-neutral-700 text-lg mt-2">

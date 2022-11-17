@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app'
 import Layout from '../components/layout'
 import TagManager from 'react-gtm-module'
 import { useEffect } from 'react'
+import { Analytics } from '@vercel/analytics/react';
 
 export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
@@ -13,6 +14,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <Layout>
       <Component {...pageProps} />
+      <Analytics />
     </Layout>
   )
 }

@@ -25,7 +25,7 @@ export default function AboutPage() {
               I‘m Nandhakumar 👋
             </p>
             <div className="text-app-neutral-700 mt-2 text-base flex items-center gap-3">
-              <p>Creative Software Developer </p>
+              <p>Software Engineer </p>
               <div className="h-0.5 w-0.5 bg-app-neutral-700 rounded-full"></div>
               <p>UI UX Designer</p>
             </div>

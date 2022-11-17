@@ -1,10 +1,7 @@
-import Link from "next/link";
-import oneDark from "react-syntax-highlighter/dist/cjs/styles/prism/one-dark";
-import { PrismAsyncLight as SyntaxHighlighter } from "react-syntax-highlighter";
 
 export const H1 = (props: any) => {
   return (
-    <h1 className="text-2xl font-bold text-app-neutral-600" {...props}>
+    <h1 className="text-2xl font-bold text-app-neutral-600 mt-12" {...props}>
       {props.children}
     </h1>
   );
@@ -12,7 +9,7 @@ export const H1 = (props: any) => {
 
 export const H2 = (props: any) => {
   return (
-    <h2 className="text-xl font-bold text-app-neutral-600" {...props}>
+    <h2 className="text-xl font-bold text-app-neutral-600 mt-12" {...props}>
       {props.children}
     </h2>
   );

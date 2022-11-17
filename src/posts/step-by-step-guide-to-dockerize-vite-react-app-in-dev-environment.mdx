@@ -1,0 +1,179 @@
+---
+title: Step By Step Guide to Dockerize Vite React App in Dev Environment
+date: 'Nov 17, 2022'
+description: Learn how to dockerize your vite react app in the development environment
+thumbnailUrl: '/javascript-functions-thumbnail.jpeg'
+tags: ['javascript', 'react', 'next.js']
+---
+
+Hey Folks!
+
+In this post, you'll learn how to dockerize your vite react app in the development environment
+
+# Prerequisites
+
+- Basic knowledge of React
+- Basic understanding of what is docker (I'll give a brief on it as well)
+- Docker on your local system
+
+# What is Docker?
+
+Docker is a tool that helps to create multiple environments on your machine.
+These environments are called containers.
+
+Let's say you want to run a node js-based app, then you need a node environment.
+
+So, you can create are docker file to let Docker know which environment should be used in the container. Then you can run your app inside that container.
+
+when you are done with the work if you don't need the container anymore, it can be deleted easily.
+
+Now Let's see how to dockerize your React app.
+
+---
+
+# Step 1: Create Vite React App (Skip this step if you already have a react app)
+
+<CodeSnippet language="bash">
+  {`npm create vite@latest`}
+</CodeSnippet>
+
+You'll be asked for
+
+- App Name
+- Which Framework to use like React, Angular, Vue? Choose React
+- Then, Typescript or Javascript. Choose as you wish
+
+<Img alt="desktop" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1668678866236/JzJ25nfLJ.png" />
+
+Now switch to the project directory
+
+<CodeSnippet language="bash">
+  {`cd [your project name]`}
+</CodeSnippet>
+
+# Step 2: Update `vite.config.js/ts` file
+
+This step is required to map the port between Docker container and your Vite react app
+
+Now replace this code snippet in vite.config
+
+<CodeSnippet language="javascript">
+  {`export default defineConfig({
+  plugins: [react()],
+})`}
+</CodeSnippet>
+to
+
+<CodeSnippet language="javascript">
+  {`export default defineConfig({
+  plugins: [react()],
+  server: {
+    watch: {
+      usePolling: true,
+    },
+    host: true, // needed for the Docker Container port mapping to work
+    strictPort: true,
+    port: 5173, // you can replace this port with any port
+  },`}
+  })
+</CodeSnippet>
+
+# Step 3: Create Dockerfile
+
+Create a file called `Dockerfile` in the root of your project directory like this 👇
+
+<Img alt="desktop" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1668679231923/p-97mBMMq.png" />
+
+# Step 4: Add Commands to Dockerfile
+
+Copy these commands to your docker file
+
+<CodeSnippet language="bash">
+{`FROM node
+
+WORKDIR /app
+
+COPY package.json .
+RUN npm i
+
+COPY . .
+
+# EXPOSE [Port you mentioned in the vite.config file]
+
+EXPOSE 5173
+
+CMD ["npm", "run", "dev"]`}
+
+</CodeSnippet>
+
+If you don't know what are these commands, read the explanation 👇
+
+- `FROM node` - Will create node environment in the container
+- `WORKDIR /app` - Will create a directory app and switch to that directory
+- `COPY package.json .` - Copies package.json file to /app directory
+- `RUN npm i` - Runs `npm install` to create node_modules for your app
+- `COPY . .` - Copies the source code to /app directory
+- `EXPOSE 5173` - Exposes the port to access from outside the container
+- `CMD ["npm", "run", "dev"]` - Execution `npm run dev` to start the server
+
+
+# Step 5: Build the Dockerfile
+
+In the terminal navigate to your project directory, then run
+
+> Remove the [ ] when executing
+
+<CodeSnippet language="bash">{`docker build -t [any name] .`}</CodeSnippet>
+
+After the build completion, a docker image will be created.
+
+Docker Image is a template to run the container.
+
+To check your Docker Image, run
+
+<CodeSnippet language="bash">{`docker images`}</CodeSnippet>
+
+check whether the name of the image you have given when running docker build command is available in the image list.
+
+# Step 6: Run the Docker Container
+
+Execute this command in the terminal 👇
+
+Remove the [ ] when executing
+
+<CodeSnippet language="bash">
+  {`docker run -d --rm -p 5173:5173 --name [name of the container] [your docker image name]`}
+</CodeSnippet>
+
+Flags used in the command
+
+- `-d` - To run the container in the background (Detach Mode )
+- `--rm` - To delete the container, when you stop the container
+- `-p` - Port Mapping between container and outside world.
+- `5173:5173` - [Port access from Browser]: [Port exposed from the container]
+
+To check whether your docker container is running or not, Execute
+
+
+<CodeSnippet language="bash">
+  {`docker ps`}
+</CodeSnippet>
+
+check whether the name of the container you have given when running the docker `run` command is available in the container list.
+
+# Step 7: Open the App in the Browser
+
+Open the Browser and access `http://localhost:[Port you mentioned in the docker run command]` as per the example it should be `http://localhost:5173`
+
+<Img alt="desktop" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1668682778580/owixBZ78D.png" />
+
+
+---
+
+Hope you learned new stuff today, Thanks for reading!
+
+Follow me to read more posts like this.
+
+You can also reach me through Twitter, Instagram and LinkedIn
+
+Cheers ✌️

@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-const PostShort = ({ data }: { data: any }) => {
+const PostShort = ({ data, readingTime }: { data: any, readingTime:string }) => {
   const trimText = (text: string) =>
     text.length > 170 ? `${text.substring(0, 170)} ... ` : text;
   return (
@@ -9,7 +9,7 @@ const PostShort = ({ data }: { data: any }) => {
         <div className="text-app-neutral-700 text-base flex items-center gap-3">
           <p>27-09-2022</p>
           <div className="h-1 w-1 bg-app-neutral-700 rounded-full"></div>
-          <p>5 min</p>
+          <p>{readingTime}</p>
         </div>
         <h1 className="text-app-neutral-600 text-xl font-bold mt-1 group-hover:underline">
           {data.data.title}

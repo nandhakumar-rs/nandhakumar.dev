@@ -1,6 +1,6 @@
 const Code = (props: any) => {
   return (
-      <code className="text-lg text-app-primary-900  bg-cyan-300 font-sans" >{props.children}</code>
+      <code className="text-lg font-sans text-app-neutral-600 bg-white bg-opacity-10 font-medium rounded px-1 py-0.5" >{props.children}</code>
   );
 };
 

@@ -9,13 +9,13 @@ import Link from 'next/link'
 
 export default function AboutPage() {
   return (
-    <div className="max-w-screen-sm mx-auto mt-12">
+    <div className="mx-auto mt-12">
       <section>
-        <div className="flex gap-6 items-center">
+        <div className="flex gap-6 items-center max-md:flex-col max-md:items-start">
         <Image
-            className="h-40"
-            height={160}
-            width={160}
+            className="h-32"
+            height={128}
+            width={128}
             src={profile}
             alt="Nandhakumar's Display Picture"
           />
@@ -30,7 +30,7 @@ export default function AboutPage() {
               <p>UI UX Designer</p>
             </div>
           </div>
-         
+        
         </div>
         <p className="mt-8 text-app-neutral-700 text-lg">
           A self taught developer and desinger. Passionate and Facinated towards

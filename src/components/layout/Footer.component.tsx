@@ -1,12 +1,12 @@
-import Link from "next/link";
-import React from "react";
-import CONSTANT from "../../constant";
-import Icon from "../icons";
+import Link from 'next/link'
+import React from 'react'
+import CONSTANT from '../../constant'
+import Icon from '../icons'
 
 const Footer = () => {
   return (
-    <footer className="bg-app-primary-900 p-5 border-t border-app-neutral-800 fixed bottom-0 left-0 right-0">
-      <div className=" max-w-screen-lg my-0 mx-auto max-md:mx-5 flex justify-between items-center ">
+    <footer className="bg-app-primary-900 p-5 border-t border-app-neutral-800">
+      <div className=" max-w-screen-md my-0 mx-auto max-md:mx-5 flex justify-between items-center max-md:flex-col max-md:text-center max-md:gap-6">
         <div className="flex gap-7">
           {CONSTANT.SOCIAL_LINKS.map((link, index) => (
             <Link href={link.url} key={index} target="_blank">
@@ -29,9 +29,9 @@ const Footer = () => {
           <p>Made with ♥️ by Nandhakumar</p>
           <p>© 2022</p>
         </div>
-      </div> 
+      </div>
     </footer>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer

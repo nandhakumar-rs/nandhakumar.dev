@@ -12,7 +12,7 @@ export default function AboutPage() {
     <div className="mx-auto mt-12">
       <section>
         <div className="flex gap-6 items-end max-md:flex-col max-md:items-start">
-        <Image
+          <Image
             className="h-32 rounded-full"
             height={128}
             width={128}
@@ -25,12 +25,12 @@ export default function AboutPage() {
               I‘m Nandhakumar 👋
             </p>
             <div className="text-app-neutral-700 mt-2 text-base flex items-center gap-3">
-              <p>Software Engineer </p>
-              <div className="h-0.5 w-0.5 bg-app-neutral-700 rounded-full"></div>
-              <p>UI UX Designer</p>
+              <p> UI UX Designer | Software Engineer | Freelancer</p>
+          
+
+            
             </div>
           </div>
-        
         </div>
         <p className="mt-4 text-app-neutral-700 text-lg">
           A self taught developer and desinger. Passionate and Facinated towards

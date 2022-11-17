@@ -9,6 +9,7 @@ import Icon from '../icons'
 const Header = () => {
   const [toggle, setToggle] = useState(false)
   const router = useRouter()
+  console.log(router.pathname)
   return (
     <header className=" h-32 flex items-center justify-between relative">
       <Link href="/" className="flex items-center">
@@ -25,7 +26,11 @@ const Header = () => {
         {CONSTANT.ROUTES.map((route, index) => (
           <Link
             key={index}
-            className="font-bold text-base text-white ml-2 hover:bg-app-primary-700 px-3 py-1 rounded-sm"
+            className={`font-bold text-base ml-2 text-app-neutral-700 hover:bg-app-primary-700 hover:text-app-primary-100 px-3 py-1 rounded-sm ${
+              router.pathname === route.href
+                ? 'bg-app-primary-700 text-app-primary-100'
+                : ''
+            } `}
             href={route.href}
           >
             {route.label}

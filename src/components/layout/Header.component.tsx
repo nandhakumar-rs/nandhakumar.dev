@@ -13,7 +13,7 @@ const Header = () => {
     <header className=" h-32 flex items-center justify-between relative">
       <Link href="/" className="flex items-center">
         <Image
-          className="h-7"
+          className="h-7 rounded-full"
           height={28}
           width={28}
           src={profile}

@@ -7,7 +7,7 @@ import { Analytics } from '@vercel/analytics/react';
 
 export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
-    console.log("ENV",process.env.NEXT_PUBLIC_VERCEL_GTM_ID )
+    console.log("ENV",process.env.NEXT_PUBLIC_GTM_ID )
     console.log("ENV",process.env )
 
     TagManager.initialize({ gtmId: process.env.GTM_ID || '' })

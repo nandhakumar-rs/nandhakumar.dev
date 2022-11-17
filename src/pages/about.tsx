@@ -11,7 +11,7 @@ export default function AboutPage() {
   return (
     <div className="mx-auto mt-12">
       <section>
-        <div className="flex gap-6 items-center max-md:flex-col max-md:items-start">
+        <div className="flex gap-6 items-end max-md:flex-col max-md:items-start">
         <Image
             className="h-32 rounded-full"
             height={128}
@@ -32,7 +32,7 @@ export default function AboutPage() {
           </div>
         
         </div>
-        <p className="mt-8 text-app-neutral-700 text-lg">
+        <p className="mt-4 text-app-neutral-700 text-lg">
           A self taught developer and desinger. Passionate and Facinated towards
           tech world. Love to help small and large scale business to build
           desing and build apps. If you want to get in touch, you can reach me

@@ -1,5 +1,5 @@
-const INSTAGRAM = "https://www.instagram.com/nandhakumar.dev/";
-const TWITTER = "https://twitter.com/nandhakumar_dev";
+const INSTAGRAM = "https://www.instagram.com/nandhakumar.io/";
+const TWITTER = "https://twitter.com/nandhakumar_io";
 const GITHUB = "https://github.com/nandhakumar-rs";
 const LINKEDIN = "https://www.linkedin.com/in/nandhakumar-dev/";
 const EMAIL = "mailto:rsnk2013@gmail.com";

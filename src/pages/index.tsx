@@ -3,12 +3,16 @@ import path from 'path'
 import PostShort from '../components/post-short.component'
 import matter from 'gray-matter'
 import readingTime from 'reading-time'
+import Head from 'next/head'
 
 export default function HomePage(props: any) {
   const { posts } = props
 
   return (
     <div>
+      <Head>
+        <title>Nandhakumar | Posts</title>
+      </Head>
       <div className="max-w-lg">
         {posts.map((post: any, index: any) => {
           return <PostShort key={index} data={post} readingTime={post.readingTime} />

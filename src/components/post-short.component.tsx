@@ -10,7 +10,7 @@ const PostShort: FC<IPostShortProps> = ({ data, readingTime }) => {
 
   const trimText = (text: string) =>
     text.length > 170 ? `${text.substring(0, 170)} ... ` : text
-    
+
   return (
     <article className="mt-8 group">
       <Link href={`/post/${data.slug}`}>
@@ -22,9 +22,9 @@ const PostShort: FC<IPostShortProps> = ({ data, readingTime }) => {
         <h1 className="text-app-neutral-600 text-xl font-bold mt-1 group-hover:underline">
           {data.data.title}
         </h1>
-        <p className="text-app-neutral-700 text-lg mt-2">
+        {/* <p className="text-app-neutral-700 text-lg mt-2">
           {trimText(data.data.description)}
-        </p>
+        </p> */}
       </Link>
     </article>
   )

@@ -1,15 +1,15 @@
-import { readdirSync, readFileSync } from 'fs'
 import Head from 'next/head'
 import Image from 'next/image'
-import path from 'path'
 import profile from '../../public/profile.png'
 import HrefLink from '../components/mdx/href-link.component'
 import CONSTANT from '../constant'
-import Link from 'next/link'
 
 export default function AboutPage() {
   return (
     <div className="mx-auto mt-12">
+      <Head>
+        <title>Nandhakumar | About</title>
+      </Head>
       <section>
         <div className="flex gap-6 items-end max-md:flex-col max-md:items-start">
           <Image
@@ -26,9 +26,6 @@ export default function AboutPage() {
             </p>
             <div className="text-app-neutral-700 mt-2 text-base flex items-center gap-3">
               <p> UI UX Designer | Software Engineer | Freelancer</p>
-          
-
-            
             </div>
           </div>
         </div>

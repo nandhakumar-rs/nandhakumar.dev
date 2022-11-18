@@ -20,6 +20,7 @@ const Components = {
   p: P,
   hr: HR,
   code: Code,
+  Code,
   ul: UL,
   ol: OL,
   Img: MdxImage,

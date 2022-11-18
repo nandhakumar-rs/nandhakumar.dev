@@ -1,7 +1,18 @@
-const Code = (props: any) => {
-  return (
-      <code className="text-lg font-sans text-app-neutral-600 bg-white bg-opacity-10 font-medium rounded px-1 py-0.5" >{props.children}</code>
-  );
-};
+import { FC, ReactNode } from 'react'
 
-export default Code;
+interface ICodeProps {
+  children: ReactNode
+  type: 'important' | 'default'
+}
+
+const Code: FC<ICodeProps> = ({ type = 'default', children }) => {
+  return (
+    <code
+      className={`text-lg font-sans text-app-neutral-600 bg-white bg-opacity-10 font-medium rounded px-1 py-0.5`}
+    >
+      {children}
+    </code>
+  )
+}
+
+export default Code

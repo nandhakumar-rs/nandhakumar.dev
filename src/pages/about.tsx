@@ -13,9 +13,9 @@ export default function AboutPage() {
       <section>
         <div className="flex gap-6 items-end max-md:flex-col max-md:items-start">
           <Image
-            className="h-32 rounded-full"
-            height={128}
-            width={128}
+            className="h-32 w-32 rounded-full"
+            height={800}
+            width={800}
             src={profile}
             alt="Nandhakumar's Display Picture"
           />

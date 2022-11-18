@@ -7,5 +7,5 @@ export const UL = (props: any) => {
 };
 
 export const LI = (props: any) => {
-  return <li className="my-2" {...props}>{props.children}</li>;
+  return <li className="my-2 text-lg" {...props}>{props.children}</li>;
 };

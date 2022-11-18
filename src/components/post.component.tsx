@@ -8,6 +8,8 @@ import HR from './mdx/hr.component'
 import { LI, OL, UL } from './mdx/list.component'
 import Image from 'next/image'
 import { MdxImage } from './mdx/image.component'
+import HrefLink from './mdx/href-link.component'
+import PostFootnote from './post-footnote.component'
 
 const Components = {
   CodeSnippet,
@@ -24,6 +26,7 @@ const Components = {
   ol: OL,
   Img: MdxImage,
   li: LI,
+  a: HrefLink
 }
 
 const Post = ({ data, content, mdxSource, readingTime }: any) => {
@@ -40,6 +43,7 @@ const Post = ({ data, content, mdxSource, readingTime }: any) => {
       <HR />
       <div className="text-app-neutral-700 text-xl mt-2">
         <MDXRemote {...mdxSource} components={Components}></MDXRemote>
+        <PostFootnote/>
       </div>
     </article>
   )

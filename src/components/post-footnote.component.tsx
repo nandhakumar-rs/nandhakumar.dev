@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import CONSTANT from '../constant'
 import { H1, H2 } from './mdx/heading.component'
 import HrefLink from './mdx/href-link.component'
@@ -8,8 +9,18 @@ const PostFootnote = () => {
     <footer className="">
       <H1>Thanks For Reading!</H1>
       <P>Hope you have learned something new today 😊.</P>
+
       <P>
-        Follow and Reach me on{' '}
+        If you find this post helpful{' '}
+        <HrefLink
+          href={`https://twitter.com/intent/tweet/?text=${'Nandhakumar Wrote this Article'}&url=${'https://nandhakumar.io/post/step-by-step-guide-to-dockerize-vite-react-app-in-dev-environment&via=nandhakumar_io'}`}
+        >
+          <b>Tweet this Post</b>
+        </HrefLink>
+      </P>
+
+      <P>
+        Follow and connect with me on{' '}
         <HrefLink href={CONSTANT.LINKS.TWITTER} rel="email" target="_blank">
           Twitter
         </HrefLink>

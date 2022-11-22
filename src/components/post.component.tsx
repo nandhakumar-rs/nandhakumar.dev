@@ -8,6 +8,7 @@ import { LI, OL, UL } from './mdx/list.component'
 import { MdxImage } from './mdx/image.component'
 import HrefLink from './mdx/href-link.component'
 import PostFootnote from './post-footnote.component'
+import Tags from './common/tag.component'
 
 const Components = {
   CodeSnippet,
@@ -34,11 +35,12 @@ const Post = ({ data, content, mdxSource, readingTime }: any) => {
       <div className="text-app-neutral-700 flex items-center gap-3">
         <p>{data.date}</p>
         <div className="h-1 w-1 bg-app-neutral-700 rounded-full"></div>
-        <p>{readingTime}</p>
+        <p>{data.readingTime}</p>
       </div>
-      <h1 className="text-app-primary-100 text-4xl font-bold mt-1">
+      <h1 className="text-app-primary-100 text-4xl font-bold mt-1 mb-4">
         {data.title}
       </h1>
+      <Tags tags={data.tags} />
       <HR />
       <div className="text-app-neutral-700 text-xl mt-2">
         <MDXRemote {...mdxSource} components={Components}></MDXRemote>

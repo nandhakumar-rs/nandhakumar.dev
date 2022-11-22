@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { FC } from 'react'
+import Tags from './common/tag.component'
 
 interface IPostShortProps {
   data: any
@@ -8,6 +9,8 @@ interface IPostShortProps {
 
 const PostShort: FC<IPostShortProps> = ({ data, readingTime }) => {
 
+  console.log(data)
+
   const trimText = (text: string) =>
     text.length > 170 ? `${text.substring(0, 170)} ... ` : text
 
@@ -15,16 +18,14 @@ const PostShort: FC<IPostShortProps> = ({ data, readingTime }) => {
     <article className="mt-8 group">
       <Link href={`/post/${data.slug}`}>
         <div className="text-app-neutral-700 text-base flex items-center gap-3">
-          <p>{data.data.date}</p>
+          <p>{data.date}</p>
           <div className="h-1 w-1 bg-app-neutral-700 rounded-full"></div>
           <p>{readingTime}</p>
         </div>
-        <h1 className="text-app-neutral-600 text-xl font-bold mt-1 group-hover:underline">
-          {data.data.title}
+        <h1 className="text-app-neutral-600 text-xl font-bold mt-1 mb-2 group-hover:underline">
+          {data.title}
         </h1>
-        {/* <p className="text-app-neutral-700 text-lg mt-2">
-          {trimText(data.data.description)}
-        </p> */}
+        <Tags tags={data.tags} />
       </Link>
     </article>
   )

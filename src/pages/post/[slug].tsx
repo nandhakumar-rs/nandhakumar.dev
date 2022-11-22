@@ -40,6 +40,6 @@ export const getStaticProps = async ({ params: { slug } }: any) => {
   const { data, content } = matter(matterData)
   const mdxSource = await serialize(content)
   return {
-    props: { data, content, mdxSource, readingTime: readingTime(content).text },
+    props: { data : {...data, readingTime: readingTime(content).text}, content, mdxSource,  },
   }
 }

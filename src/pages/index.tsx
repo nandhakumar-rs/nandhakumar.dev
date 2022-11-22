@@ -29,10 +29,10 @@ export const getStaticProps = async () => {
     const mdMetaData = readFileSync(path.join('src', 'posts', filename))
     const { data, content } = matter(mdMetaData)
     return {
-      data,
+      ...data,
       readingTime: readingTime(content).text,
       slug: filename.replace('.mdx', ''),
     }
   })
-  return { props: { posts: posts } }
+  return { props: { posts } }
 }

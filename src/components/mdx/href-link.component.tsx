@@ -20,7 +20,7 @@ const HrefLink: FC<IHrefProps> = ({
         href={href}
         rel={rel}
         target={target}
-      >
+      > 
         {children}
       </Link>
   )

@@ -12,10 +12,11 @@ export default function PostPage({
   mdxSource,
   readingTime,
 }: any) {
+  
   return (
     <section>
       <Head>
-        <title>Post | {data.title}</title>
+        <title>Post | {data?.title || ""}</title>
       </Head>
       <Post
         data={data}

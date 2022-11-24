@@ -9,8 +9,6 @@ interface IPostShortProps {
 
 const PostShort: FC<IPostShortProps> = ({ data, readingTime }) => {
 
-  console.log(data)
-
   const trimText = (text: string) =>
     text.length > 170 ? `${text.substring(0, 170)} ... ` : text
 
@@ -18,7 +16,7 @@ const PostShort: FC<IPostShortProps> = ({ data, readingTime }) => {
     <article className="mt-8 group">
       <Link href={`/post/${data.slug}`}>
         <div className="text-app-neutral-700 text-base flex items-center gap-3">
-          <p>{data.date}</p>
+          <p>{data.publishedAt}</p>
           <div className="h-1 w-1 bg-app-neutral-700 rounded-full"></div>
           <p>{readingTime}</p>
         </div>

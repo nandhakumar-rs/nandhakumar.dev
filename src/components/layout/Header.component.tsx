@@ -9,7 +9,6 @@ import Icon from '../icons'
 const Header = () => {
   const [toggle, setToggle] = useState(false)
   const router = useRouter()
-  console.log(router.pathname)
   return (
     <header className=" h-32 flex items-center justify-between relative">
       <Link href="/" className="flex items-center">

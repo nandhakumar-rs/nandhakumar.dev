@@ -7,6 +7,10 @@ module.exports = {
   content: [],
   theme: {
     extend: {
+      listStyleType: {
+        circle: 'circle',
+        square: 'square',
+      },
       screens: {
         lg: "900px",
       },

@@ -3,7 +3,7 @@ export const OL = (props: any) => {
 };
 
 export const UL = (props: any) => {
-  return <ul className="list-disc ml-2 list-inside" {...props}>{props.children}</ul>;
+  return <ul className="ml-4 list-inside" {...props}>{props.children}</ul>;
 };
 
 export const LI = (props: any) => {

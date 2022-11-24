@@ -15,7 +15,9 @@ export default function HomePage(props: any) {
       </Head>
       <div className="max-w-lg">
         {posts.map((post: any, index: any) => {
-          return <PostShort key={index} data={post} readingTime={post.readingTime} />
+          return (
+            <PostShort key={index} data={post} readingTime={post.readingTime} />
+          )
         })}
       </div>
     </div>
@@ -34,5 +36,13 @@ export const getStaticProps = async () => {
       slug: filename.replace('.mdx', ''),
     }
   })
+
+  posts.sort((a: any, b: any) => {
+    if (new Date(a.publishedAt).getTime() < new Date(b.publishedAt).getTime()) return 1
+    if (new Date(a.publishedAt).getTime() > new Date(b.publishedAt).getTime()) return -1
+
+    return 0
+  })
+
   return { props: { posts } }
 }

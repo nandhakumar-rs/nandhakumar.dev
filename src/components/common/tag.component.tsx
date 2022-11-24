@@ -7,7 +7,7 @@ interface ITagProps {
 
 const Tags: FC<ITagProps> = ({ tags }) => {
   return (
-    <div className="flex gap-4 items-center">
+    <div className="flex gap-4 items-center flex-wrap">
       {tags.map((tag, index) => (
         <p
           key={index}

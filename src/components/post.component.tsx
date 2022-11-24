@@ -9,6 +9,7 @@ import { MdxImage } from './mdx/image.component'
 import HrefLink from './mdx/href-link.component'
 import PostFootnote from './post-footnote.component'
 import Tags from './common/tag.component'
+import Blockquote from './mdx/blockquote.component'
 
 const Components = {
   CodeSnippet,
@@ -27,13 +28,14 @@ const Components = {
   Img: MdxImage,
   li: LI,
   a: HrefLink,
+  blockquote: Blockquote
 }
 
 const Post = ({ data, content, mdxSource, readingTime }: any) => {
   return (
     <article className="mt-8">
       <div className="text-app-neutral-700 flex items-center gap-3">
-        <p>{data.date}</p>
+        <p>{data.publishedAt}</p>
         <div className="h-1 w-1 bg-app-neutral-700 rounded-full"></div>
         <p>{data.readingTime}</p>
       </div>
@@ -44,6 +46,7 @@ const Post = ({ data, content, mdxSource, readingTime }: any) => {
       <HR />
       <div className="text-app-neutral-700 text-xl mt-2">
         <MDXRemote {...mdxSource} components={Components}></MDXRemote>
+        <HR/>
         <PostFootnote />
       </div>
     </article>

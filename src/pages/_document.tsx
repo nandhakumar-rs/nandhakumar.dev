@@ -1,29 +1,17 @@
+/* eslint-disable @next/next/no-sync-scripts */
 import Document, {
+  DocumentContext,
+  DocumentInitialProps,
   Html,
   Head,
   Main,
   NextScript,
-  DocumentContext,
-  DocumentInitialProps,
 } from 'next/document'
-import Script from 'next/script'
 
 class MyDocument extends Document {
   static async getInitialProps(
     ctx: DocumentContext,
   ): Promise<DocumentInitialProps> {
-    const originalRenderPage = ctx.renderPage
-
-    // Run the React rendering logic synchronously
-    ctx.renderPage = () =>
-      originalRenderPage({
-        // Useful for wrapping the whole react tree
-        enhanceApp: (App) => App,
-        // Useful for wrapping in a per-page basis
-        enhanceComponent: (Component) => Component,
-      })
-
-    // Run the parent `getInitialProps`, it now includes the custom `renderPage`
     const initialProps = await Document.getInitialProps(ctx)
 
     return initialProps
@@ -31,13 +19,13 @@ class MyDocument extends Document {
 
   render() {
     return (
-      <Html lang="end">
+      <Html>
         <Head>
-          <Script
+          <script
             id="cookieyes"
             type="text/javascript"
             src="https://cdn-cookieyes.com/client_data/68fbbf9114bdbeedae797004/script.js"
-          ></Script>
+          ></script>
         </Head>
         <body>
           <Main />

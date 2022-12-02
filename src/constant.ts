@@ -2,7 +2,7 @@ const INSTAGRAM = "https://www.instagram.com/nandhakumar.io/";
 const TWITTER = "https://twitter.com/nandhakumar_io";
 const GITHUB = "https://github.com/nandhakumar-rs";
 const LINKEDIN = "https://www.linkedin.com/in/nandhakumar-io/";
-const EMAIL = "mailto:rsnk2013@gmail.com";
+const EMAIL = "mailto:contact@nandhakumar.io";
 
 const CONSTANT = {
   LINKS: {

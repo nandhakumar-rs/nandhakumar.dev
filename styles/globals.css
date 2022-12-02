@@ -24,3 +24,7 @@ ul ul {
 .syntax-h code {
   background: #1c2930 !important;
 }
+
+.cky-consent-container .cky-consent-bar {
+  box-shadow: none !important;
+}

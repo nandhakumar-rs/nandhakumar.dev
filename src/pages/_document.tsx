@@ -21,11 +21,11 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          <script
+          {/* <script
             id="cookieyes"
             type="text/javascript"
             src="https://cdn-cookieyes.com/client_data/68fbbf9114bdbeedae797004/script.js"
-          ></script>
+          ></script> */}
         </Head>
         <body>
           <Main />

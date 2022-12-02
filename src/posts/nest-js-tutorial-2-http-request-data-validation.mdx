@@ -1,0 +1,258 @@
+---
+title: 'Nest JS Tutorial #2: HTTP Request & Data Validation'
+publishedAt: 'Dec 2, 2022'
+description: Learn what is HTTP Request and how to validate the request data in Nest.JS
+thumbnailUrl: '/javascript-functions-thumbnail.jpeg'
+tags: ['nestjs', 'javascript', 'typescript', 'backend', 'api']
+---
+
+Hi There! 👋
+
+In this post, you will learn what is HTTP Request and how to validate the request data in [Nest.JS](https://nestjs.com/)
+
+If you don't know what is Nest JS, Check out [my previous post](https://www.nandhakumar.io/post/nest-js-tutorial-1-create-your-first-api)
+
+Let's Get Started Now! 🚀
+
+# Prerequisite
+
+- [Javascript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+- [Typescript](https://www.typescriptlang.org/) (Optional)
+- Basics Of OOPS
+- [Postman](https://www.postman.com/) (For API Testing)
+- [Code Editor](https://code.visualstudio.com/)
+- [Node.JS](https://nodejs.org/en/)
+
+# What is an HTTP Request?
+
+HTTP Request is sent from the client machine(web browser or any other client application) to access or get information from the server.
+
+These Requests are sent with the help of URLs like this 👇
+
+<CodeSnippet language="bash">{`https://yourapp.com/api/v1/users`}</CodeSnippet>
+
+## Three parts of HTTP Request
+
+**Methods** - It defines the type of the request
+
+**Headers** - It Will have the information about the request and sender(client), you can add custom parameters as well. Usually, Authorization Cookies will be attached to Headers.
+
+**Body** - It Will have the request data. For example, when registering a new user, you have to pass user information as request data to store it in the server
+
+## HTTP Request Methods
+
+| Methods |          Purpose          |
+| ------- | :-----------------------: |
+| GET     |        To get Data        |
+| POST    |   To create or add data   |
+| PATCH   | To update data partially  |
+| PUT     | To update the entire data |
+| DELETE  |      To delete data       |
+
+**To know more about HTTP Request, [Click Here!](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods)**
+
+That's a short brief on HTTP Requests.
+
+## Why Request Data Validation?
+
+As you know the body part of the HTTP Request may have some data.
+
+When the HTTP Request reaches the server, Getting the Body data directly without validating is not good. Some of you may get malicious data. So, you have to validate your Body data always.
+
+# Understanding Nest.JS Validation
+
+In Nest.JS, We have something called a validation pipe. Whenever a request body is passed through this pipe and validated. If there are any invalid data, it will throw an error.
+
+Before moving further you need to understand what is DTO(Data Transfer Object)
+
+DTO is a class where you will define the validation rules. If you are not sure about this no worries, you'll understand this when implementing.
+
+## Two Parts Of Validation Pipe
+
+**Class Transformer** -- It helps to transform your request body into a class instance of DTO and then the instance will be passed to the class validation
+
+**Class Validator** -- It will validate the request body based on the rules defined in the DTO and throws an error if there are any invalid data
+
+Now let's start the implementation for the example scenario given below
+
+**Scenario: Need to add a new user and the user should have email, age, name, and country( Country is an optional property).**
+
+As per the scenario, it's clear that we need to add data to the server
+
+So, it is an HTTP POST Method and we need to pass user data in the request body.
+
+Hope you have already created a Nest.JS Project, If not follow my previous [tutorial](https://www.nandhakumar.io/post/nest-js-tutorial-1-create-your-first-api) to create one.
+
+Now, Let's do the implementation step by step,
+
+# Step 1:
+
+Install class validator and class transformer on your project
+
+<CodeSnippet language="bash">
+  {`npm i class-validator class-transformer -s`}
+</CodeSnippet>
+
+# Step 2:
+
+Generate User Controller.
+
+<CodeSnippet language="bash">{`nest g controller user`}</CodeSnippet>
+
+> Note: to execute nest commands you should have installed
+> nest cli globally
+
+# Step 3:
+
+Generate User Module
+
+<CodeSnippet language="bash">{`nest g module user/user --flat`}</CodeSnippet>
+
+> Note: As we have already created a user folder in Step 2,
+> To avoid creating additional folders --flag is used
+
+# Step 4:
+
+Add User Controller to User Module
+
+<CodeSnippet language="ts">
+  {`// user.module.ts
+import { Module } from '@nestjs/common';
+import { UserController } from './user.controller';
+@Module({
+  imports: [],
+  providers: [],
+  controllers: [UserController], // add user controller
+})
+export class UserModule {}`}
+</CodeSnippet>
+
+# Step 5:
+
+Add User Module to App Module
+
+<CodeSnippet language="ts">
+{`// app.module.ts
+import { Module } from '@nestjs/common';
+import { UserModule } from './user/user.module';
+
+@Module({
+imports: [UserModule], // add user module
+controllers: [],
+providers: [],
+})
+export class AppModule {}`}
+
+</CodeSnippet>
+
+# Step 6:
+
+Create a dto folder under the user folder and create a file called user.dto.ts
+
+![Project Structure - USER DTO](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/5bz9as4lek43gk0m2zoa.png)
+
+# Step 7:
+
+- Create UserDTO Class
+- Add the user properties to UserDTO as per the scenario
+
+<CodeSnippet language="ts">
+  {`// user.dto.ts
+export class UserDTO {
+  email: string;
+  age: string;
+  name: number;
+  country: number;
+}`}
+</CodeSnippet>
+
+# Step 8:
+
+Nest.JS uses [Typescript](https://www.typescriptlang.org/) decorators extensively.
+
+> Note: [Decorators](https://www.typescriptlang.org/docs/handbook/decorators.html) are a simple function that helps to modify
+> the targeted value
+> Decorators are defined like @[decoratorname]()
+
+Coming back to the UserDTO,
+
+Class-Validator has a list of validation functions which can be used in the form of a decorator
+
+Now, Let's try to add the validation decorators to the class properties
+
+<CodeSnippet language="ts">
+{`import { IsEmail, IsNumber, IsOptional, IsString } from 'class-validator';
+
+export class UserDTO {
+  @IsEmail()
+  email: string;
+@IsNumber()
+age: string;
+@IsString()
+name: number;
+// add @IsOptional to make the country property optional
+@IsOptional()
+@IsString()
+country: number;
+}
+}`}
+
+</CodeSnippet>
+
+# Step 9:
+
+- Create a controller to add a user
+- Add UserDTO as the type of the request body
+
+<CodeSnippet language="ts">
+{`import { Body, Controller, Post } from '@nestjs/common';
+
+import { UserDTO } from './dto/user.dto';
+@Controller('user')
+export class UserController {
+  @Post()
+  async addUser(@Body() user: UserDTO) {
+    return user;
+  }
+}
+}`}
+</CodeSnippet>
+> **Note:**
+> I have added @post Decorator to the function addUser as we > are dealing with Post HTTP Request
+> Also, the @Body Decorator to get the request body
+That's it we have added validation to the `addUser` request body
+# Testing
+
+Let's test the implementation now.
+
+Start the server by executing
+
+<CodeSnippet language="ts">
+  {`
+npm start:dev
+}`}
+</CodeSnippet>
+
+Open the server URL `http://localhost:3000` in [Postman](https://www.postman.com/) or any API Testing Tool.
+
+## Test Case 1
+
+Passing all the user properties with an invalid email
+
+![Nest JS Request Body Validation - Test Case 1](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/4ark6dxnw3c3x4ajx5g3.png)
+
+And the validation works!
+
+## Test Case 2
+
+Since the country property has been set to optional, Now let's try to send the request without the country property
+
+![Nest JS Request Body Validation - Test Case 2](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/wptt1ahr6qkkpnxl9pfe.png)
+
+Now we got success response, even without the country property.
+
+Try testing with different scenarios by passing invalid data and the validation should work as expected
+
+Congratulation! 👏
+
+You have successfully validated the request body in Nest.JS

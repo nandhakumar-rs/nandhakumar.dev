@@ -26,11 +26,11 @@ Now, once you are done with the development you need to hand over the source cod
 
 Similar scenario for production as well.
 
-So How can we ship the environment to all the places where ever you run the application? 
+So How can we ship the environment to all the places where ever you run the application?
 
 And here comes Docker, It will create a virtual environment for your app to run and you can create and use the environment where ever you need to run your app.
 
-Awesome right? 
+Awesome right?
 
 That's a short brief on Docker.
 
@@ -42,9 +42,7 @@ Now Let's see how to Dockerize your React app.
 
 # Step 1: Create React App Using Vite (Skip this step if you already have a react app)
 
-<CodeSnippet language="bash">
-  {`npm create vite@latest`}
-</CodeSnippet>
+<CodeSnippet language="bash">{`npm create vite@latest`}</CodeSnippet>
 
 You'll be asked for
 
@@ -52,15 +50,16 @@ You'll be asked for
 - Which Framework to use like React, Angular, or Vue? Choose React
 - Then, Typescript or Javascript. Choose as you wish
 
-<Img alt="desktop" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1668678866236/JzJ25nfLJ.png" />
+<Img
+  alt="desktop"
+  src="https://cdn.hashnode.com/res/hashnode/image/upload/v1668678866236/JzJ25nfLJ.png"
+/>
 
 Now switch to the project directory
 
-<CodeSnippet language="bash">
-  {`cd [your project name]`}
-</CodeSnippet>
+<CodeSnippet language="bash">{`cd [your project name]`}</CodeSnippet>
 
-# Step 2:  Update `vite.config` File
+# Step 2: Update `vite.config` File
 
 This step is required to map the port between Docker container and your React app
 
@@ -91,7 +90,10 @@ to
 
 Create a file called `Dockerfile` in the root of your project directory like this 👇
 
-<Img alt="desktop" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1668679231923/p-97mBMMq.png" />
+<Img
+  alt="desktop"
+  src="https://cdn.hashnode.com/res/hashnode/image/upload/v1668679231923/p-97mBMMq.png"
+/>
 
 # Step 4: Add Commands to Dockerfile
 
@@ -124,7 +126,6 @@ If you don't know what are these commands, read the explanation 👇
 - `COPY . .` - Copies the source code to /app directory
 - `EXPOSE 5173` - Exposes the port to access the app from outside the container i.e from the browser
 - `CMD ["npm", "run", "dev"]` - Executes `npm run dev` to start the server
-
 
 # Step 5: Build the Dockerfile
 
@@ -169,10 +170,7 @@ Execute this command in the terminal 👇
 
 To check whether your docker container is running or not, execute
 
-
-<CodeSnippet language="bash">
-  {`docker ps`}
-</CodeSnippet>
+<CodeSnippet language="bash">{`docker ps`}</CodeSnippet>
 
 It will show the list of containers running on your system
 
@@ -182,4 +180,7 @@ Check whether the name of the container you have given when running the `docker 
 
 Open the Browser and access `http://localhost:[Port you mentioned in the docker run command]` as per the configuration we did so far it should be `http://localhost:5173`
 
-<Img alt="desktop" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1668682778580/owixBZ78D.png" />
+<Img
+  alt="desktop"
+  src="https://cdn.hashnode.com/res/hashnode/image/upload/v1668682778580/owixBZ78D.png"
+/>

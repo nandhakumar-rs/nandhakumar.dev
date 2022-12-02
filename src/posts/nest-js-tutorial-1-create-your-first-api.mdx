@@ -1,9 +1,9 @@
 ---
-title: 'Nest JS Series: Create Your First API'
+title: 'Nest JS Tutorial #1: Create Your First API'
 publishedAt: 'Nov 24, 2022'
-description: Learn how to create your first API using Nest.JS
+description: Learn how to create your API in Nest.JS
 thumbnailUrl: '/javascript-functions-thumbnail.jpeg'
-tags: ['nestjs','javascript','typescript','backend']
+tags: ['nestjs', 'javascript', 'typescript', 'backend', 'api']
 ---
 
 Hi There! 👋
@@ -14,19 +14,18 @@ I am still trying to learn more about Nest.JS, So thought of sharing my learning
 
 Let's Get Started Now! 🚀
 
-
 # Prerequisite
+
 - [Javascript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 - [Typescript](https://www.typescriptlang.org/) (Optional)
 - Basics Of OOPS
-- [Postman](https://www.postman.com/)  (For API Testing)
+- [Postman](https://www.postman.com/) (For API Testing)
 - [Code Editor](https://code.visualstudio.com/)
 - [Node.JS](https://nodejs.org/en/)
 
-
 # What is Nest.JS?
 
-Nest.JS is a framework to build highly scalable Node.JS server-side applications. It comes with the full support of typescript(It also allows us to build the app with pure JS as well). 
+Nest.JS is a framework to build highly scalable Node.JS server-side applications. It comes with the full support of typescript(It also allows us to build the app with pure JS as well).
 
 It combines OOP(Object Oriented Programming) and Functional Programming to write clean and reusable code.
 
@@ -36,7 +35,7 @@ Under the hood, Nest.JS uses Express.JS as its default HTTP Server. If you prefe
 
 That's a short brief on Nest.JS
 
-***
+---
 
 # Generating Nest.JS Project
 
@@ -46,32 +45,32 @@ I am using Node.JS Version `v18.12.1`
 
 To generate a Nest.JS Project first, you need to install [Nest Cli](https://docs.nestjs.com/cli/overview)
 
-<CodeSnippet language="bash">
-{`npm i -g @nestjs/cli`}
-</CodeSnippet>
+<CodeSnippet language="bash">{`npm i -g @nestjs/cli`}</CodeSnippet>
 
 Now generate a new Nest.JS project
 
-<CodeSnippet language="bash">
-{`nest new [your project name]`}
-</CodeSnippet>
+<CodeSnippet language="bash">{`nest new [your project name]`}</CodeSnippet>
 
 It will ask for,
+
 - Which package manager ([npm](https://www.npmjs.com/), [yarn](https://yarnpkg.com/), [pnpm](https://pnpm.io/)) to use? (I choose yarn, you can choose as you wish)
 
 Now open the project on your code editor
 
 # Understanding Nest.JS Project Structure
 
-<Img alt="Nest JS Project Structure" src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/7d11o7dru54dgkw3z4f1.png" />
+<Img
+  alt="Nest JS Project Structure"
+  src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/7d11o7dru54dgkw3z4f1.png"
+/>
 
 - `node_modules` - Contains all the libraries that are required for your project.
 - `src` - Contains your application source code, Under this directory Nest.JS has generated a starter code. Let's explore what they are,
-    - `app.controller.spec.ts` - Contains unit test cases for each controller implementation
-    - `app.controller.ts` - Contains the implementation of the [API](https://en.wikipedia.org/wiki/API)
-    - `app.service.ts` - Contains business logic which will  be used in the controller
-    - `app.module.ts` - Contains Imports, Exports and DI(Dependency Injection). More on this later...
-    - `main.ts` - Contains implementation to bootstrap the application. This is the starting point of your application 
+  - `app.controller.spec.ts` - Contains unit test cases for each controller implementation
+  - `app.controller.ts` - Contains the implementation of the [API](https://en.wikipedia.org/wiki/API)
+  - `app.service.ts` - Contains business logic which will be used in the controller
+  - `app.module.ts` - Contains Imports, Exports and DI(Dependency Injection). More on this later...
+  - `main.ts` - Contains implementation to bootstrap the application. This is the starting point of your application
 - `test` - Contains E2E test case implementations
 - `.eslintrc.js` - Contains lint configuration that helps to identify incorrect syntax, typescript standards and more ...
 - `.gitignore` - Contains files & directories to ignore when pushing the code to GitHub
@@ -81,13 +80,12 @@ Now open the project on your code editor
 - `README.md` - Contains documentation of your project
 - `tsconfig.json` - Contains typescript configurations
 
-
 # Basic Understanding Of API(You can skip this section if you know what is an API)
 
 If you are a complete beginner in API development.
 
 In simple terms,
-Let's say you have a raw cloth material and you want it to be stitched. 
+Let's say you have a raw cloth material and you want it to be stitched.
 
 So you will go to a tailor and give your cloth to stitch. You will also give some instructions on how the design should be.
 
@@ -98,10 +96,9 @@ These requests are sent using an API URL.
 An API(Application programming interface) will look like this 👇
 
 <CodeSnippet language="ts">
-{`// Example API
+  {`// Example API
 "https://google.com/api/users" // returns a list of users`}
-</CodeSnippet >
-
+</CodeSnippet>
 
 If you are still confused. Don't worry, going forward you will figure it out.
 
@@ -109,31 +106,30 @@ If you are still confused. Don't worry, going forward you will figure it out.
 
 Let's start the server first
 
-Open your terminal 
+Open your terminal
 
 Navigate to your project directory
 
 And Run 👇
 
-<CodeSnippet language="bash">
-{`yarn start:dev`}
-</ CodeSnippet >
+<CodeSnippet language="bash">{`yarn start:dev`}</CodeSnippet>
 
 > Replace `yarn` with `npm` or `pnpm` if you have configured those package managers initially
 
-Now your server should have been started on 
+Now your server should have been started on
 
-<CodeSnippet language="bash">
-{`http://localhost:3000`}
-</CodeSnippet>
+<CodeSnippet language="bash">{`http://localhost:3000`}</CodeSnippet>
 
 To test the starter code generated by Nest.JS
 
-Open Postman(tool to test the API) 
+Open Postman(tool to test the API)
 
 Choose **GET** Method and Add the **API URL(http://localhost:3000)** then hit **Send**
 
-<Img alt="API Testing With Postman" src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/mh6bqxytzlncjyju8u79.png" />
+<Img
+  alt="API Testing With Postman"
+  src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/mh6bqxytzlncjyju8u79.png"
+/>
 
 You will see the response as "Hello World!"
 
@@ -143,12 +139,12 @@ You have executed your first API.
 
 Now let's try to customise this API in a way to get a list of user names
 
-### Step 1 
+### Step 1
 
-Open `app.controller.ts` 
+Open `app.controller.ts`
 
-- Add `/user` route to `@Controller()` decorator 
-- Change the function name under `@Get()` decorator to  `getUsers`
+- Add `/user` route to `@Controller()` decorator
+- Change the function name under `@Get()` decorator to `getUsers`
 - Change return type from `string` to `string[]`
 - Change the App Service method name to `getUsers`
 
@@ -161,21 +157,22 @@ import { AppService } from './app.service';
 
 @Controller('/users') // Add '/user' route
 export class AppController {
-  constructor(private readonly appService: AppService) {}
-  
-  // Change the function name to getUsers
-  @Get()
-  getUsers(): string[] { // Change return type to string[](stirng Array) 
-     // Change the service method name to getUsers
-     return this.appService.getUsers(); 
-  }
+constructor(private readonly appService: AppService) {}
+
+// Change the function name to getUsers
+@Get()
+getUsers(): string[] { // Change return type to string[](stirng Array)
+// Change the service method name to getUsers
+return this.appService.getUsers();
+}
 }
 `}
+
 </CodeSnippet>
 
 ### Step 2
 
-Open `app.service.ts` 
+Open `app.service.ts`
 
 - Change the function name `getHello()` inside AppService Class to `getUsers()`
 - Change return type from `string` to `string[]`
@@ -188,27 +185,29 @@ Code Snippet 👇
 
 @Injectable()
 export class AppService {
-  // Change function name to getUsers
-  getUsers(): string[] { // Change return type to string[](stirng Array) 
-    return ['userOne', 'userTwo'];
-  }
+// Change function name to getUsers
+getUsers(): string[] { // Change return type to string[](stirng Array)
+return ['userOne', 'userTwo'];
+}
 }
 `}
+
 </CodeSnippet>
 
 That's it your user API is ready now.
 
-Let's test it in Postman 
+Let's test it in Postman
 
 - Open Postman
 - Choose **GET** Method and Add the **API URL(http://localhost:3000/users)** then hit **Send**
 
-
-<Img alt="Testing Get Users API Developed in Nest JS" src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/4zi9b0oytvztskqjgtnf.png" />
+<Img
+  alt="Testing Get Users API Developed in Nest JS"
+  src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/4zi9b0oytvztskqjgtnf.png"
+/>
 
 If you got a response as a list of user names.
 
 Congratulation! 👏
 
 You have created your first API in Nest.JS 🙌
-

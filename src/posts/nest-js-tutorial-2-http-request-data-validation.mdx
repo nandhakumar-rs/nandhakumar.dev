@@ -215,7 +215,40 @@ export class UserController {
 > **Note:**
 > I have added @post Decorator to the function addUser as we > are dealing with Post HTTP Request
 > Also, the @Body Decorator to get the request body
+
+# Step 9:
+Add Validation Pipe middleware globally in `main.ts`. By adding this globally, it helps DTO to validate the data all over the application.
+
+<CodeSnippet language="ts">
+{`// main.ts
+import { ValidationPipe } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+const CookieSession = require('cookie-session');
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+
+  app.useGlobalPipes(
+    // By adding this validation pipe globally, nest js helps us to validate body params, query param etc..
+    new ValidationPipe({
+      whitelist: true, // When Whitelist is set to true, You will not be allowed to send additional props apart from DTO Property
+    }),
+  );
+
+  // Add Cookie Session Middleware to store user id in cookies on the response and the request.
+  app.use(
+    CookieSession({
+      keys: ['SecretKey'],
+    }),
+  );
+  app.listen(3000);
+}
+bootstrap();`}
+</CodeSnippet>
+
 That's it we have added validation to the `addUser` request body
+
 # Testing
 
 Let's test the implementation now.

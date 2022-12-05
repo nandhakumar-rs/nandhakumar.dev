@@ -41,18 +41,20 @@ These Requests are sent with the help of URLs like this 👇
 
 ## HTTP Request Methods
 
-<Img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/n22mtpxpj9hwt9x1i5tm.png" alt="HTTP Request Methods" />
+<Img
+  src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/n22mtpxpj9hwt9x1i5tm.png"
+  alt="HTTP Request Methods"
+/>
 
 That's a short brief on HTTP Requests.
 
 **To know more about HTTP Request, [Click Here!](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods)**
 
-
 ## Why Request Data Validation?
 
 As you know the body part of the HTTP Request may have some data.
 
-When the HTTP Request reaches the server, Getting the Body data directly without validating is not good. Some of you may get malicious data. So, you have to validate your Body data always.
+When the HTTP Request reaches the server, Getting the Body data directly without validating is not good. Sometimes you may get malicious data. So, it is required that you always validate your Request Body data.
 
 # Understanding Nest.JS Validation
 
@@ -144,7 +146,10 @@ export class AppModule {}`}
 
 Create a dto folder under the user folder and create a file called user.dto.ts
 
-<Img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/5bz9as4lek43gk0m2zoa.png" alt="Project Structure - USER DTO" />
+<Img
+  src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/5bz9as4lek43gk0m2zoa.png"
+  alt="Project Structure - USER DTO"
+/>
 
 # Step 7:
 
@@ -176,22 +181,21 @@ Class-Validator has a list of validation functions which can be used in the form
 Now, Let's try to add the validation decorators to the class properties
 
 <CodeSnippet language="ts">
-{`import { IsEmail, IsNumber, IsOptional, IsString } from 'class-validator';
+{`import { IsEmail, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class UserDTO {
   @IsEmail()
   email: string;
-@IsNumber()
-age: string;
-@IsString()
-name: number;
-// add @IsOptional to make the country property optional
-@IsOptional()
-@IsString()
-country: number;
+  @IsNumber()
+  age: string;
+  @IsString()
+  name: number;
+  // add @IsOptional to make the country property optional
+  @IsOptional()
+  @IsString()
+  country: number;
 }
 }`}
-
 </CodeSnippet>
 
 # Step 9:
@@ -215,36 +219,38 @@ export class UserController {
 > **Note:**
 > I have added @post Decorator to the function addUser as we > are dealing with Post HTTP Request
 > Also, the @Body Decorator to get the request body
-
 # Step 9:
+
 Add Validation Pipe middleware globally in `main.ts`. By adding this globally, it helps DTO to validate the data all over the application.
 
 <CodeSnippet language="ts">
 {`// main.ts
-import { ValidationPipe } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-const CookieSession = require('cookie-session');
+import { ValidationPipe } from '@nestjs/common'
+import { NestFactory } from '@nestjs/core'
+import { AppModule } from './app.module'
+const CookieSession = require('cookie-session')
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule)
 
   app.useGlobalPipes(
     // By adding this validation pipe globally, nest js helps us to validate body params, query param etc..
     new ValidationPipe({
       whitelist: true, // When Whitelist is set to true, You will not be allowed to send additional props apart from DTO Property
     }),
-  );
+  )
 
   // Add Cookie Session Middleware to store user id in cookies on the response and the request.
   app.use(
     CookieSession({
       keys: ['SecretKey'],
     }),
-  );
-  app.listen(3000);
+  )
+  app.listen(3000)
 }
-bootstrap();`}
+bootstrap()
+`}
+
 </CodeSnippet>
 
 That's it we have added validation to the `addUser` request body
@@ -267,7 +273,10 @@ Open the server URL `http://localhost:3000` in [Postman](https://www.postman.com
 
 Passing all the user properties with an invalid email
 
-<Img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/4ark6dxnw3c3x4ajx5g3.png" alt="Nest JS Request Body Validation - Test Case 1" />
+<Img
+  src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/4ark6dxnw3c3x4ajx5g3.png"
+  alt="Nest JS Request Body Validation - Test Case 1"
+/>
 
 And the validation works!
 
@@ -275,7 +284,10 @@ And the validation works!
 
 Since the country property has been set to optional, Now let's try to send the request without the country property
 
-<Img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/wptt1ahr6qkkpnxl9pfe.png" alt="Nest JS Request Body Validation - Test Case 2" />
+<Img
+  src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/wptt1ahr6qkkpnxl9pfe.png"
+  alt="Nest JS Request Body Validation - Test Case 2"
+/>
 
 Now we got success response, even without the country property.
 

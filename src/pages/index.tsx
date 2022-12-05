@@ -38,8 +38,10 @@ export const getStaticProps = async () => {
   })
 
   posts.sort((a: any, b: any) => {
-    if (new Date(a.publishedAt).getTime() < new Date(b.publishedAt).getTime()) return 1
-    if (new Date(a.publishedAt).getTime() > new Date(b.publishedAt).getTime()) return -1
+    if (new Date(a.publishedAt).getTime() < new Date(b.publishedAt).getTime())
+      return 1
+    if (new Date(a.publishedAt).getTime() > new Date(b.publishedAt).getTime())
+      return -1
 
     return 0
   })

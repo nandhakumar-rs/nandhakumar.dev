@@ -1,0 +1,341 @@
+---
+title: 'Nest JS Tutorial #3 : Query & Route Params'
+publishedAt: 'Dec 15, 2022'
+description: Learn what is HTTP Request and how to validate the request data in Nest.JS
+thumbnailUrl: '/javascript-functions-thumbnail.jpeg'
+tags: ['nestjs', 'javascript', 'typescript', 'backend', 'api']
+---
+Hi There! 👋
+
+In this post, you will learn what is route & query param, when to use it and how to use it in [Nest.JS](https://nestjs.com/)
+
+This post is a part Nest JS tutorial series, Do check out my other post on nest js to know more about it.
+
+Let's Get Started Now! 🚀
+
+# Prerequisite
+
+- [Javascript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+- [Typescript](https://www.typescriptlang.org/)
+- Basics Of OOPS
+- [Postman](https://www.postman.com/) (For API Testing)
+- [Code Editor](https://code.visualstudio.com/)
+- [Node.JS](https://nodejs.org/en/)
+
+
+# Understanding Route and Query param
+
+## Route Param
+
+Route Params are used to get specific data.
+
+Example Scenario,
+Let's say you want to get a user detail by `ID`, so `ID` can be will be passed as a route param like this 👇
+
+<CodeSnippet language="bash">
+  {`http://api.com/5689`}
+</CodeSnippet>
+
+Here, `5689` is the `ID` of the user
+
+## Query Param
+
+Query params are used when you want to filter, sort and paginate the data.
+
+Example Scenario,
+Let's say you want to get a list of users that matches a name. so, here name can be passed as a query param like this 👇
+
+<CodeSnippet language="bash">
+  {`"http://api.com?name=tamilan"`}
+</CodeSnippet>
+
+Here, the name `tamilan` is passed as a query param. To get results matching the name.
+
+You can also pass multiple query param.
+
+In addition to filter by name, we can also add a sort query with the existing name query like this 👇
+
+<CodeSnippet language="bash">
+  {`"http://api.com?name=tamilan&sort=name"`}
+</CodeSnippet>
+
+That's a short brief on route and query param!
+
+Now let's see how to capture these query and route param in nest js.
+
+# Using Route and Query Param in Nest JS
+
+To get started, Create a new nest project using nest cli. If you are not sure how to create a new project, check out this **[post](https://www.nandhakumar.io/post/nest-js-tutorial-1-create-your-first-api)**
+
+I have created a new nest project, with its starter code.
+
+Here's the project structure I have now,
+
+<Img
+  src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/exw7umiwr6o7xfawgw3o.png"
+  alt="Nest JS Starter Project Structure"
+/>
+
+## Requirements
+
+We need two routes,
+
+- `/user`
+  - It should be a GET request
+  - It should return all the users when there is no query param
+  - It should return all the users that match the name when the name query param is passed
+- `/user/:id`
+  - It should be a GET request
+  - It should return the user that matches the `id` passed as a route param
+
+# Implementation
+
+## Step 1:
+
+Add some mock user data to the service file.
+
+As we are using typescript it would be nice to add an interface for the user.
+
+<CodeSnippet language="ts">
+{`// app.service.ts
+
+import { Injectable } from '@nestjs/common';
+
+// user interface
+export interface IUser {
+  id: number;
+  name: string;
+  age: number;
+}
+
+@Injectable()
+export class AppService {
+  // list of users
+  private users: IUser[] = [
+    {
+      id: 1,
+      name: 'Tamilan',
+      age: 23,
+    },
+    {
+      id: 1,
+      name: 'Nandha',
+      age: 24,
+    },
+    {
+      id: 1,
+      name: 'Nandha Kumar',
+      age: 24,
+    },
+  ];
+}`}
+</CodeSnippet>
+
+## Step 2:
+
+Create a method `findUsersByName` that returns users matching the 'name' query or all the users when there is no name query.
+
+Add this method to the same service file
+
+<CodeSnippet language="ts">
+  {`findUsersByName(nameToBeMatched: string): IUser[] {
+    return nameToBeMatched
+      ? this.users.filter((user) =>
+          // return users with name matching
+          // 'name' query param
+          user.name.toLowerCase().includes(nameToBeMatched),
+        )
+      : // returns all the users if the
+        // 'name' query param is 'null' or ''
+        this.users;
+  }`}
+</CodeSnippet>
+
+## Step 3:
+
+Create another method `findUserById` that returns a user matching the `id` route param.
+
+Add this method to the same service file.
+
+<CodeSnippet language="ts">
+  {`findUserById(id: string): IUser {
+    // return user with id matching 'id' route param
+
+    // By Default when you get value from query or route
+    // param it will be string, But in our case user id is of
+    // type number. So we are making a type conversion for id
+    return this.users.find((user) => user.id === Number(id));
+}`}
+</CodeSnippet>
+
+## Step 4:
+
+Update the base route of the controller to `/user`
+
+<CodeSnippet language="ts">
+  {` // app.controller.ts
+import { Controller, Get} from '@nestjs/common';
+import { AppService, IUser } from './app.service';
+
+@Controller('/user') // update the base route to '/user'
+export class AppController {
+  constructor(private readonly appService: AppService) {}
+
+}`}
+</CodeSnippet>
+
+## Step 5:
+
+Implementing the first part of the requirement.
+
+Create a method `getUsers` with `@Get()` decorator.
+
+And it should take `@Query()` decorator as its argument. So that whenever we add the query to the URL, those params will be captured by this argument.
+
+In the implementation pass the query params to the service method`(findUsersByName)` that we have already implemented in the service
+
+Finally, return the data
+
+<CodeSnippet language="ts">
+  {` // app.controller.ts
+import { Controller, Get} from '@nestjs/common';
+import { AppService, IUser } from './app.service';
+
+@Controller('/user')
+export class AppController {
+  constructor(private readonly appService: AppService) {}
+
+  @Get()
+  getUsers(@Query() params: any): IUser[] {
+    return this.appService.findUsersByName(params.name);
+  }
+}`}
+</CodeSnippet>
+
+**Pro Tip**
+
+If you want a specific property from the query, you can specify the property `name` in the `@Query()` decorator like this 👇
+
+<CodeSnippet language="ts">
+  {`
+@Get()
+  getUsers(@Query('name') name: string): IUser[] {
+    return this.appService.findUsersByName(name);
+  }
+`}
+</CodeSnippet>
+
+## Step 6:
+
+Implementing the second part of the requirement.
+
+Create a method `getUserById` with `@Get(':id')` decorator.
+
+> **Note** :  
+> Here we have defined `:id` route param in the `@Get()` decorator.
+
+And it should take `@Param()` decorator as its argument. So that the route param will be captured by this argument.
+
+In the implementation pass the query params to the service method(`findUserById`) that we have already implemented in the service.
+
+Finally, return the data.
+
+<CodeSnippet language="ts">
+  {`// app.controller.ts
+import { Controller, Get, Param, Query } from '@nestjs/common';
+import { AppService, IUser } from './app.service';
+
+@Controller('/user')
+export class AppController {
+  constructor(private readonly appService: AppService) {}
+
+  @Get()
+  getUsers(@Query() params: any): IUser[] {
+    return this.appService.findUsersByName(params.name);
+  }
+
+  @Get(':id')
+  getUserById(@Param() params: any): IUser {
+    return this.appService.findUserById(params.id);
+  }
+}`}
+</CodeSnippet>
+
+**Pro Tip**
+
+Similar to the `@Query()` decorator you can specify the property `id` in the `@Param()` decorator like this 👇
+<CodeSnippet language="ts">
+  {`
+@Get()
+  getUsers(@Param('id') id: string): IUser {
+    return this.appService.findUsersByName(id);
+  }
+`}
+</CodeSnippet>
+
+That's it!
+
+As per the requirement, you have implemented the API.
+
+***
+
+# Testing
+
+Let's test the implementation now!
+
+Start the server by executing,
+
+<CodeSnippet language="bash">
+  {`npm run start:dev`}
+</CodeSnippet>
+
+Open the server URL `http://localhost:3000` in [Postman](https://postman.com/) or any API Testing Tool.
+
+## Test Case 1:
+
+Getting all Users, without query params.
+
+<Img
+  src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/fhqdj2ojjdvaoba9xhr4.png"
+  alt="Nest JS Query and Route Param, Test Case - 1"
+/>
+
+And we got all the users.
+
+✅ Test Case Passed!
+
+## Test Case 2:
+
+Getting all Users, with `name` query param
+
+<Img
+  src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/cqxetgp9tcqvst7gr15w.png"
+  alt="Nest JS Query and Route Param, Test Case - 2"
+/>
+
+And we got all the users matching the name passed in the query param.
+
+✅ Test Case Passed!
+
+## Test Case 3:
+
+Getting User by id, with `id` route param.
+
+<Img
+  src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ghhc4ajem3yedxdjj8vw.png"
+  alt="Nest JS Query and Route Param, Test Case - 3"
+/>
+
+And we got the user with the id we passed in the route.
+
+✅ Test Case Passed!
+
+
+
+Try implementing different scenarios with multiple `Query` and `Route` params.
+
+Congratulation! 👏
+
+You have successfully implemented APIs with `Query` and `Route` param in Nest.JS.
+
+Get the completed source code from [here](https://github.com/nandhakumar-rs/nest-js-tutorial-series).

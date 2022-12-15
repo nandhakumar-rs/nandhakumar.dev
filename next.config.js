@@ -19,6 +19,12 @@ const nextConfig = {
         hostname: 'dev-to-uploads.s3.amazonaws.com',
         port: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'cdn-images-1.medium.com',
+        port: '',
+      },
+      
     ],
   },
 }

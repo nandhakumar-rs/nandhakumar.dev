@@ -28,7 +28,7 @@ const Components = {
   Img: MdxImage,
   li: LI,
   a: HrefLink,
-  blockquote: Blockquote
+  blockquote: Blockquote,
 }
 
 const Post = ({ data, content, mdxSource, readingTime }: any) => {
@@ -43,10 +43,15 @@ const Post = ({ data, content, mdxSource, readingTime }: any) => {
         {data.title}
       </h1>
       <Tags tags={data.tags} />
+      {data.thumbnailUrl ? (
+        <MdxImage src={data.thumbnailUrl} alt={data.title} />
+      ) : (
+        ''
+      )}
       <HR />
       <div className="text-app-neutral-700 text-xl mt-2">
         <MDXRemote {...mdxSource} components={Components}></MDXRemote>
-        <HR/>
+        <HR />
         <PostFootnote />
       </div>
     </article>

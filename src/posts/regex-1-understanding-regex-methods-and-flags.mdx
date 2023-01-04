@@ -1,0 +1,230 @@
+---
+title: 'Regex #1: Understanding Regex, Regex-Based String Methods and Regex Flags'
+publishedAt: 'Jan 4, 2023'
+description: 'Learn the fundamentals of regex, regex methods and its flags'
+thumbnailUrl: '/images/post/regex-1-understanding-regex-methods-and-flags.png'
+tags: [ 'javascript', 'typescript', 'regex', ]
+---
+
+Hi There! 👋
+
+In this post, you will learn the fundamentals of regex.
+
+
+# Why Regex?
+
+The most common feature every application has is user registration and login. 
+
+Nowadays, Libraries(Eg: Class Validator NPM Package) that you use for form validation has a direct method to validate input value like `isEmail()`, etc...
+
+Which is very helpful, But each application has its own use case. So, these direct methods won't be helpful in that case.
+
+For Example, Not all application has the same rules for password.
+
+In such scenarios, you can use Regex Pattern to validate the user input values.
+
+> **Note:** Regex is not limited to use only for Input Validation
+
+Most of the time I used to find the required Regex pattern from Google.
+
+At some point, I thought why can't we try to understand regex instead of searching on Google? 
+
+
+Just gave try!
+
+After understanding some basics, Regex was interesting. And I regret that I didn't learn Regex so far.
+
+That's How I started learning Regex in depth.
+
+> **Note:** Examples I share in this post are based on 
+> javascript, but the concepts can be applied to any 
+> programming language
+
+# Defining a Regex Pattern?
+
+When you add a pattern between `/`, it is considered a regex pattern
+
+<CodeSnippet language="bash">
+  {`/[regex pattern]/`}
+</CodeSnippet>
+
+
+> **Note:** There shouldn't be any `'` or `"` around the `/`
+
+ 
+## Two Ways to test Regex Pattern
+ 
+### Using Regex Methods
+
+`.test()` - It will return a boolean value if the pattern matches the string
+
+<CodeSnippet language="ts">
+  {`// regex Pattern
+const pattern = /world/ 
+
+// string to be tested against the pattern
+const text = 'Hello world' 
+
+// returns 'true' as the 'world' is present in the message
+console.log('[Test Method] - ', pattern.test(message)) 
+  }`}
+</CodeSnippet>
+
+<CodeSnippet language="bash">
+  {`// output
+[Test Method] - true `}
+</CodeSnippet>
+
+`.exec()` - It will return an array with the index and additional info on the matching pattern
+
+<CodeSnippet language="ts">
+  {`// regex Pattern
+const pattern = /world/ 
+
+// string to be tested against the pattern
+const text = 'Hello world' 
+
+// returns Array with index and additional info
+console.log('[Exec Method] - ', pattern.exec(message))
+`}
+</CodeSnippet>
+
+<CodeSnippet language="bash">
+  {`// output
+[Exec Method] - [ 'world', index: 6, input: 'Hello world', groups: undefined ] `}
+</CodeSnippet>
+
+### Using String Methods
+
+`.match()` - It will return an array with the index and additional info on the matching pattern (similar to `.exec()` method) if only one match is found. Otherwise, it will return all the string that matches the pattern as an array.
+
+<CodeSnippet language="ts">
+  {`// regex Pattern
+const pattern = /world/ 
+
+// string to be tested against the pattern
+const text = 'Hello world' 
+
+// returns Array with index and additional info
+console.log('[Exec Match] - ', text.match(pattern)) 
+`}
+</CodeSnippet>
+
+<CodeSnippet language="bash">
+  {`// output
+[Exec Match] - [ 'world', index: 6, input: 'Hello world', groups: undefined ] `}
+</CodeSnippet>
+
+`.replace()` -  It will replace the string that matches the pattern with the string that is to be replaced.
+
+<CodeSnippet language="ts">
+  {`// regex Pattern
+const pattern = /world/ 
+
+// string to be tested against the pattern
+const text = 'Hello world' 
+
+// returns Array with index and additional info
+console.log('[Exec Replace] - ', text.replace(pattern, 'Word'))
+`}
+</CodeSnippet>
+
+<CodeSnippet language="bash">
+  {`// output
+[Exec Replace] - Hello Word`}
+</CodeSnippet>
+
+`.split()` -  It will split the text into an array based on the matching pattern
+
+<CodeSnippet language="ts">
+  {`// regex Pattern
+const pattern = /world/ 
+
+// string to be tested against the pattern
+const text = 'Hello world' 
+
+// returns Array with index and additional info
+console.log('[Exec Split] - ', text.split(pattern))
+`}
+</CodeSnippet>
+
+<CodeSnippet language="bash">
+  {`// output
+[Exec Split] - [ 'Hello ', '' ]`}
+</CodeSnippet>
+
+
+# Regex Flags
+
+There are three 3 flags in Regex
+
+`g` - Global
+
+Usually, when you try to match a pattern, it will match only the first occurrence in the string.
+
+By adding the `Global` flag to the Regex pattern, it can match multiple occurrences of the pattern in the string
+
+<CodeSnippet language="ts">
+  {`// regex Pattern with global flag
+const pattern = /the/g
+
+// string to be tested against the pattern
+const text = 'Get the Work Done and the work will pay off.'
+
+// Returns Array of strings matching the pattern
+console.log('[Exec Global Flag] - ', text.match(pattern))
+`}
+</CodeSnippet>
+
+<CodeSnippet language="bash">
+  {`// output
+[Exec Global Flag] - [ 'the', 'the' ]`}
+</CodeSnippet>
+
+`i` - Case Insensitive
+
+By default, matching string with regex is case-sensitive.
+
+By adding the `Case Insensitive` flag to the Regex pattern, it can match the string with Case Insensitive
+
+<CodeSnippet language="ts">
+  {`// regex Pattern with global and Case Insensitive flag
+const pattern = /work/gi
+
+// string to be tested against the pattern
+const text = 'Get the Work Done and the work will pay off.'
+
+// Returns Array of strings matching the pattern
+console.log('[Exec Global & Case Insensitive Flag] - ', text.match(pattern))
+`}
+</CodeSnippet>
+
+<CodeSnippet language="bash">
+  {`// output
+[Exec Global & Case Insensitive Flag] - [ 'Work', 'work' ]`}
+</CodeSnippet>
+
+`m` - Multi Line
+
+When you try to match a pattern with a multi-line string, By default the match is found only in the first line even though we have a match in the second line
+
+By adding the `Multi Line` flag to the Regex pattern, it can find the matches in multiple lines.
+
+
+<CodeSnippet language="ts">
+  {`// regex Pattern with global and Multi-Line flag
+const pattern = /^The/gm // starts with "The"
+
+// string to be tested against the pattern
+const text = 'The the Work Done.
+The work will pay off.'
+
+// Returns Array of strings matching the pattern
+console.log('[Exec Global & Multi Line Flag] - ', text.match(pattern))
+`}
+</CodeSnippet>
+
+<CodeSnippet language="bash">
+  {`// output
+[Exec Global & New Line Flag] - [ 'The', 'The' ]`}
+</CodeSnippet>

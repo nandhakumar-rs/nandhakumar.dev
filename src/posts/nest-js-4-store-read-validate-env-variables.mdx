@@ -1,0 +1,212 @@
+---
+title: 'Nest Js #4: How to Store, Read and Validate Environment Variable Using @nestjs/config'
+publishedAt: 'Jan 15, 2023'
+description: 'Learn what is HTTP Request and how to validate the request data in Nest.JS'
+thumbnailUrl: '/images/post/nest-js-4-store-read-validate-env-variables.png'
+tags: ['nestjs', 'javascript', 'typescript', 'backend', 'api']
+---
+
+Hi There! 👋
+
+Usually, when you are working on a project you are not going to write code for all the features you are developing, sometime you might use third-party tools or services like AWS, SendGrid, Google Cloud, etc…
+
+And these platforms will provide some secret or API keys to access the service and If you hardcode these keys on your code, there is a chance that anyone can misuse it.
+
+So as a best practice, you should never hardcode these keys in code or push these keys to GitHub or any cloud repositories.
+
+Instead, store these keys in the environment file and remember you shouldn't push this file to the repository.
+
+In Node.js applications, it's common to use .env files, holding key-value pairs where each key represents a particular value.
+
+Before we get started with the implementation. Make sure you have a Nest Js project with these dependencies
+
+<CodeSnippet language="bash">
+  {`# yarn
+yarn add @nestjs/config class-validator class-transformer
+
+# npm
+npm i @nestjs/config class-validator class-transformer -s`}
+</CodeSnippet>
+
+# Store Environment Variables
+
+Create a file `.env` at the root level of the project
+
+<Img
+  src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/xyzlqiei2aa8xa6jqn4j.png"
+  alt="Nest JS Project Structure"
+/>
+
+Add your secret keys to the `.env` file
+
+<CodeSnippet language="bash">
+  {`# .env
+SECRET_KEY="This is a Secret Key"`}
+</CodeSnippet>
+
+Great! You have created your environment variable.
+
+To avoid pushing the `.env` file to the repository. Add `.env` to `.gitignore` file
+
+<Img
+  src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/jd7u8b9krpani8eso07o.png"
+  alt=".gitignore"
+/>
+
+# Setting Up Nest Config Module
+
+If you haven't installed the dependency that I mentioned at the begging of this tutorial. please install.
+
+Once Installed
+
+Import ConfigModule in `app.module.ts`
+
+<CodeSnippet language="ts">
+  {`// App.module.ts
+
+import { Module } from '@nestjs/common';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { ConfigModule } from '@nestjs/config';
+
+@Module({
+  imports: [ConfigModule.forRoot()], // Import ConfigModule
+  controllers: [AppController],
+  providers: [AppService],
+})
+export class AppModule {}`}
+</CodeSnippet>
+
+The `forRoot()` method registers the `ConfigService` provider which provides a `get()`  method to read the environment variables.
+
+Since `@nestjs/config` uses `dotenv` library under the hood, by default `forRoot()`
+
+the method will search for `.env` in the root of the project.
+
+If you have named your environment file with a different name like `.dev.env` then you need to pass the file name to the `forRoot()` method
+
+
+<CodeSnippet language="ts">
+  {`ConfigModule.forRoot({
+  envFilePath: '.dev.env',
+})`}
+</CodeSnippet>
+
+> **Pro Tip**
+> If you want to use ConfigService in other modules you have to import ConfigModule again, To avoid importing in multiple modules and to globalise ConfigModule  you can set isGlobal to true
+
+<CodeSnippet language="ts">
+  {`ConfigModule.forRoot({
+  envFilePath: '.dev.env',
+  isGlobal: true
+})`}
+</CodeSnippet>
+
+# Reading Environment Variables Using ConfigService
+
+To read environment variable value, we need to inject `ConfigService` which is already registered by `ConfigModule` that we imported in the `app.module.ts`
+
+In my project, I want to read environment variable in the` app.service.ts` file, So injecting `ConfigService`  in it. You can inject where ever you need.
+
+<CodeSnippet language="ts">
+  {`// app.service.ts
+
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+
+@Injectable()
+export class AppService {
+  constructor(private readonly configService: ConfigService) {}
+
+  getSecretKey(): string {
+    return this.configService.get('SECRET_KEY'); // read environment variable
+  }
+}`}
+</CodeSnippet>
+
+Use `get()` and pass the variable name that you want to read.
+
+# Validating Environment Variables
+
+`ConfigModule` provides an additional option to validate the environment variables by passing custom validation functions.
+
+**Why validation is required?**
+
+If you are working on a team and any developer miss any variable in the `.env` file, that might break the application.
+
+Make sure you have installed the required dependencies `class-validator` and `class-transformer`
+
+Create a file `environment.validation.ts`
+
+Add a class `EnvironmentVariables` with all the variables that you have in the` .env` file
+
+<CodeSnippet language="ts">
+  {`// environment.validation.ts
+
+import { IsString } from 'class-validator';
+
+class EnvironmentVariables {
+  @IsString({ message: 'Invalid SECRET_KEY' })
+  SECRET_KEY: string;
+}`}
+</CodeSnippet>
+
+Now create the validation function
+
+<CodeSnippet language="ts">
+  {`// environment.validation.ts
+
+export const validate = (config: Record<string, unknown>) => {
+  
+  // 'plainToClass' to converts plain object into Class
+  const validatedConfig = plainToClass(EnvironmentVariables, config, {
+    enableImplicitConversion: true,
+  });
+ 
+  // 'validateSync' method validate the class and returns errors
+  const errors = validateSync(validatedConfig, {
+    skipMissingProperties: false,
+  });
+
+  if (errors.length > 0) {
+    throw new Error(errors.toString());
+  }
+  return validatedConfig;
+};`}
+</CodeSnippet>
+
+Import the validate functions in `app.module.ts` and pass it to `ConfigModule`
+
+<CodeSnippet language="ts">
+  {`// app.module.ts
+
+import { Module } from '@nestjs/common';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { ConfigModule } from '@nestjs/config';
+import { validate } from './environment.validation';
+@Module({
+  imports: [
+    ConfigModule.forRoot({
+      validate,
+    }),
+  ], // Import ConfigModule
+  controllers: [AppController],
+  providers: [AppService],
+})
+export class AppModule {}`}
+</CodeSnippet>
+
+# Time For Testing
+
+I am running my server at `http://localhost:3000`
+
+Use any API testing tool like(`postman`) to test the API.
+
+<Img
+  src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/lypdies4yvrh4y34g7z4.png"
+  alt="API Testing"
+/>
+
+And you can see when I hit my API, I am getting the secret key stored in the `.env` file as the response.
+

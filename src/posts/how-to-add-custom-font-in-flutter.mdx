@@ -1,0 +1,157 @@
+---
+title: 'How To Add Custom Font in Flutter'
+publishedAt: 'Feb 18, 2023'
+description: 'How To Add Custom Font in Flutter'
+thumbnailUrl: '/images/post/how-to-add-custom-font-in-flutter.png'
+tags: ['flutter', 'dart', 'mobileapp', 'typography']
+---
+
+Hi There! 👋
+
+Recently, I was developing a clothing store app using flutter. And I was about to use a custom font, so researched flutter docs to find a way to add custom fonts.
+
+Here's how I did 👇
+
+# Download your fonts
+
+As a first step download the required fonts. Flutter supports `.ttc`,`.ttf` and `.otf` fonts. It doesn't support `.woff` and `.woff2` fonts for all platforms.
+
+# Add Fonts To Your Project
+
+Create `assets/fonts` in the root level of the project
+
+Add all your fonts.
+
+In my case, I am adding all styles of `EncodeSans` Font to `Fonts` directory
+
+<Img
+  alt="Project Structure"
+  src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/0gsy6wt967hpode31zf5.png"
+/>
+
+# Create a Font Family Typography Class
+
+Creating a common Typography class that holds font family styles would help in using font family throughout the application
+
+Add `constant/typography.dart` file under `lib` directory
+
+<CodeSnippet language="dart">
+  {`// typography.dart
+
+import 'package:flutter/material.dart';
+
+class Typogaphy {
+  static TextStyle Black =
+      TextStyle(fontFamily: _FONT_FAMILY, fontWeight: FontWeight.w900);
+
+  static TextStyle ExtraBold =
+      TextStyle(fontFamily: _FONT_FAMILY, fontWeight: FontWeight.w800);
+
+  static TextStyle Bold =
+      TextStyle(fontFamily: _FONT_FAMILY, fontWeight: FontWeight.w700);
+
+  static TextStyle SemiBold =
+      TextStyle(fontFamily: _FONT_FAMILY, fontWeight: FontWeight.w600);
+
+  static TextStyle Medium =
+      TextStyle(fontFamily: _FONT_FAMILY, fontWeight: FontWeight.w500);
+  
+  static TextStyle Regular =
+      TextStyle(fontFamily: _FONT_FAMILY, fontWeight: FontWeight.w400);
+  
+  static TextStyle Thin =
+      TextStyle(fontFamily: _FONT_FAMILY, fontWeight: FontWeight.w300);
+  
+  static TextStyle Light =
+      TextStyle(fontFamily: _FONT_FAMILY, fontWeight: FontWeight.w200);
+  
+  static TextStyle ExtraLight =
+      TextStyle(fontFamily: _FONT_FAMILY, fontWeight: FontWeight.w100);
+}`}
+</CodeSnippet>
+
+# Using Font Family From The Typography Class
+
+To use the font family declared in the typography class,
+use `copyWith` method to merge typography style with text-specific style.
+
+<CodeSnippet language="bash">{`
+Text('This is a Semi Bold Typo',
+                  textAlign: TextAlign.center,
+                  style: Typogaphy.SemiBold.copyWith(
+                    color: Colors.black,
+                    fontSize: 40,
+                  ))`}</CodeSnippet>
+
+Here's my main.dart file looks like
+
+<CodeSnippet language="dart">
+  {`// main.dart
+
+import 'package:clothing_store/constant/typography.dart';
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Custom Typo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key, required this.title});
+  final String title;
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title,
+            style: Typogaphy.SemiBold.copyWith(color: Colors.white)),
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text('This is a Semi Bold Typo',
+                  textAlign: TextAlign.center,
+                  style: Typogaphy.SemiBold.copyWith(
+                    color: Colors.black,
+                    fontSize: 40,
+                  ))
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}`}
+</CodeSnippet>
+
+For simplicity, I have created a basic typography class with font families alone. Based on your application requirement, you can extend it.
+
+## Final Result
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/vsthe8yb19nmidaj5zgk.png)
+
+# Conclusion
+
+In this post, you have learned how to add a custom font, what fonts are supported by the flutter and how to reuse font family throughout the application.

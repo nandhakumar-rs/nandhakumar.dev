@@ -29,6 +29,33 @@ In my case, I am adding all styles of `EncodeSans` Font to `Fonts` directory
   src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/0gsy6wt967hpode31zf5.png"
 />
 
+# Declare Fonts In Pubspec.yml
+
+<CodeSnippet language="dart">
+  {`fonts:
+    - family: EncodeSans
+      fonts:
+        - asset: assets/fonts/EncodeSans-Black.ttf
+          weight: 900
+        - asset: assets/fonts/EncodeSans-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/EncodeSans-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/EncodeSans-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/EncodeSans-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/EncodeSans-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/EncodeSans-Thin.ttf
+          weight: 300
+        - asset: assets/fonts/EncodeSans-Light.ttf
+          weight: 200
+        - asset: assets/fonts/EncodeSans-ExtraLight.ttf
+          weight: 100`}
+</CodeSnippet>
+
+
 # Create a Font Family Typography Class
 
 Creating a common Typography class that holds font family styles would help in using font family throughout the application

@@ -1,0 +1,93 @@
+---
+title: 'Use Custom Colors in Flutter'
+publishedAt: 'Feb 22, 2023'
+description: 'Discover different methods for using custom colors in Flutter with this comprehensive guide. Learn how to define colors using hexadecimal values, named colors, and RGBA colors. Enhance the look and feel of your app with custom colors in Flutter.'
+thumbnailUrl: '/images/post/how-to-add-custom-font-in-flutter.png'
+tags: ['flutter', 'dart', 'mobileapp', 'typography']
+---
+
+Hi There! 👋
+
+# Using Hexadecimal Values
+
+Defining custom colors using hexadecimal values is a popular way to use custom colors in Flutter. 
+
+To define hexadecimal color,
+- Replace the `#` in the Hexcode with `0xFF`
+- Pass it to Color class and you are ready to use Hex color code
+
+Example,
+
+<CodeSnippet language="dart">
+  {`const Color myColor = Color(0xFF00FF00); // Using #00FF00 Hex Color`}
+</CodeSnippet>
+
+# Using Named Colors
+
+Named colors are defined in your material theme and can be used throughout your application.
+
+To define named colors ,
+- Create named colors using `ThemeData` constructor.
+- Add `ThemeData` to `MaterialApp` constructor.
+- Use the color using theme context anywhere in the application
+
+Example,
+
+<CodeSnippet language="dart">
+  {`
+  MaterialApp(
+  theme: ThemeData(
+    primaryColor: Colors.red, // Define a named color in the app's theme
+    ...
+    )
+  ...
+  )
+
+  Container(
+    color: Theme.of(context).primaryColor, // Use the named color in a widget
+    ...
+  )
+  `}
+</CodeSnippet>
+
+# Using color schemes
+
+You can define a color scheme for your app and use it throughout your app. A color scheme is a set of colors used to define the colors with any custom color names and it can be used throughout the application.
+
+To define color schemes,
+- Pass different colors to `ColorScheme` constructor with custom name such as the primary color, accent color, and background color. 
+- Use the colors using the color scheme
+
+Example,
+
+<CodeSnippet language="dart">
+  {`
+final myColorScheme = ColorScheme(
+  primary: Color(0xFF00FF00),
+  secondary: Color(0xFF0000FF),
+  background: Color(0xFFFFFFFF),
+  ...
+);
+...
+Container(
+  color: myColorScheme.primary, // Use a color from the color scheme in a widget
+  ...
+)
+  `}
+</CodeSnippet>
+
+# Using RGBA Colors
+
+RGBA colors are defined by specifying the red, green, blue, and alpha values. The alpha value defines the transparency of the color. You can create an RGBA color by using the `Color.fromRGBO()` constructor.
+
+Example,
+
+<CodeSnippet language="dart">
+  {`Color myColor = Color.fromRGBO(255, 0, 0, 0.5); // Red color with 50% opacity`}
+</CodeSnippet>
+
+`Alpha` can be have the value from `0 - 1.0` and `(R, G, B)` can have the value from `0 to 255`
+
+# Conclusion
+
+In this blog, we explored the different ways to use custom colors in Flutter. We covered using hexadecimal values, named colors, color schemes, and RGBA colors. Each of these methods has its advantages, and the choice depends on the specific requirements of your application. By using custom colors, you can create an app that stands out and has a unique look and feel.

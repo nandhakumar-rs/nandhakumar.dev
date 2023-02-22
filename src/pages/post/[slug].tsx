@@ -12,11 +12,11 @@ export default function PostPage({
   mdxSource,
   readingTime,
 }: any) {
-  
   return (
     <section>
       <Head>
-        <title>Post | {data?.title || ""}</title>
+        <title>Post | {data?.title || ''}</title>
+        <meta name="description">{data?.description || ''}</meta>
       </Head>
       <Post
         data={data}
@@ -41,6 +41,10 @@ export const getStaticProps = async ({ params: { slug } }: any) => {
   const { data, content } = matter(matterData)
   const mdxSource = await serialize(content)
   return {
-    props: { data : {...data, readingTime: readingTime(content).text}, content, mdxSource,  },
+    props: {
+      data: { ...data, readingTime: readingTime(content).text },
+      content,
+      mdxSource,
+    },
   }
 }

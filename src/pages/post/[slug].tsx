@@ -16,7 +16,10 @@ export default function PostPage({
     <section>
       <Head>
         <title>Post | {data?.title || ''}</title>
-        <meta name="description">{data?.description || ''}</meta>
+        <meta  key="desc" name="description" content={data?.description || ''} />
+        <meta
+          property="og:image"
+          content={data?.thumbnailUrl}/>
       </Head>
       <Post
         data={data}

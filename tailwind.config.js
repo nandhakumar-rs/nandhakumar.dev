@@ -29,6 +29,9 @@ module.exports = {
           700: "#CCCFD1",
           600: "#E8E9EA",
         },
+        "app-danger": {
+          900: "#EB5757"
+        }
       },
     },
   },

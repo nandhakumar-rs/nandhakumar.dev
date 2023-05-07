@@ -1,0 +1,25 @@
+---
+title: 'PhaseScriptExecution failed with a nonzero exit code'
+publishedAt: 'May 07, 2023'
+description: 'Learn how to resolve "PhaseScriptExecution failed with a nonzero exit code" error when publishing your ios app'
+thumbnailUrl: '/images/post/how-to-add-custom-font-in-flutter.png'
+tags: ['flutter', 'dart', 'mobileapp', 'typography']
+---
+
+Hi There! 👋
+
+If you have updated Xcode from ****14.2**** to ****14.3,**** there is an issue in archiving & publishing your app to App Store
+
+After researching this issue, I found a workaround in Apple’s Developer forum 
+
+Forum Ref - [https://developer.apple.com/forums/thread/725230](https://developer.apple.com/forums/thread/725230)
+
+And the solution is simple,
+
+Open `[Your App Name]/ios/App/Pods/Target Support Files/Pods-[Your App]/Pods-[Your App]-frameworks.sh`
+
+Replace  `source="$(readlink "${source}")"` with `source="$(readlink -f "${source}")"`
+
+And people say that the issue is due to CocoaPods.
+
+Hope this helps you to resolve the issue.

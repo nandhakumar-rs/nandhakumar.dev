@@ -31,7 +31,7 @@ export default function AboutPage() {
         
         </div>
         <p className="mt-4 text-app-neutral-700 text-lg">
-          A self taught developer and desinger. Passionate and Facinated towards
+          Professional Full Stack Developer and Desinger. Passionate and Facinated towards
           tech world. Love to help small and large scale business to build
           desing and build apps. If you want to get in touch, you can reach me
           over{' '}

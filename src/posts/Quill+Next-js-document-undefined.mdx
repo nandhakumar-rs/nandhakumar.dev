@@ -1,0 +1,76 @@
+---
+title: 'Quill + Next.js Failed to collect page data … Document Undefined'
+publishedAt: 'May 10, 2023'
+description: 'Resolving "Document Undefined" error when building your Next.js app with Quill Editor'
+thumbnailUrl: ''
+tags: ['react', 'next.js', 'quill', 'editor']
+---
+
+Hi There! 👋
+
+If you are using Quill Editor with Next.js, Initialising Quill Editor is a bit tricky.
+
+Sometimes in the dev environment, you might not see any issues, but when building your app there might be an issue called `document undefined` 
+
+Which will block you from deploying your app to the production 
+
+Before knowing the solution, Let’s understand why we are getting this error.
+
+Quill.js Runs in the browser environment and because of that, it relies on the browser’s `document` object. (because of this you are getting document undefined when building your app)
+
+Possible Solutions,
+- Make sure you use dynamic imports to only load and render Quill.js on the client side.
+  <CodeSnippet language="ts">
+  {`const ReactQuill = dynamic(import('react-quill'), {
+  ssr: false,
+  loading: () => <p>Loading ...</p>,
+  })`}
+  </CodeSnippet>
+  - `ssr: false` to render Quill Editor only on client side
+  - `loading` to show a template component or html when loading Quill Editor
+
+- Quill.js allow you to overwrite and add modules to editor, in my case I was trying to add a list of font sizes.
+And this is how you need to overwrite font size module
+  <CodeSnippet language="ts">
+  {`const ReactQuill = dynamic(import('react-quill'), {
+  ssr: false,
+  loading: () => <p>Loading ...</p>,
+  })`}
+  </CodeSnippet>
+  - `fontSizeArr` list of font size to overwrite existing font sizes
+  - `Quill.import('attributors/style/size')` is the module from Quill's internal modules.
+  - `Size.whitelist` allows the users to select and use the new font sizes
+  - `Quill.register`  takes two arguments
+    - `Size` new module to be overwritten on Quill Editor
+    - `true` tells Quill to overwrite the existing "Size" module with the customized version that you just configured
+
+  You might think why i am explaining Quill Modules to fix the error Document Undefined , because most of the time you face this error when overwriting or adding module to Quill.js
+  
+  And to resolve this error,
+  
+  As I said earlier, Quill relies on the browser’s `document` object.
+
+  In React, only after mounting the component you can use `document` or `window` object.
+
+  So, It is always best to initialise `Quill` and its `modules` when the `component mounts`
+
+  And this can be done by initializing Quill and its modules inside useEffect
+
+  <CodeSnippet language="ts">
+  {`useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const Quill = require('react-quill').Quill
+      const Size = Quill.import('attributors/style/size')
+      Size.whitelist = fontSizeArr
+      Quill.register(Size, true)
+    }
+  }, [])`}
+  </CodeSnippet>
+
+  By initializing `Quill` and its `module` on component mounting, you can resolve this issue.
+
+Hope this post resolves your issue.
+
+If you still face this issue after following all the best practice I have mentioned when using Quill.js
+
+DM me on twitter, Let’s try to figure it out.

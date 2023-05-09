@@ -12,8 +12,8 @@ export default function AboutPage() {
       </Head>
       <section>
         <div className="flex gap-6 items-end max-md:flex-col max-md:items-start">
-          <Image
-            className="h-32 w-32 rounded-full"
+        <Image
+            className="h-28 w-28 rounded-sm"
             height={800}
             width={800}
             src={profile}
@@ -28,6 +28,7 @@ export default function AboutPage() {
               <p> UI UX Designer | Software Engineer | Freelancer</p>
             </div>
           </div>
+        
         </div>
         <p className="mt-4 text-app-neutral-700 text-lg">
           A self taught developer and desinger. Passionate and Facinated towards

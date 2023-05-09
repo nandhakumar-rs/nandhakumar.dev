@@ -32,13 +32,13 @@ Possible Solutions,
 - Quill.js allow you to overwrite and add modules to editor, in my case I was trying to add a list of font sizes.
 And this is how you need to overwrite font size module
   <CodeSnippet language="ts">
-  {`const ReactQuill = dynamic(import('react-quill'), {
-  ssr: false,
-  loading: () => <p>Loading ...</p>,
-  })`}
+  {`const fontSizeArr = ['8','9','10','12']
+  const Size = Quill.import('attributors/style/size');
+  Size.whitelist = fontSizeArr;
+  Quill.register(Size, true);`}
   </CodeSnippet>
   - `fontSizeArr` list of font size to overwrite existing font sizes
-  - `Quill.import('attributors/style/size')` is the module from Quill's internal modules.
+  - `Quill.import` is to import module from Quill's internal modules.
   - `Size.whitelist` allows the users to select and use the new font sizes
   - `Quill.register`  takes two arguments
     - `Size` new module to be overwritten on Quill Editor

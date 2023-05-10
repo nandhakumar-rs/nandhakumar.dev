@@ -5,7 +5,7 @@ import InstagramIcon from './Instagram.icon'
 import LinkedInIcon from './Linkedin.icon'
 import MenuIcon from './menu.icon'
 import TwitterIcon from './Twitter.icon'
-import SearchIcon from './search.icon'
+import SearchIcon from './Search.icon'
 
 export type TIconName =
   | 'instagram'

@@ -5,6 +5,7 @@ import InstagramIcon from './Instagram.icon'
 import LinkedInIcon from './Linkedin.icon'
 import MenuIcon from './menu.icon'
 import TwitterIcon from './Twitter.icon'
+import SearchIcon from './search.icon'
 
 export type TIconName =
   | 'instagram'
@@ -13,6 +14,7 @@ export type TIconName =
   | 'linkedin'
   | 'menu'
   | 'close'
+  | 'search'
 
 interface ISVGProps {
   color?: string
@@ -41,6 +43,8 @@ const Icon: FC<IIConProps> = ({
         return renderIcon(MenuIcon)
       case 'close':
         return renderIcon(CloseIcon)
+      case 'search':
+        return renderIcon(SearchIcon)
     }
   }
 

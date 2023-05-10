@@ -40,7 +40,7 @@ export default function HomePage(props: any) {
       <Head>
         <title>Nandhakumar | Posts</title>
       </Head>
-      <div className="max-w-lg">
+      <div className="max-w-lg"> 
         <input value={searchTerm} placeholder='Search Posts ...' className='w-full h-10 outline-none rounded-lg p-2 bg-app-primary-800 font-normal placeholder-app-primary-400 text-app-primary-100' onChange={onSearchChange} />
 
         {searchResults.map((post: any, index: any) => {

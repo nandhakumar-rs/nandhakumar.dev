@@ -1,0 +1,262 @@
+---
+title: 'Stop Using Date Time Libraries like Moment, Dayjs, etc …'
+publishedAt: 'May 12, 2023'
+description: ''
+thumbnailUrl: '/images/post/stop-using-date-time-libs.png'
+tags: ['node.js', 'date', 'time']
+---
+
+
+
+I personally used Moment and Dayjs library a lot for basic date calculations like adding, subtracting, and finding the difference between dates.
+
+But, Later I found that JS itself has a good number of Date time methods to solve simple Date time use cases
+
+Let’s see what are those methods and how we can use them,
+
+***Note: For more complex DateTime calculations, it is better to use the libraries. We don’t want to waste time writing complex logic from scratch.***
+
+## Manipulating Date time
+
+### Hours
+
+Adding & Subtracting Hours
+
+<CodeSnippet language="ts">
+{`
+const currentTime = new Date()
+
+// currentTime
+// Thu May 11 2023 06:44:51 GMT+0530 (India Standard Time)
+
+// Adding 5 Hours to the time
+
+currentTime.setHours(currentTime.getHours() + 5) // Thu May 11 2023 11:44:51 GMT+0530 (India Standard Time)
+
+// Subtracting 5 Hours to the time
+currentTime.setHours(currentTime.getHours() - 5) // Thu May 11 2023 06:44:51 GMT+0530 (India Standard Time)
+`}
+</CodeSnippet>
+
+### Minutes
+
+Adding & Subtracting Minutes
+
+<CodeSnippet language="ts">
+{`
+const currentTime = new Date()
+
+// currentTime
+// Thu May 11 2023 11:44:51 GMT+0530 (India Standard Time)
+
+// Adding 5 Minutes to the time
+
+currentTime.setHours(currentTime.getHours() + 5) // Thu May 11 2023 11:49:51 GMT+0530 (India Standard Time)
+
+currentTime.setHours(currentTime.getHours() - 5) // Thu May 11 2023 11:44:51 GMT+0530 (India Standard Time)
+`}
+</CodeSnippet>
+
+### Seconds
+
+Adding & Subtracting Seconds
+
+<CodeSnippet language="ts">
+{`
+const currentTime = new Date()
+
+// currentTime
+// Thu May 11 2023 11:44:51 GMT+0530 (India Standard Time)
+
+// Adding 5 Minutes to the time
+
+currentTime.setSeconds(currentTime.getSeconds() + 5) // Thu May 11 2023 11:49:56 GMT+0530 (India Standard Time)
+
+currentTime.setSeconds(currentTime.getSeconds() - 5) // Thu May 11 2023 11:44:51 GMT+0530 (India Standard Time)
+`}
+</CodeSnippet>
+
+You can also try manipulating year, milliseconds, timestamps etc.. Take it as an exercise and try it by yourself.
+
+## Finding Difference
+
+Finding difference in between months and years are bit tricky so, let’s focus on finding difference between days, hours, seconds and even milliseconds.
+
+So first we need to define base value of days, hours, seconds and milliseconds
+
+<CodeSnippet language="ts">
+{`
+const milliseconds = 1; 
+const second = 1000; // 1000 milliseconds = 1 second
+const minute = second * 60; // 60 seconds = 1 minute
+const hour = minute * 60; // 60 minute =  1 hour
+const day = hour * 24; // 24 hour = 1 day
+`}
+</CodeSnippet>
+
+Since we have the base value now, finding difference will be easy
+
+- Define two dates to find the difference,
+<CodeSnippet language="ts">
+{`
+const dateOne = new Date(2023, 5, 1);  // June 1, 2023
+const dateTwo = new Date(2023, 5, 10); // June 10, 2023
+`}
+</CodeSnippet>
+
+- Find the timestamp difference of the two dates
+<CodeSnippet language="ts">
+{`
+
+const timeStampDiff = Math.abs(dateOne.getTime() - dateTwo.getTime()); // 777600000
+`}
+</CodeSnippet>
+
+> Why we are using `Math.abs()`?
+**`Math.abs()`** is used to ensure that the result is always a positive number, regardless of the order of the dates. It usually doesn't make sense to have a negative value when finding difference
+> 
+    
+- Now divide the difference by the base value that we defined earlier
+<CodeSnippet language="ts">
+{`
+const difference =  timeStampDiff / day; // 9
+`}
+</CodeSnippet>
+
+since, we divided by day’s base value we got the day difference between two dates 
+
+which is `9`, similarly you can divide timeStampDiff by other base values to get appropriate result.
+    
+
+## Finding Difference between months
+
+### Months
+
+Finding Difference between months has two possible solution,
+
+**Solution 1 (Not the best solution)**
+
+This is straight forward solution, Get the month of two dates and get subtract to get the the difference
+<CodeSnippet language="ts">
+{`
+const dateOne = new Date(2023, 5, 1);  // June 1, 2023
+const dateTwo = new Date(2023, 9, 10); // Oct 10, 2023
+
+const difference = Math.abs(dateOne.getMonth() - dateTwo.getMonth()) // 4
+`}
+</CodeSnippet>
+
+Even though this solution is working fine. There is an issue with this solution. If the year of the two dates are different the result(the difference) would be incorrect.
+
+For example, for **`dateOne = new Date(2022, 11, 1)`** (December 2022) and **`dateTwo = new Date(2023, 0, 1)`** (January 2023), the result would be **`Math.abs(0 - 11) = 11`**, which is incorrect as the difference is actually 1 month.
+
+**Solution 2**
+
+This is bit tricky, But I’ll explain you step by step
+
+- Let’s define the date first
+<CodeSnippet language="ts">
+{`
+const dateOne = new Date(2022, 5, 1);  // June 1, 2022
+const dateTwo = new Date(2023, 9, 10); // Oct 10, 2023
+`}
+</CodeSnippet>
+
+  ***Note: In Js Dates, months starts from 0 i.e (Jan → 0, Feb → 1)***
+
+- Find the year difference
+<CodeSnippet language="ts">
+{`
+const yearDifference = dateTwo.getFullYear() - dateOne.getFullYear(); // 1
+`}
+</CodeSnippet>
+
+- Find the month difference
+<CodeSnippet language="ts">
+{`
+const monthDifference = dateTwo.getMonth() - dateOne.getMonth(); // 4
+`}
+</CodeSnippet>
+
+- Calculate total no. of months of the `yearDifference`
+<CodeSnippet language="ts">
+{`
+let months = yearDifference * 12 // 12
+`}
+</CodeSnippet>
+
+- Now add the `monthDifference` to `months`
+<CodeSnippet language="ts">
+{`
+months += monthDifference; // 16
+`}
+</CodeSnippet>
+
+
+That’s it we have found the difference. 
+
+Also you can add `Math.abs(months)` as one other step, so you can avoid getting negative values
+
+## Finding Difference between years
+
+This also a bit tricky, but not like months
+
+- Let’s First Define the dates
+<CodeSnippet language="ts">
+{`
+const dateOne = new Date(2022, 5, 1);  // June 1, 2022
+const dateTwo = new Date(2023, 9, 10); // Oct 10, 2023
+`}
+</CodeSnippet>
+
+
+- Find the difference in year
+<CodeSnippet language="ts">
+{`
+let difference = dateTwo.getFullYear() - dateOne.getFullYear();
+`}
+</CodeSnippet>
+
+
+- You might think just by subtracting two year can get the expected result. But, there are few scenarios to be handled.
+Example:
+If you have dates like Jan 1 2023 and Dec 31 2023, here the year is same but the diff is 1 year.
+and in another case, if the dates are Dec 31 2023 and Jan 1 2024, here the year is different but the actual difference is 1 day.
+
+You get the point right?
+
+So to handle this, you can add few conditions 
+<CodeSnippet language="ts">
+{`
+if (dateTwo.getMonth() < dateOne.getMonth() || 
+   (dateTwo.getMonth() == dateOne.getMonth() && 
+    dateTwo.getDate() < dateOne.getDate())) {
+    difference--;
+}
+
+difference = Math.abs(difference)
+`}
+</CodeSnippet>
+
+Let’s break down the conditions
+
+- `dateTwo.getMonth() < dateOne.getMonth()` -
+  This means that, in the current year of `dateTwo`, `dateTwo` has not yet reached the month of `dateOne`.
+  For example, if `dateOne` is June 10, 2023 and `dateTwo` is March 15, 2024, even though `dateTwo`'s year is 2024, it hasn't yet reached the month of June,
+  so we should consider the year difference as 0,<br/> not 1.
+- `(date2.getMonth() == date1.getMonth() && date2.getDate() < date1.getDate())` -
+  This means that, even though `dateTwo` is in the same month as `dateOne`, it hasn't yet reached the day of `dateOne` in its current year.
+  For example, if `dateOne` is June 10, 2023 and `dateTwo` is June 5, 2024, even though `dateTwo`'s year is 2024 and the month is June, it hasn't yet reached the 10th of June, so we should consider the year difference as 0, not 1.
+
+
+In both of these conditions, we decrease `difference` by one (`difference**--**`) to accurately reflect the year difference considering the month and day, not just the year.
+
+Finally we are use `Math.abs()` as we don’t want negative values
+
+## **Conclusion**
+
+In this post you learnt how to manipulate data and time yourself without using libraries. However the Date time libraries are always a time saver. When you have more complex use case to solve that is based on Date time, You can use these libraries.
+
+If you are going to perform only simple calculation utilise existing Date time module in node.js.
+
+Again this is my thought, based on your requirement you can decide whether to use libraries or not.

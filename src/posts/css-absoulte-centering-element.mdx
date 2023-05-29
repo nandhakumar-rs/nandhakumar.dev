@@ -11,9 +11,9 @@ You might often face a scenario where you need to center an element relative to 
 
 So, how is it done?
 
-Most solutions I've encountered on the internet employ Flex properties or make use of absolute positioning. There may be other solutions as well, but these are the ones I've primarily seen.
+Most solutions I've encountered on the internet employ `Flex` properties or make use of `absolute` positioning. There may be other solutions as well, but these are the ones I've primarily seen.
 
-Aligning a child element with Flex is simple:
+Aligning a child element with `Flex` is simple:
 
 <CodeSnippet language="css">
 {`
@@ -29,11 +29,11 @@ Aligning a child element with Flex is simple:
 `}
 </CodeSnippet>
 
-Aligning a child element using absolute positioning is also straightforward, although many developers don't understand how it works.
+Aligning a child element using `absolute` positioning is also straightforward, although many developers don't understand how it works.
 
 In this post, I'll dissect the properties of absolute positioning to help you understand how it operates.
 
-Let’s assume we have a parent element (a div):
+Let’s assume we have a parent element `(a div)`:
 <CodeSnippet language="html">
 {`
 <div class="parent"></div>
@@ -72,7 +72,7 @@ Now the result looks like this, based on the code we've written so far:
 />
 
 
-To move the child element (image) to the center of the parent, we must:
+To move the `child element (image)` to the center of the parent, we must:
 - Inform the child element of its parent.
     - This step is crucial because if we simply make the child element absolute, it will consider the body element (the entire window) as its parent by default. We don't want that; we need to align the child in relation to its parent (div element).
     - To let the child element know its parent, add `position: relative` property to the parent.
@@ -93,7 +93,7 @@ To move the child element (image) to the center of the parent, we must:
 }
 `}
 </CodeSnippet>
-- To center the child element, add 50% from the top and left of the parent:
+- To center the child element, add `50%` from the `top` and `left` of the parent:
 <CodeSnippet language="css">
 {`
 .parent {
@@ -120,9 +120,9 @@ Let's examine the output:
 
 Even after applying the top and left values, the image doesn't center to the parent as expected.
 
-However, it actually is centered.
+However, it actually is `centered`.
 
-If you observe the output, the top left corner of the image is placed in the center of the parent. To correct this, we need to move the child `-50%` in `X` and `Y` directions:
+If you observe the output, the `top left corner of the image` is placed in the center of the parent. To correct this, we need to move the child `-50%` in `X` and `Y` directions:
 
 <CodeSnippet language="css">
 {`

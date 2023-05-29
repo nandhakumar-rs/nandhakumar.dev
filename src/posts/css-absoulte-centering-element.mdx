@@ -1,0 +1,174 @@
+---
+title: 'CSS Absolute Positioning: How Translate Works When Centering The Element'
+publishedAt: 'May 29, 2023'
+description: "You'll learn how css translate works behind the scene when centering element with absolute positioning"
+thumbnailUrl: '/images/post/css-absoulte-centering-element.png'
+tags: ['html', 'positioning', 'css','web']
+---
+
+
+You might often face a scenario where you need to center an element relative to its parent element.
+
+So, how is it done?
+
+Most solutions I've encountered on the internet employ Flex properties or make use of absolute positioning. There may be other solutions as well, but these are the ones I've primarily seen.
+
+Aligning a child element with Flex is simple:
+
+<CodeSnippet language="css">
+{`
+.parent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.child {
+     /*  child styles */
+}
+`}
+</CodeSnippet>
+
+Aligning a child element using absolute positioning is also straightforward, although many developers don't understand how it works.
+
+In this post, I'll dissect the properties of absolute positioning to help you understand how it operates.
+
+Let’s assume we have a parent element (a div):
+<CodeSnippet language="html">
+{`
+<div class="parent"></div>
+`}
+</CodeSnippet>
+
+We then add an image to the parent element, which becomes the child:
+<CodeSnippet language="html">
+{`
+<div class="parent">
+  <img class="child" src="" />
+</div>
+`}
+</CodeSnippet>
+
+We add height and width properties to make the parent bigger, along with a few other styles. We also make the child smaller so that it's easier to see how this works:
+<CodeSnippet language="css">
+{`
+.parent {
+  height: 300px;
+  width: 300px;
+  border: 1px solid black;
+}
+
+.child {
+  height: 100px;
+  width: 100px;
+}
+`}
+</CodeSnippet>
+
+Now the result looks like this, based on the code we've written so far:
+<Img
+  src="/images/visuals/css-absoulte-centering-element-1.png"
+  alt="first-output"
+/>
+
+
+To move the child element (image) to the center of the parent, we must:
+- Inform the child element of its parent.
+    - This step is crucial because if we simply make the child element absolute, it will consider the body element (the entire window) as its parent by default. We don't want that; we need to align the child in relation to its parent (div element).
+    - To let the child element know its parent, add `position: relative` property to the parent.
+- Then, make the child absolute:
+<CodeSnippet language="css">
+{`
+.parent {
+  height: 300px;
+  width: 300px;
+  border: 1px solid black;
+  position: relative;
+}
+
+.child {
+  height: 100px;
+  width: 100px;
+  position: absolute;
+}
+`}
+</CodeSnippet>
+- To center the child element, add 50% from the top and left of the parent:
+<CodeSnippet language="css">
+{`
+.parent {
+  height: 300px;
+  width: 300px;
+  border: 1px solid black;
+  position: relative;
+}
+
+.child {
+  height: 100px;
+  width: 100px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+`}
+</CodeSnippet>
+Let's examine the output:
+<Img
+  src="/images/visuals/css-absoulte-centering-element-2.png"
+  alt="second-output"
+/>
+
+Even after applying the top and left values, the image doesn't center to the parent as expected.
+
+However, it actually is centered.
+
+If you observe the output, the top left corner of the image is placed in the center of the parent. To correct this, we need to move the child `-50%` in `X` and `Y` directions:
+
+<CodeSnippet language="css">
+{`
+.parent {
+  height: 300px;
+  width: 300px;
+  border: 1px solid black;
+  position: relative;
+}
+
+.child {
+  height: 100px;
+  width: 100px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) /* translate(x, y) */
+}
+`}
+</CodeSnippet>
+
+Note that the `top` and `left` CSS properties will move the child in relation to the parent’s `top` and `left`.
+
+However, `translate` moves the element up and to the left by 50% of its own height and width.
+
+Now the center of the image will be moved and placed in the center of the parent element.
+
+Here's the final output:
+<Img
+  src="/images/visuals/css-absoulte-centering-element-3.png"
+  alt="final-output"
+/>
+
+## Summary
+
+When it comes to centering an element within its parent, CSS provides multiple options, such as using `flex` properties or `absolute` positioning. This post specifically delved into the workings of `absolute` positioning.
+
+To center a child element using `absolute` positioning:
+
+1. Establish the parent-child relationship between the elements. This is crucial because an element with absolute positioning will consider the entire window (body element) as its parent by default. By setting the parent's position as `relative`, we can ensure that the child element aligns itself relative to the parent, not the whole window.
+2. Make the child element `absolute`, which means it's positioned relative to the nearest positioned ancestor— in this case, the parent with `relative` positioning.
+3. Apply `top: 50%;` and `left: 50%;` to the child, which moves the child element's top left corner to the center of the parent.
+4. Lastly, use `translate(-50%, -50%)` to move the child element up and to the left by 50% of its own height and width. This adjustment aligns the child element's center with the parent's center, achieving the desired centering effect.
+
+Remember, while `top` and `left` move the child with respect to the parent's top left corner, `translate` adjusts the position based on the child's own dimensions.
+
+By following these steps, you can successfully center a child element within a parent element using CSS absolute positioning and the `translate` function.
+
+

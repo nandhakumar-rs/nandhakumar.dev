@@ -11,7 +11,7 @@ const Tags: FC<ITagProps> = ({ tags }) => {
       {tags.map((tag, index) => (
         <p
           key={index}
-          className="bg-app-primary-700 font-mono text-sm text-app-neutral-600 px-2 py-0.5 rounded-sm"
+          className="bg-app-primary-700 font-mono text-sm text-app-neutral-600 px-2 py-0.5 rounded-md"
         >
           #{tag}
         </p>

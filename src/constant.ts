@@ -41,6 +41,19 @@ const CONSTANT = {
       url: GITHUB,
     },
   ],
+
+  FAQ_CONTENT:[
+    {
+      id:'1',
+      heading: 'What Technologies I Use?',
+      content: 'React, Angular, Next.js, Express.js, Nest.js, MongoDB, PostgresSQL, React Native, Ionic', 
+    },
+    {
+      id:'2',
+      heading: 'What tools I Use?',
+      content: 'VS Code, XCode, Figma, Photoshop', 
+    }
+  ]
 };
 
 export default CONSTANT;

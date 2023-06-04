@@ -3,6 +3,7 @@ import Image from 'next/image'
 import profile from '../../public/profile.png'
 import HrefLink from '../components/mdx/href-link.component'
 import CONSTANT from '../constant'
+import FAQ from '../components/common/faq.component'
 
 export default function AboutPage() {
   return (
@@ -12,7 +13,7 @@ export default function AboutPage() {
       </Head>
       <section>
         <div className="flex gap-6 items-end max-md:flex-col max-md:items-start">
-        <Image
+          <Image
             className="h-28 w-28 rounded-sm"
             height={800}
             width={800}
@@ -28,13 +29,12 @@ export default function AboutPage() {
               <p> UI UX Designer | Software Engineer | Freelancer</p>
             </div>
           </div>
-        
         </div>
         <p className="mt-4 text-app-neutral-700 text-lg">
-          Professional Full Stack Developer and Desinger. Passionate and Facinated towards
-          tech world. Love to help small and large scale business to build
-          desing and build apps. If you want to get in touch, you can reach me
-          over{' '}
+          Professional Full Stack Developer and Desinger. Passionate and
+          Facinated towards tech world. Love to help small and large scale
+          business in UI/UX design and application development. If you want to
+          get in touch, you can reach me over{' '}
           <HrefLink href={CONSTANT.LINKS.EMAIL} rel="email" target="_blank">
             Email
           </HrefLink>{' '}
@@ -52,7 +52,7 @@ export default function AboutPage() {
       {/* <section className="mt-16">
         <p className="text-app-primary-100 text-2xl font-bold">{`FAQ's`}</p>
 
-        
+        <FAQ />
       </section> */}
     </div>
   )

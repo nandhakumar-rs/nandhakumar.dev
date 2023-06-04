@@ -25,7 +25,7 @@ const Header = () => {
         {CONSTANT.ROUTES.map((route, index) => (
           <Link
             key={index}
-            className={`font-bold text-base ml-2 text-app-neutral-700 hover:bg-app-primary-700 hover:text-app-primary-100 px-3 py-1 rounded-sm ${
+            className={`font-bold text-base ml-2 text-app-neutral-700 hover:underline px-3 py-1 rounded-md ${
               router.pathname === route.href
                 ? 'bg-app-primary-700 text-app-primary-100'
                 : ''

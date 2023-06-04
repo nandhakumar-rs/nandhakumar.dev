@@ -5,7 +5,7 @@ import matter from 'gray-matter'
 import readingTime from 'reading-time'
 import Head from 'next/head'
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
-
+import { FiSearch } from 'react-icons/fi'
 export default function HomePage(props: any) {
   const { posts } = props
 
@@ -40,14 +40,33 @@ export default function HomePage(props: any) {
       <Head>
         <title>Nandhakumar | Posts</title>
       </Head>
-      <div className="max-w-lg"> 
-        <input value={searchTerm} placeholder='Search Posts ...' className='w-full h-10 outline-none rounded-lg p-2 bg-app-primary-800 font-normal placeholder-app-primary-400 text-app-primary-100' onChange={onSearchChange} />
+      <div>
+        <p className=" text-3xl font-semibold text-app-primary-100 my-8">
+          I Write about UI, UX, Programming,
+          <br /> My Learnings & Experiences in my journey!
+        </p>
 
-        {searchResults.map((post: any, index: any) => {
-          return (
-            <PostShort key={index} data={post} readingTime={post.readingTime} />
-          )
-        })}
+        <div className="max-w-lg">
+          <div className='h-10 w-full rounded-md overflow-hidden flex items-center  bg-app-primary-800 p-2  '>
+            <FiSearch className='text-app-primary-100' />
+            <input
+              value={searchTerm}
+              placeholder="Search Posts ..."
+              className="w-full h-full outline-none p-2 font-normal bg-app-primary-800  placeholder-app-primary-400 text-app-primary-100"
+              onChange={onSearchChange}
+            />
+          </div>
+
+          {searchResults.map((post: any, index: any) => {
+            return (
+              <PostShort
+                key={index}
+                data={post}
+                readingTime={post.readingTime}
+              />
+            )
+          })}
+        </div>
       </div>
     </div>
   )

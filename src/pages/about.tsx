@@ -31,10 +31,9 @@ export default function AboutPage() {
           </div>
         </div>
         <p className="mt-4 text-app-neutral-700 text-lg">
-          Professional Full Stack Developer and Desinger. Passionate and
-          Facinated towards tech world. Love to help small and large scale
+          Professional Full Stack Developer and Designer. Passionate towards tech world. Love to help small and large scale
           business in UI/UX design and application development. If you want to
-          get in touch, you can reach me over{' '}
+          get in touch, you can reach me over
           <HrefLink href={CONSTANT.LINKS.EMAIL} rel="email" target="_blank">
             Email
           </HrefLink>{' '}

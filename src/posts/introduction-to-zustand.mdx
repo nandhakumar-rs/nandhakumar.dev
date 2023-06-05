@@ -1,0 +1,170 @@
+---
+title: 'Introduction to Zustand: A Lightweight State Management Library'
+publishedAt: 'Jun 05, 2023'
+description: 'Learn how to add custom fonts to your Flutter app with this step-by-step guide. Enhance the design and style of your app by incorporating unique fonts that truly represent your brand. Start creating a stunning user experience today'
+thumbnailUrl: '/images/post/intro-to-zustand.png'
+tags: ['zustand', 'react', 'js']
+---
+
+Hi There! 👋
+
+I have personally used `redux` and `redux-toolkit` in many projects. These libraries excel at what they are designed for, but the issue often lies in the `boilerplate code`.
+
+Indeed, we need to write a substantial amount of boilerplate code to set things up, and the learning curve can be steep if you are just getting started with state management libraries.
+
+Recently, I discovered a library called `Zustand` that has been the talk among many developers. I decided to give it a try in one of my side projects.
+
+To be honest, it significantly reduced my development time, especially in setting up and using state.
+
+**So, What is `Zustand`?**
+
+It is a light weight `State Management Library` that can be used with any frontend JS technologies like React, Angular, Vue, etc.
+
+> Note: Some features like hooks can be only used in react.  Basically, the implementation varies depending on the front-end technology you employ.
+
+**Why Should You Consider Using It?**
+
+Well, It is
+
+- Small
+- Fast
+- Easy to Learn & Use
+- Less Boilerplate Code (Compared to redux and redux toolkit)
+
+Now, let's see how we can implement Zustand in React.
+
+
+For this demonstration, we are going to build a simple app where you can add an item to a list and delete any item from the list.
+
+
+## Step 1: 
+Create a new React project, or you can also use your existing project.
+
+## Step 2: 
+Install Zustand
+
+<CodeSnippet language="bash">
+{`npm i zustand`}
+</CodeSnippet>
+
+## Step 3: 
+Building the UI
+We are going to have an input field and a list of items with a delete option.
+Add the below code in `App.tsx`
+
+<CodeSnippet language="ts">
+{`import { useState } from "react";
+import "./styles.css";
+
+export default function App() {
+  const [item, setItem] = useState<string>(""); // To Store the input value
+
+  return (
+    <div className="App">
+      <input value={item} onChange={(event) => setItem(event.target.value)} />
+      <button className="add-btn" onClick={()=> {}}>Add Item</button>
+    </div>
+  );
+}`}
+</CodeSnippet>
+
+
+## Step 4: 
+Creating Store with Zustand
+Create a file called `store.ts`
+
+<CodeSnippet language="ts">
+{`import { create } from "zustand";
+
+export interface IStore {
+  items: string[];
+  addItem: any;
+  deleteItem: any;
+}
+
+export const useStore = create<IStore>((set) => ({
+  items: [],
+  deleteItem: (index: number) =>
+    set((state: IStore) => {
+      const existingItems = [...state.items];
+      existingItems.splice(index, 1);
+
+      return {
+        ...state,
+        items: existingItems
+      };
+    }),
+
+  addItem: (value: string) =>
+    set((state: IStore) => ({
+      ...state,
+      items: [...state.items, value]
+    }))
+}));`}
+</CodeSnippet>
+
+What I am doing here?
+
+- Creating the structure of the store using an interface and naming it as `IStore`
+- `Zustand` provides a `create` method which will generate the state to store values
+- `items` will contain the list of inputs added from the UI. Initially, we set it with an empty array `[]`
+- We define two methods, `addItem` to add an item and `deleteItem` to delete an item. Note that these methods should return the updated state value (similar to what we do in Redux)
+
+Now the store can be used as a hook.
+> Note I am following hooks naming convention, so naming it as `use[StoreName]`
+
+
+## Step 5: 
+Using the Store
+Call the store hook in the component
+
+<CodeSnippet language="ts">
+{`import { useState } from "react";
+import "./styles.css";
+import { store } from "./store";
+
+export default function App() {
+  const [item, setItem] = useState<string>("");
+
+  const { items, addItem, deleteItem } = store();
+
+  return (
+    <div className="App">
+      <input value={item} onChange={(event) => setItem(event.target.value)} />
+      <button className="add-btn" onClick={()=> addItem(item)}>Add Item</button>
+
+      <div>
+        {items.map((item: string, index: number) => (
+          <p key={index}>{item} - 
+            <span className="delete-btn" onClick={()=> deleteItem(index) }>
+              delete
+            </span>
+          </p> 
+        ))}
+      </div>
+    </div>
+  );
+}`}
+</CodeSnippet>
+
+Here,
+
+- First, we are `destructuring` methods and `values` from the store
+- Then, we are mapping the `addItem` method to the 'Add Item' button
+- We loop through the list of stored items
+- With each item, we add a 'delete' option and map the `deleteItem` method to it.
+
+That's it, we have successfully set up state management, and it is ready to use.
+
+See how simple it is? It certainly saves a lot of time. At least for me, it did.
+
+## Final Result
+
+<Img
+  src="/gif/intro-to-zustand.gif"
+  alt="final-output"
+/>
+
+# Conclusion
+
+In this post, you have learned what Zustand is and how you can implement it with React. In conclusion, Zustand is another state management library, like Redux and Redux Toolkit. We can't say that this is the best library for state management. Each library has its own purpose, so choose based on your use case.

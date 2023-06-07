@@ -18,7 +18,11 @@ export default function PostPage({
         <title>Post | {data?.title || ''}</title>
         <meta key="title" name="title" content={data?.title || ''} />
         <meta key="og:title" name="og:title" content={data?.title || ''} />
-        <meta key="twitter:title" name="twitter:title" content={data?.title || ''} />
+        <meta
+          key="twitter:title"
+          name="twitter:title"
+          content={data?.title || ''}
+        />
 
         <meta key="desc" name="description" content={data?.description || ''} />
         <meta
@@ -33,8 +37,20 @@ export default function PostPage({
         />
 
         <meta property="image" name="image" content={data?.thumbnailUrl} />
-        <meta property="og:image" name="og:image"  content={data?.thumbnailUrl} />
-        <meta property="twitter:image" name="twitter:image" content={data?.thumbnailUrl} />
+        <meta
+          property="og:image"
+          name="og:image"
+          content={data?.thumbnailUrl}
+        />
+        <meta
+          property="twitter:image"
+          name="twitter:image"
+          content={data?.thumbnailUrl}
+        />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@nandhakumar-io" />
+        <meta name="twitter:creator" content="@nandhakumar-io" />
       </Head>
       <Post
         data={data}

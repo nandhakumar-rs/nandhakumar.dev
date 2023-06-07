@@ -8,7 +8,7 @@ interface ICodeProps {
 const Code: FC<ICodeProps> = ({ type = 'default', children }) => {
   return (
     <code
-      className={`font-mono text-base font-light text-app-danger-900 bg-white bg-opacity-10 rounded px-1 py-0.5`}
+      className={`font-mono text-base font-semibold text-app-danger-900 bg-white bg-opacity-10 rounded px-1 py-0.5`}
     >
       {children}
     </code>

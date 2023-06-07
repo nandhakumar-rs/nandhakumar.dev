@@ -1,0 +1,118 @@
+---
+title: 'Using Handlebars Templates with SendGrid in Node.js'
+publishedAt: 'Jun 7, 2023'
+description: 'Learn how to how to use the Handlebars template engine to create dynamic email templates, and how to send these emails using SendGrid in a Node.js application'
+thumbnailUrl: '/images/post/using-handlebar-with-sendgrid.png'
+tags: ['node.js', 'javascript', 'handlebars', 'sendgrid']
+---
+
+Hi There! 👋
+
+Recently, In one of my projects, I was using SendGrid(a popular email delivery service to send emails). And a requirement arose for using a custom email template.
+
+There are two primary ways you can design custom templates,
+  - **Design the template within the SendGrid platform itself**
+    This is a straightforward method that allows you to create templates using SendGrid's built-in editor. The advantage is that it requires no additional tooling or setup, and it's integrated directly with SendGrid. The downside is that it may be less flexible and offer fewer customization options than coding the template yourself.
+  - **Design the template using HTML and CSS**
+    This method allows you to have full control over the template design. You can leverage your HTML and CSS skills to create highly customized templates. The downside is that it requires more setup, as you have to integrate the HTML/CSS template with SendGrid manually.
+
+We'll follow the second method in this tutorial, as it gives us more control over the template, and the possibilities for customization are endless.
+
+In this blog, we will explore how to use the Handlebars template engine to create dynamic email templates, and how to send these emails using `SendGrid` in a `Node.js` application.
+
+Before getting started, create a new node.js project or if you have any js-based backend project you can use that
+
+
+## Step 1: Installing Dependencies
+We will be using `handlebars` for templating and `@sendgrid/mail` to send emails. You can install these packages using the following command:
+<CodeSnippet language="bash">
+{`npm install handlebars @sendgrid/mail`}
+</CodeSnippet>
+
+## Step 2: Setting Up Handlebars Templates
+**Handlebars** is a popular templating engine that allows you to build semantic templates effectively with no frustration. **Handlebars** templates look like regular HTML, with embedded handlebars expressions that allows to pass dynamic value to the HTML from Javascript.
+
+Let's create a simple **Handlebars** template for a welcome email:
+
+Create a file called `templates/mail-template.hbs`
+
+<CodeSnippet language="html">
+{`<h1>Welcome, {{username}}!</h1>
+<p>We're glad to have you with us.</p>`}
+</CodeSnippet>
+
+
+In this template, `{{username}}` is a placeholder that will be replaced with actual data when we compile the template.
+
+
+## Step 3: Configuring SendGrid
+
+To send emails with SendGrid, you need to get an API key from your SendGrid dashboard. Once you have the API key, you can configure `SendGrid` in your Node.js application like this:
+
+
+Create a file a file called `email.js` and setup `SendGrid`
+
+<CodeSnippet language="js">
+{`const sgMail = require('@sendgrid/mail');
+
+sgMail.setApiKey(process.env.SEND_GRID_API_KEY);`}
+</CodeSnippet>
+
+> Note: I’ll be adding my `SEND_GRID_API_KEY` in the environment file. It is a best practice to avoid hardcoding your secret keys or API keys directly in your code. You can use packages like `dotenv` to easily manage environment variables in `Node.js`.
+
+## Step 4: Compiling the Template and Sending the Email
+
+Now that we have our Handlebars template and `SendGrid` set up, we can compile the template, fill it with data, and send it as an email. Here's how you can do it,
+
+Within the same `email.js` file
+
+<CodeSnippet language="js">
+{`const Handlebars = require('handlebars');
+const fs = require('fs');
+const path = require('path');
+
+// Load and compile the template
+const templatePath = path.resolve('./templates', 'mail-template.hbs');
+const html = fs.readFileSync(templatePath, 'utf8'); // reading with utf8 encoding
+const template = Handlebars.compile(html);
+
+// Create the email data
+const emailData = {
+    username: 'John Doe',
+};
+
+// Create the email
+const msg = {
+    to: 'test@example.com', // Change to your recipient
+    from: 'test@example.com', // Change to your sender
+    subject: 'Welcome Email',
+    html: template(emailData),
+};
+
+// Send the email
+sgMail
+    .send(msg)
+    .then(() => {
+        console.log('Email sent');
+    })
+    .catch((error) => {
+        console.error(error);
+    });`}
+</CodeSnippet>
+
+
+So what are doing here is,
+
+- We are reading the Handlebars template from a file,
+- Compiling it into a function called `template`
+- Calling this `template` function with the email data(the username which we added as a placeholder previously in the HTML) to create the HTML content of the email.
+
+Finally, We send the email by calling SendGrid's `send` method with basic email information’s like from, to, subject and in the place of body, we are using our HTML that has be generated from the `template` function .
+
+
+## Conclusion
+
+Email communication is a crucial part of most web applications, and the ability to send custom, dynamic emails can significantly enhance user experience. By leveraging the power of Handlebars, a flexible and efficient templating engine. Coupling this with SendGrid's reliable mail delivery service makes the process of creating and sending these emails seamless and straightforward.
+
+This setup is not only limited to welcome emails. You can extend it for various other use cases like sending password reset emails, notifications, newsletters, and more. The power of Handlebars templates allows you to be creative with how you communicate with your users.
+

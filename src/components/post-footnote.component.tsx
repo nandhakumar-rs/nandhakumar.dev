@@ -10,6 +10,8 @@ const PostFootnote = () => {
       <H1>Thanks For Reading!</H1>
       <P>Hope you have learned something new today 😊.</P>
 
+      <P>I welcome your questions, feedback, and discussions on this topic. Don't hesitate to reach out if there's something you'd like to talk about.</P>
+
       <P>
         If you find this post helpful{' '}
         <HrefLink

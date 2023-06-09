@@ -11,58 +11,34 @@ export default function PostPage({
   content,
   mdxSource,
   readingTime,
+  slug,
 }: any) {
+  console.log(data)
   return (
     <section>
       <Head>
         <title>Post | {data?.title || ''}</title>
-        <title>
-          Post | Using Handlebars Templates with SendGrid in Node.js
-        </title>
-        <meta
-          name="title"
-          content="Post | Using Handlebars Templates with SendGrid in Node.js"
-        />
-        <meta
-          name="description"
-          content="Learn how to how to use the Handlebars template engine to create dynamic email templates, and how to send these emails using SendGrid in a Node.js application"
-        />
+
+        <meta name="title" content={data?.title} />
+        <meta name="description" content={data?.description} />
 
         <meta property="og:type" content="website" />
         <meta
           property="og:url"
-          content="https://www.nandhakumar.io/post/using-handlebar-with-sendgrid"
+          content={`https://www.nandhakumar.io/post/${slug}`}
         />
-        <meta
-          property="og:title"
-          content="Post | Using Handlebars Templates with SendGrid in Node.js"
-        />
-        <meta
-          property="og:description"
-          content="Learn how to how to use the Handlebars template engine to create dynamic email templates, and how to send these emails using SendGrid in a Node.js application"
-        />
-        <meta
-          property="og:image"
-          content="/images/post/using-handlebar-with-sendgrid.png"
-        />
+        <meta property="og:title" content={data?.title} />
+        <meta property="og:description" content={data?.description} />
+        <meta property="og:image" content={data?.thumbnailUrl} />
 
         <meta property="twitter:card" content="summary_large_image" />
         <meta
           property="twitter:url"
-          content="https://www.nandhakumar.io/post/using-handlebar-with-sendgrid"
+          content={`https://www.nandhakumar.io/post/${slug}`}
         />
-        <meta
-          property="twitter:title"
-          content="Post | Using Handlebars Templates with SendGrid in Node.js"
-        />
-        <meta
-          property="twitter:description"
-          content="Learn how to how to use the Handlebars template engine to create dynamic email templates, and how to send these emails using SendGrid in a Node.js application"
-        />
-        <meta
-          property="twitter:image"
-          content="/images/post/using-handlebar-with-sendgrid.png"
-        />
+        <meta property="twitter:title" content={data?.title} />
+        <meta property="twitter:description" content={data?.description} />
+        <meta property="twitter:image" content={data?.thumbnailUrl} />
       </Head>
       <Post
         data={data}
@@ -91,6 +67,7 @@ export const getStaticProps = async ({ params: { slug } }: any) => {
       data: { ...data, readingTime: readingTime(content).text },
       content,
       mdxSource,
+      slug,
     },
   }
 }

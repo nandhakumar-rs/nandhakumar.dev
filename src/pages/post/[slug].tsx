@@ -51,6 +51,8 @@ export default function PostPage({
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@nandhakumar_io" />
         <meta name="twitter:creator" content="@nandhakumar_io" /> */}
+                <meta name="twitter:card" content="summary_large_image" ></meta>
+        <meta name="twitter:site" content="@nandhakumar_io" ></meta>
 <meta name="twitter:title" content="Photo by Hyundai Motor Group on Unsplash" data-rh="true"></meta>
 
 <meta name="twitter:description" content="Genesis GV60 is charging at EV charging station – Download this photo by Hyundai Motor Group on Unsplash" data-rh="true"></meta>

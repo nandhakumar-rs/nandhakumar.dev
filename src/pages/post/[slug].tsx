@@ -51,18 +51,14 @@ export default function PostPage({
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@nandhakumar_io" />
         <meta name="twitter:creator" content="@nandhakumar_io" /> */}
+<meta name="twitter:title" content="Photo by Hyundai Motor Group on Unsplash" data-rh="true"></meta>
 
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@yourTwitterHandle" />
-        <meta name="twitter:title" content="Title of your blog post" />
-        <meta
-          name="twitter:description"
-          content="Description of your blog post"
-        />
-        <meta
-          name="twitter:image"
-          content="https://images.unsplash.com/photo-1666919643134-d97687c1826c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2671&q=80"
-        />
+<meta name="twitter:description" content="Genesis GV60 is charging at EV charging station – Download this photo by Hyundai Motor Group on Unsplash" data-rh="true"></meta>
+<meta name="twitter:url" content="https://unsplash.com/photos/a3vDd8hzuYs" data-rh="true"></meta>
+
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1666919643134-d97687c1826c?crop=faces%2Cedges&amp;cs=tinysrgb&amp;fit=crop&amp;fm=jpg&amp;ixid=M3wxMjA3fDF8MXxhbGx8MXx8fHx8fDJ8fDE2ODYzMTc0MDV8&amp;ixlib=rb-4.0.3&amp;q=60&amp;w=1200&amp;auto=format&amp;h=630&amp;mark-w=64&amp;mark-align=top%2Cleft&amp;mark-pad=50&amp;blend-mode=normal&amp;blend-alpha=10&amp;blend-w=1&amp;mark=https%3A%2F%2Fimages.unsplash.com%2Fopengraph%2Flogo.png&amp;blend=000000" data-rh="true"></meta>
+<meta name="twitter:creator" content="@hyundaimotorgroup" data-rh="true"></meta>
+        
       </Head>
       <Post
         data={data}

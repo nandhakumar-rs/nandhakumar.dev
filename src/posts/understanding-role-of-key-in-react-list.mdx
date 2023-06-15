@@ -1,0 +1,74 @@
+---
+title: 'Understanding the Role of Keys in React List Rendering'
+publishedAt: 'Jun 15, 2023'
+description: 'Learn why you need to pass key in to items in react list, and understand how it plays an important role in performance'
+thumbnailUrl: '/images/post/understanding-role-key-of-in-react-list.png'
+tags: ['react.js', 'javascript']
+---
+
+Hi There! 👋
+
+In react, it is required to pass the key to the react list items. If you don’t pass it, react might throw a warning in the console.
+
+**What Are Keys in React?**
+
+Keys are just strings that are passed as an attribute for each element when rendering a list. They help React identify which elements have changed and which have not.
+We'll follow the second method in this tutorial, as it gives us more control over the template, and the possibilities for customization are endless.
+
+
+And these keys are expected to be unique.
+
+Here’s an example, rendering a list of users, and when rendering each element in the list user id is used as a unique key.
+
+
+<CodeSnippet language="jsx">
+{`const users = [{id: 1, name: "Jin"}, {id: 2, name: "Jhon"}];
+
+return (
+  <ul>
+    {users.map(user =>
+      <li key={user.id}>{user.name}</li>
+    )}
+  </ul>
+);`}
+</CodeSnippet>
+
+
+**Why Are Keys Required?**
+
+Keys have an important role in improving React's performance by helping to identify which items in the list have changed, are added, or are removed when the component re-renders. 
+
+This process is known as "reconciliation", where React compares the new version of the DOM with the saved previous version, updating the DOM to match the new state of the component as efficiently as possible.
+
+Without keys, React wouldn't be able to effectively differentiate between the different elements in the list. This would result in inefficient updates and potential issues with the component's state.
+
+
+**Why array index shouldn’t be used as key?**
+
+While it might be tempting to use the index of each item in the array as its key, this approach can potentially lead to issues with the component's state, because the index can change based on the order of items.
+
+This is generally considered an anti-pattern unless the list is static and will not change in the future.
+
+For example, the following code snippet might cause issues:
+
+<CodeSnippet language="jsx">
+{`const users = ["Jin", "Jhon", "Charlie"];
+
+return (
+  <ul>
+    {users.map((user, index) =>
+      <li key={index}>{user}</li>
+    )}
+  </ul>
+);`}
+</CodeSnippet>
+
+In this case, **`key={index}`** assigns the index of each item in the array as its key. If the order of items in the **`users`** array changes, this will cause unnecessary re-renders, as React will assume that each item is a new element due to the change in the key.
+
+Instead, it's typically better to use a string that uniquely identifies the list item among its siblings, like user id we used in the previous example
+
+**Conclusion**
+
+Keys are a small detail of React, but they have a significant impact on the performance and reliability of your applications. By understanding and using keys correctly, you can ensure that your lists are rendered efficiently and accurately, leading to a smoother user experience and more manageable codebase.
+
+Next time you're rendering a list in React, don't forget to assign a unique key to each element. Your app's performance might just depend on it!

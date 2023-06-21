@@ -1,0 +1,229 @@
+---
+title: 'How to setup Next.js 13 + Chakra UI'
+publishedAt: 'Jun 21, 2023'
+description: 'Learn how to Chakra UI in a Next.js 13 Application'
+thumbnailUrl: '/images/post/how-to-setup-next-app-with-chakra-ui.png'
+tags: ['next.js', 'chakra ui', 'javascript','jsx','tsx']
+---
+
+Hi There! 👋
+
+Next.js 13 is a game changer, it comes with some new features, and one of them that I love the most is you can decide which component to be rendered on the client side and which component to be rendered on the server side.
+
+Now, let’s see how we can integrate Chakra UI into it.
+
+> Note,  You should have [Node.js 16.8](https://nodejs.org/) or later
+> 
+
+## Create a new Next.js 13 Project
+
+Open the terminal and execute
+
+<CodeSnippet language="bash">
+{`npx create-next-app@latest`}
+</CodeSnippet>
+
+You will be prompted for list of questions before generating the project, 
+
+<CodeSnippet language="bash">
+{`What is your project named? // Name of your project
+Would you like to use TypeScript with this project? No / Yes 
+Would you like to use ESLint with this project? No / Yes
+Would you like to use Tailwind CSS with this project? No / Yes
+Would you like to use src/ directory with this project? No / Yes
+Use App Router (recommended)? No / Yes
+Would you like to customize the default import alias? No / Yes`}
+</CodeSnippet>
+
+Notes on above prompts,
+
+- By default it asks whether we need to setup tailwind css, since we are going to integrate chakra UI, You say No to it.
+- If you wish to have a `src/`  you can go ahead with that
+- For `AppRouter` it is required for page routing, so it a `Yes`
+- `import alias` is again a personal preference, what it does is when you import components your can reference by alias
+
+If you choose to have alias, it ask for custom alias name if the name is not provided it will use default alias `@/`
+ 
+So whenever you import component you can import like this
+    
+    <CodeSnippet language="jsx">
+    {`import component from "@/shared/component";`}
+    </CodeSnippet>
+    
+
+After answering the prompts, your project will be generated.
+
+Now it’s time for chakra UI
+
+## Install Chakra UI and it’s dependencies
+
+<CodeSnippet language="bash">
+{`npm i @chakra-ui/react @chakra-ui/next-js @emotion/react @emotion/styled framer-motion`}
+</CodeSnippet>
+
+
+Notes on the above dependencies,
+
+- `@chakra-ui/react @chakra-ui/next-js` are the chakra ui core libraries required to use things like component, styles, etc.
+- `@emotion/react` is a library for building highly customizable and themeable design systems in React.
+- `@emotion/styled` is another part of Emotion. It allows you to create styled React components.
+- `framer-motion` is a production-ready motion library for React. It's used to create animations and interactions.
+
+Once installing all the dependency we have to configure Next.js to use components and utilities of chakra UI
+
+## Step 1:  Remove Existing CSS files
+
+Remove existing css files and it’s imports statements from the components
+
+## Step 2:  Create ChakraUI Provider
+
+Create a new directory called `provider` under `/src` directory and create a file called 
+
+`chakra-ui.provider.tsx` 
+
+Add the following code snippet to the provider file
+
+<CodeSnippet language="bash">
+{`'use client';
+
+import { CacheProvider } from '@chakra-ui/next-js'
+import { ChakraProvider } from '@chakra-ui/react'
+
+const ChakraUiProvider = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <CacheProvider>
+      <ChakraProvider>{children}</ChakraProvider>
+    </CacheProvider>
+  )
+}
+
+export default ChakraUiProvider`}
+</CodeSnippet>
+
+
+Notes on `chakra-ui.provider.tsx`,
+
+- Providers are simply an another component which will act as a wrapper around children component, because of that the file is of type `.tsx`.
+- In Next.js 13, we have a new feature where you can decide which component should render on server side and client side. <br/> <br/>Check the docs for more info https://nextjs.org/docs/app/building-your-application/rendering.<br/> <br/> Since **Chakra UI only works in client-side components,** the provider has to be a client sider rendering component. To render a component in client side, you need to add `use client` directive at the top of the file.
+- `CacheProvider`  ensures that all styles created by Emotion (the CSS-in-JS library used by Chakra UI) are properly included in the when rendering the component. This is necessary due to the way Next.js streams HTML from server to client, which can interfere with how CSS-in-JS libraries like Emotion inject styles into the page. The CacheProvider works around this limitation to ensure styles are properly delivered to the client.
+## Step 3:  Adding Custom Theme
+
+Chakra UI is more flexible in allowing to customize existing theme and component’s of chakra UI
+
+Let’s try to add custom colors and google fonts
+
+- Create a `theme` directory under `/src` directory
+- Create three files,
+    - `index.ts` will export all the theme properties
+    - `colors.ts` will have the app colour pallet
+    - `fonts.ts` will have the google font
+
+### Adding Colors
+
+In `colors.ts` , I am adding some custom colors. you can add based on your requirement
+
+<CodeSnippet language="bash">
+{`/** App Color Pallet */
+export const colors = {
+  primary: {
+    900: "#00234B",
+    800: "#4A90E2",
+    700: "#89CFF0",
+    600: "#F3FBFF",
+    500: "#F7F9FA",
+  },
+  success: {
+    900: "#2E7D32",
+    800: "#A5D6A7",
+  },
+  warning: {
+    900: "#FF9800",
+  },
+  accent: {
+    900: "#FAD938",
+  },
+  text: {
+    900: "#292929",
+    800: "#333333",
+    700: "#585858",
+    600: "#666666",
+    500: "#F0F0F0",
+    400: "#F8F8F8",
+    300: "#F7F7F7",
+  },
+  white: {
+    900: "#FFFFFF",
+  },
+};`}
+</CodeSnippet>
+
+### Adding Fonts
+
+In `font.ts` , I am using `Montserrat` font. you can change it based on your requirement
+
+<CodeSnippet language="bash">
+{`import { Montserrat } from "next/font/google";
+const montserrat = Montserrat({ subsets: ["latin"] });
+
+/** App Fonts */
+export const fonts = {
+  body: montserrat.style.fontFamily,
+  heading: montserrat.style.fontFamily,
+};`}
+</CodeSnippet>
+
+Note, You can use multiple fonts and point the font to `heading` and `body(paragraphs)`
+
+### Exporting Theme
+
+Finally we have to export fonts and colors. To do that, open `index.ts`  add the following code
+
+<CodeSnippet language="bash">
+{`import {  extendTheme } from "@chakra-ui/react";
+import { fonts } from "./fonts";
+import { colors } from "./colors";
+
+export const theme = extendTheme({
+  colors, 
+  fonts,
+  components: {
+  /** Customize Chakra UI Components */
+  },
+});`}
+</CodeSnippet>
+
+
+Notes on the above code,
+
+- `extendTheme` helps us to extend themes with Chakra UI’s existing theme.
+- `components`  under `extendTheme` allows us to write customize styles of chakra UI component globally.
+
+## Step 4:  Adding theme to provider
+
+Add the theme to Chakra UI Provider, So that the custom theme will now be available throughout the application
+
+<CodeSnippet language="bash">
+{`'use client'
+
+import { CacheProvider } from '@chakra-ui/next-js'
+import { ChakraProvider } from '@chakra-ui/react'
+import { theme } from '../theme' // Customized theme
+
+const ChakraUiProvider = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <CacheProvider>
+      <ChakraProvider theme={theme}>{children}</ChakraProvider>
+    </CacheProvider>
+  )
+}
+
+export default ChakraUiProvider`}
+</CodeSnippet>
+
+I have created a [repo](https://github.com/nandhakumar-rs/next-js-13-chakra-ui-starter) with all the configuration we did so far, you can use it for your project and you have any other suggestion to improve this repo, feel free to reach me. I’ll be keeping this repo up to date
+
+## **Conclusion**
+
+And that's it! You have successfully set up Next.js 13 with Chakra UI. We've walked through creating a new Next.js 13 project, installing Chakra UI and its dependencies, and configuring Chakra UI to work with our Next.js project. We even customized our application's theme with custom colors and Google Fonts.
+
+Keep coding, and stay curious!

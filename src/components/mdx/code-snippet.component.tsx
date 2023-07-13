@@ -1,10 +1,11 @@
-import oneDark from "react-syntax-highlighter/dist/cjs/styles/prism/one-dark";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import oneDark from 'react-syntax-highlighter/dist/cjs/styles/prism/one-dark'
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 
 const CodeSnippet = (props: any) => {
   return (
     <div className="relative my-8">
       <SyntaxHighlighter
+        showLineNumbers={props.showLineNumbers}
         className="text-base rounded-md syntax-h"
         language="javascript"
         style={oneDark}
@@ -14,7 +15,7 @@ const CodeSnippet = (props: any) => {
         {props.children}
       </SyntaxHighlighter>
     </div>
-  );
-};
+  )
+}
 
-export default CodeSnippet;
+export default CodeSnippet

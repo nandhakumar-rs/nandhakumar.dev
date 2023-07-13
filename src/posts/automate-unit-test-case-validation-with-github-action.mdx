@@ -1,0 +1,77 @@
+---
+title: 'Automate Unit Test Case Validation With Github Action'
+publishedAt: 'Jul 13, 2023'
+description: 'In this post you will learn how to automate validating your unit test cases using github action.'
+thumbnailUrl: '/images/post/automate-unit-test-case-validation-with-github-action.png'
+tags: ['github-action', 'node.js', 'javascript']
+---
+
+Hi There! 👋
+
+Sometimes you might miss validating your unit test cases before pushing your code and this might be trouble later during the project release or deployments
+
+What if you can automate this test case validation just before you merge your code?
+
+Yes, You can do that using Github Action.
+
+> Note: This Automation will work only if your project is on Github. 
+
+So, What is Github Action?
+
+[Github Action](https://github.com/features/actions) is a platform that allows you to automate your build, test, and deployments. 
+
+Now, Let’s see how we can setup github action to automate test case validation
+
+## Step 1: New Repository
+
+Create a new repository on Github
+
+## Step 2: Setup a Node.js Project
+
+Download the starter project from this [repository](https://github.com/nandhakumar-rs/node-app-with-mocha-test) or if you have an existing project you can use it.
+
+For this tutorial, I am going to use the node.js project. But the workflow can be used for other type of projects as well, the only thing you that you have to do is updating shell scripts in the working based on your project 
+
+## Step 3: Git Workflow Setup
+
+Create a `.github` directory and create a `workflows` directory inside it.
+Note the naming is important otherwise, the workflow will not be triggered
+
+## Step 4: Create a YAML File
+
+Create a [YAML](https://yaml.org/) file inside the workflows directory. We will be writing instructions that have to be executed.
+
+## Step 5: Write Instructions To Automate Unit Test Cases
+
+Add the following script to the YAML file,
+
+<CodeSnippet showLineNumbers language='yaml'>
+{`name: Unit Test Cases Execution
+on: pull_request
+jobs:
+    unit-test:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Clone Repository
+          uses: actions/checkout@v3
+        - name: Setup Node.js
+          uses: actions/setup-node@v3
+          with:
+              node-version: 19.9.0
+        - name: Install Dependencies
+          run: npm ci
+        - name: Execute Test Cases
+          run: npm run test`}
+</CodeSnippet>
+
+- `Line 1` - Name of the workflow
+- `Line 2` - On which event the workflow should be triggered like push, pull_request.
+- `Line 4` - Name of the job
+- `Line 5` - On which runner(platform window, linux etc) we want to execute the test cases, in our case we are using ubuntu. Check out other [runners](https://github.com/actions/runner)
+- `Line 6 - 16` - Steps to be executed when running the job
+- `Line 7 - 8` - It is the First Step, and here we are cloning the repository into the runner. To clone the repository we are using existing github action called `actions/checkout@v3` .
+- `Line 9 - 12` - To Install node into the runner, by default the runner will come with node pre installed, At the time of writing this blog the default node version the runner use is V18.16.1. Since I want a specific version we are reinstalling the node with specific version V19.9.0
+- `Line 13 - 14` - To Install the required dependencies.
+- `Line 15 - 16` - Execution of the test cases.
+
+Now push the changes and when you rise a PR, your workflow will be started automatically and it will execute the unit test cases.

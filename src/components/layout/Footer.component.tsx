@@ -32,8 +32,8 @@ const Footer = () => {
           ))}
         </div>
         <div className=" text-base font-normal text-white">
-          <p>Made with ♥️ by Nandhakumar</p>
-          <p>© 2022</p>
+          <p>Made with ♥️ by</p>
+          <p>Nandhakumar © 2024</p>
         </div>
       </div>
     </footer>

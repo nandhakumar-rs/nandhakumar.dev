@@ -26,14 +26,42 @@ export default function AboutPage() {
               I‘m Nandhakumar 👋
             </p>
             <div className="text-app-neutral-700 mt-2 text-base flex items-center gap-3">
-              <p> UI UX Designer | Software Engineer | Freelancer</p>
+              <p> UI UX Designer | Full Stack Engineer | Freelancer</p>
             </div>
           </div>
         </div>
         <p className="mt-4 text-app-neutral-700 text-lg">
-          Professional Full Stack Developer and Designer. Passionate towards tech world. Love to help small and large scale
-          business in UI/UX design and application development. If you want to
-          get in touch, you can reach me over
+          I never thought I would become a developer, I don’t even know what I
+          am going to become, or where I am going to work. Nothing.
+        </p>
+        <p className="mt-4 text-app-neutral-700 text-lg">
+          Fortunately, My mom was a developer. She inspired me to get into
+          coding and app development. Also, I got some good mentors, who
+          directed me on a path to where I am now.
+        </p>
+        <p className="mt-4 text-app-neutral-700 text-lg">
+          I started my career as a Full Stack Developer, specializing in
+          javascript-based frameworks like React, Angular, Vue, etc… I am
+          helping many agencies and small & large-scale business owners to build
+          high-quality applications to solve their problems by providing
+          solutions as best as I could.
+        </p>
+        <p className="mt-4 text-app-neutral-700 text-lg">
+          In addition, I am also interested in UI/UX design. So whenever I get
+          some time, practice UI/UX. I have helped a couple of clients in UI/UX
+          design as well.
+        </p>
+        <p className="mt-4 text-app-neutral-700 text-lg">
+          I usually spend more time leveling up my skills, so that I can build
+          more performant apps in less time.
+        </p>
+        <p className="mt-4 text-app-neutral-700 text-lg">
+          Apart from work, I read books to improve myself and understand
+          different perspectives of people. Love to take part in some sports
+          activities as well like badminton, running, and strength training.{' '}
+        </p>
+        <p className="mt-4 text-app-neutral-700 text-lg">
+          If you want to get in touch, you can reach me over{' '}
           <HrefLink href={CONSTANT.LINKS.EMAIL} rel="email" target="_blank">
             Email
           </HrefLink>{' '}

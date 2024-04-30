@@ -1,0 +1,160 @@
+---
+title: 'Mastering Webpack: Setting Up Webpack with TypeScript For Node.js - Part 1'
+publishedAt: 'Apr 30, 2024'
+description: "Discover the essentials of module bundling, explore how Webpack optimizes your project's assets, and learn the steps to configure Webpack with TypeScript effectively."
+thumbnailUrl: '/images/post/mastering-webpack-with-typescript.png'
+tags: ['optimization', 'webpack', 'javascript', 'typescript']
+---
+
+Before diving into the Webpack setup, let's understand what Webpack is and why we use it.
+
+Webpack is a module bundling tool. If you're new to module bundling, it's a critical process in web development that optimizes the application's loading time and runtime efficiency by combining and optimizing multiple code files and assets from a project into a smaller number of files. 
+
+This process not only consolidates scripts and styles but also manages dependencies to ensure they are loaded in the correct order. Modern bundlers can also perform additional optimizations such as minification, tree shaking, and lazy loading to improve loading times and application performance.
+
+Some of the advantages of module bundling include:
+- Reducing the number of HTTP requests by combining multiple files into fewer bundles.
+- Automating the management of assets and dependencies, making it easier to maintain and scale large applications.
+- Including tools and processes like polyfills and transpilers to ensure code works across various browsers.
+- Implementing techniques such as minification, tree shaking, and lazy loading to minimize file sizes.
+- Enhancing the developer experience with features like Hot Module Replacement.
+
+Coming back to Webpack, 
+it is a powerful module bundler primarily used in web development. It compiles and optimizes all your project's assets, such as JavaScript, HTML, and CSS, into fewer and more efficient files suited for production environments. Webpack also provides advanced features like code splitting, lazy loading, and module caching to enhance application performance.
+
+Since this post focuses on setting up Webpack for a TypeScript project, it's important to understand how module bundling works with TypeScript. Here’s a simplified overview:
+1. **TypeScript Compilation**: First, the TypeScript compiler (**`tsc`**) transforms TypeScript code into JavaScript. This step converts TypeScript's syntax and features into JavaScript that browsers or Node.js environments can execute.
+2. **Module Bundling**: Next, the compiled JavaScript code is bundled into a single file or a few files by a module bundler. This process optimizes the code and manages dependencies to ensure they are loaded correctly.
+
+Note that while Webpack is one of the most popular module bundlers, there are several others widely used in the development community, including:
+
+- **Rollup**: Known for its efficiency and suitability for libraries.
+- **Esbuild**: Praised for its speed, written in Go, and leveraging multithreading.
+- **Vite**: A modern build tool that combines the best of Esbuild and Rollup for both development and production builds.
+
+Each of these tools has its strengths and can be chosen based on the specific needs of a project.
+
+Enough of the theory, now let's jump into setting up Webpack with TypeScript
+
+## Step 1: Initialize a Node Project
+
+<CodeSnippet language="bash">
+{`npm init -y`}
+</ CodeSnippet>
+Note: The `-y` flag automatically populates the package.json file with default values.
+
+## Step 2: Install Required Development Dependencies
+
+<CodeSnippet language="bash">
+{`npm i -D typescript @types/node webpack webpack-cli ts-node ts-loader @types/webpack`}
+</ CodeSnippet>
+Notes:
+- `-D` flag is to indicate these dependencies are not needed in the production environment but are essential during development
+- `typescript`  - Essential for converting TypeScript code to JavaScript.
+- `@types/node` - These are TypeScript declaration files for Node.js. They provide type definitions for Node.js modules.
+- `webpack` - Webpack tool required to bundle the code
+- `webpack-cli` - This is the command line interface for Webpack used to execute webpack based commands
+- `ts-node` - TypeScript execution engine, Allows you to run TypeScript files directly in Node.js without pre-compiling.
+- `ts-loader` - This is a Webpack loader that handles the compilation of TypeScript files into JavaScript.
+- `@types/webpack` - Similar to **`@types/node`**, these are TypeScript declaration files but for Webpack itself
+
+## Step 3: Generate TypeScript Configuration File (`tsconfig.json`)
+
+<CodeSnippet language="bash">
+{`tsc --init`}
+</ CodeSnippet>
+This command generates a `tsconfig.json` with a set of default compiler options commonly used in most TypeScript projects. It is customizable as per your project requirements.
+
+## Step 4: Create `webpack.config.ts` in the Root Directory
+
+<CodeSnippet language="ts" filename="webpack.config.ts">
+{`import { Configuration } from "webpack";
+import { resolve } from "path";
+
+const config: Configuration = {
+  mode: "none", // Sets bundling mode to 'none' (no optimizations).
+  entry: {
+    bundle: "./src/index.ts", // Entry point of the application.
+  },
+  target: "node", // Bundles code for Node.js environment.
+  module: {
+    rules: [
+      {
+        exclude: /node_modules/, // Excludes node_modules from processing.
+        use: {
+          loader: "ts-loader", // Processes TypeScript files.
+          options: {
+            transpileOnly: true, // Speeds up compilation by skipping type checking.
+          },
+        },
+      },
+    ],
+  },
+  resolve: {
+    extensions: [".tsx", ".ts", ".js"], // Resolves these file extensions.
+  },
+  output: {
+    filename: "[name].js", // Names output file after its entry point ('bundle.js').
+    path: resolve(__dirname, "dist"), // Output directory for the bundled files.
+  },
+};
+export default config;
+`}
+</ CodeSnippet>
+
+## Step 5: Define the Entry Point
+
+Create a `src` directory, and within it, create two files: `index.ts` (entry file) and `utils.ts` (to export functions used in `index.ts`).
+<CodeSnippet language="ts" filename="src/utils.ts">
+{`import crypto from "crypto";
+
+// Create a function to generate a SHA-256 hash
+export const generateHash = (input: string): string => {
+  return crypto.createHash("sha256").update(input).digest("hex");
+};
+`}
+</ CodeSnippet>
+
+<CodeSnippet language="ts" filename="src/index.ts">
+{`import { generateHash } from './utils';
+
+console.log("Typescript Works!")
+console.log("Node Works!")
+
+const hash = generateHash("Webpack is Working!")
+console.log('SHA-256 Hash:', hash)
+`}
+</ CodeSnippet>
+
+## Step 6: Add Custom Scripts in `package.json`
+
+<CodeSnippet language="json" filename="package.json">
+{`"scripts": {
+  "start": "node dist/bundle.js",
+  "build": "webpack",
+}
+`}
+</ CodeSnippet>
+
+## Step 7: Execute `npm run build`
+
+This will bundle the code and generate a `dist` directory containing `bundle.js`.
+
+## Step 8: Test the Bundled Code
+
+Execute `npm run start`. If everything is set up correctly, you should see outputs confirming that TypeScript and Node are working, along with a SHA-256 hash generated by your utility function.
+
+<CodeSnippet language="bash">
+{`❯ npm run start
+
+> Typescript Webpack Setup@1.0.0 start
+> node dist/bundle.js
+
+Typescript Works!
+Node Works!
+SHA-256 Hash: a7929e1f857cca0a8c9c1345e79f3b1a1976e603c9ce4e77a808988658b36181
+`}
+</CodeSnippet>
+
+
+However, there's a limitation with this configuration: it's not suitable for web environments. If you add an `index.html` and try to include the bundled script, it won’t work. We'll explore how to modify this setup for web compatibility in Part 2 of this series.

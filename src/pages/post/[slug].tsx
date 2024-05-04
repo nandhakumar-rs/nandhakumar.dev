@@ -41,6 +41,7 @@ export default function PostPage({
         <meta property="twitter:image" content={data?.thumbnailUrl} />
       </Head>
       <Post
+        slug={slug}
         data={data}
         content={content}
         mdxSource={mdxSource}

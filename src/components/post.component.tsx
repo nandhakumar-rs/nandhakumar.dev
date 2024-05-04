@@ -31,7 +31,8 @@ const Components = {
   blockquote: Blockquote,
 }
 
-const Post = ({ data, content, mdxSource, readingTime }: any) => {
+const Post = ({ data, content, mdxSource, readingTime, slug }: any) => {
+  console.log(data)
   return (
     <article className="mt-8">
       <div className="text-app-neutral-700 flex items-center gap-3">
@@ -52,7 +53,7 @@ const Post = ({ data, content, mdxSource, readingTime }: any) => {
       <div className="text-app-neutral-700 text-xl mt-2">
         <MDXRemote {...mdxSource} components={Components}></MDXRemote>
         <HR />
-        <PostFootnote slug={data.slug} />
+        <PostFootnote slug={slug} />
       </div>
     </article>
   )

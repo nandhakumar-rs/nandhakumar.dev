@@ -4,18 +4,22 @@ import { H1, H2 } from './mdx/heading.component'
 import HrefLink from './mdx/href-link.component'
 import P from './mdx/paragraph.component'
 
-const PostFootnote = () => {
+const PostFootnote = ({ slug }: {slug: string}) => {
   return (
     <footer className="">
       <H1>Thanks For Reading!</H1>
       <P>Hope you have learned something new today 😊.</P>
 
-      <P>I welcome your questions, feedback, and discussions on this topic. Don&apos;t hesitate to reach out if there&apos;s something you&apos;d like to talk about.</P>
+      <P>
+        I welcome your questions, feedback, and discussions on this topic.
+        Don&apos;t hesitate to reach out if there&apos;s something you&apos;d
+        like to talk about.
+      </P>
 
       <P>
         If you find this post helpful{' '}
         <HrefLink
-          href={`https://twitter.com/intent/tweet/?text=${'Nandhakumar Wrote this Article'}&url=${'https://nandhakumar.io/post/step-by-step-guide-to-dockerize-vite-react-app-in-dev-environment&via=nandhakumar_io'}`}
+          href={`https://twitter.com/intent/tweet/?text=${'Nandhakumar Wrote this Article'}&url=${`https://nandhakumar.io/post/${slug}&via=nandhakumar_io`}`}
         >
           <b>Tweet this Post</b>
         </HrefLink>

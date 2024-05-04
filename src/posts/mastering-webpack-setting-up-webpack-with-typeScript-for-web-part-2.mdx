@@ -56,8 +56,8 @@ export default config;
 Notes:
 - The `[name].js` in the filename field tells Webpack to name the output file based on the name of the entry point. For instance, since your entry point is named `bundle`, the output file will be `bundle.web.js`.
 - Most of this file resembles the configuration we created for the Node.js environment. The key differences here are,
-  - The target set to `web` instead of `node`
-  - The output filename changed to `bundle.web.js` to distinguish it from the Node.js bundle
+  - The target is set to `web` instead of `node`
+  - The output filename is changed to `bundle.web.js` to distinguish it from the Node.js bundle
   - The configuration is set to `tsconfig.web.json`
 
 ## Step 2: Create separate ts config for web
@@ -75,11 +75,11 @@ Create a new tsconfig file for web version named `tsconfig.web.json`  and add th
 </ CodeSnippet>
 Notes:
 - Here, we are extending the base `tsconfig.json` to avoid repeating configurations. We set the module to `ES6` to utilize the latest JavaScript features in the browser.
-- Additionally `module` is set to `ES6` , to use latest features of JS in the browser environment
+- Additionally `module` is set to `ES6` , to use the latest features of JS in the browser environment
 
-## Step 3: Include bundle generated for web in html 
+## Step 3: Include bundle generated for web in HTML 
 
-Add index.html file in the root directory, and add the bundle script that will be generated for web
+Add index.html file in the root directory, and add the bundle script that will be generated for the web
 
 <CodeSnippet language="html" filename="index.html">
 {`<!DOCTYPE html>
@@ -119,7 +119,7 @@ Note:
 
 Execute `npm run build-web` , to generate the bundle for web
 
-**Note: If you're following from Part 1, you might encounter an error related to the `crypto` module. This occurs because `crypto` is a Node.js native module and isn't natively supported in the browser. We'll fix this by adding necessary polyfills.**
+**Note: If you're following from Part 1, you might encounter an error related to the `crypto` module. This occurs because `crypto` is a Node.js native module and isn't natively supported in the browser. We'll fix this by adding the necessary polyfills.**
 
 <CodeSnippet language="bash" >
 {`ERROR in ./src/utils.ts 1:0-28
@@ -161,7 +161,7 @@ Add a fallback library for crypto library, under resolve section in `webpack.con
 `}
 </ CodeSnippet>
 
-Basically what we are doing here is, we are telling webpack to use `crypto-browserify` instead of `crypto` native library, similarly for other polyfill dependent libraries
+Basically what we are doing here is, we are telling webpack to use `crypto-browserify` instead of `crypto` native library, similar for other polyfill-dependent libraries
 
 Now again execute the `npm run build-web` , bundle file will be generated successfully
 

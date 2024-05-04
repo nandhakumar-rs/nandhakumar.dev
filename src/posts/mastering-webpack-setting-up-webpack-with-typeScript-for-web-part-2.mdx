@@ -1,0 +1,174 @@
+---
+title: 'Mastering Webpack: Setting Up Webpack with TypeScript For Web - Part 2'
+publishedAt: 'May 4, 2024'
+description: "Discover the essentials of module bundling, explore how Webpack optimizes your project's assets, and learn the steps to configure Webpack with TypeScript effectively."
+thumbnailUrl: '/images/post/mastering-webpack-with-typescript.webp'
+tags: ['optimization', 'webpack', 'javascript', 'typescript']
+---
+
+This is Part 2 of our Mastering Webpack series. If you need a refresher on the fundamentals of Webpack and module bundling, consider revisiting Part 1 of this series.
+
+In this post, we are going to see how webpack can be configured for web, by default when we setup webpack it will work fine in the node.js environment, but if we try to use the bundled version of JS by opening in a browser the js file won't support and it won’t work
+
+Continuing configuration based on the previous post
+
+## Step 1: Create Separate webpack config for web
+
+Create a separate webpack config file called webpack.config.web.ts in the root directory, Then add the below code which is the configurations that tell how the project code should be compiled and bundled
+
+<CodeSnippet language="ts" filename="webpack.config.web.ts">
+{`import { Configuration } from "webpack";
+import { resolve } from "path";
+
+const config: Configuration = {
+  mode: "none", // Sets bundling mode to 'none' (no optimizations).
+  entry: {
+    bundle: "./src/index.ts", // Entry point of the application.
+  },
+  target: "web", // Correctly sets the bundle target to web environments.
+  module: {
+    rules: [
+      {
+        exclude: /node_modules/, // Excludes node_modules from processing.
+        use: {
+          loader: "ts-loader", // Processes TypeScript files.
+          options: {
+            transpileOnly: true, // Speeds up compilation by skipping type checking.
+            configFile: "tsconfig.web.json", // Using tsconfig created for web platform
+          },
+        },
+      },
+    ],
+  },
+  resolve: {
+    extensions: [".tsx", ".ts", ".js"], // Resolves these file extensions.
+  },
+  output: {
+    filename: "[name].web.js", // Names output file after its entry point ('bundle.js').
+    path: resolve(__dirname, "dist"), // Output directory for the bundled files.
+  },
+};
+
+export default config;
+`}
+</ CodeSnippet>
+
+Notes:
+- The `[name].js` in the filename field tells Webpack to name the output file based on the name of the entry point. For instance, since your entry point is named `bundle`, the output file will be `bundle.web.js`.
+- Most of this file resembles the configuration we created for the Node.js environment. The key differences here are,
+  - The target set to `web` instead of `node`
+  - The output filename changed to `bundle.web.js` to distinguish it from the Node.js bundle
+  - The configuration is set to `tsconfig.web.json`
+
+## Step 2: Create separate ts config for web
+
+Create a new tsconfig file for web version named `tsconfig.web.json`  and add the following code
+
+<CodeSnippet language="json" filename="tsconfig.web.json">
+{`{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "ES6"
+  }
+}
+`}
+</ CodeSnippet>
+Notes:
+- Here, we are extending the base `tsconfig.json` to avoid repeating configurations. We set the module to `ES6` to utilize the latest JavaScript features in the browser.
+- Additionally `module` is set to `ES6` , to use latest features of JS in the browser environment
+
+## Step 3: Include bundle generated for web in html 
+
+Add index.html file in the root directory, and add the bundle script that will be generated for web
+
+<CodeSnippet language="html" filename="index.html">
+{`<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Typescript with webpack</title>
+  </head>
+  <body>
+    <p> Check the console by opening inspect window!</p>
+    
+    <!-- Adding bundle file that will be generated for web -->
+    <script src="./dist/bundle.web.js"></script> 
+  </body>
+</html>
+`}
+</ CodeSnippet>
+
+## Step 4: Add build script for web
+
+Add build script for the web version in `package.json` file 
+
+<CodeSnippet language="json" filename="package.json">
+{`"scripts": {
+    "start": "node dist/bundle.js",
+    "build": "webpack",
+    "build-web": "webpack --config webpack.config.web.ts",
+  },
+`}
+</ CodeSnippet>
+
+Note: 
+- `--config webpack.config.web.ts` - is added to mention that we need to use `webpack.config.web.ts` configuration when bundling
+
+## Step 5: Build the bundle
+
+Execute `npm run build-web` , to generate the bundle for web
+
+**Note: If you're following from Part 1, you might encounter an error related to the `crypto` module. This occurs because `crypto` is a Node.js native module and isn't natively supported in the browser. We'll fix this by adding necessary polyfills.**
+
+<CodeSnippet language="bash" >
+{`ERROR in ./src/utils.ts 1:0-28
+Module not found: Error: Can't resolve 'crypto' in '/Users/nandhu/Desktop/Learnings/typescript/src'
+
+BREAKING CHANGE: webpack < 5 used to include polyfills for node.js core modules by default.
+This is no longer the case. Verify if you need this module and configure a polyfill for it.
+
+If you want to include a polyfill, you need to:
+        - add a fallback 'resolve.fallback: { "crypto": require.resolve("crypto-browserify") }'
+        - install 'crypto-browserify'
+If you don't want to include a polyfill, you can use an empty module like this:
+        resolve.fallback: { "crypto": false }
+`}
+</ CodeSnippet>
+
+> **Why Polyfill?**
+> Polyfills are used to emulate the functionality of APIs or components that are available in some environments but missing in others, typically in web browsers that do not support certain modern web standards. When developing applications that need to work both in Node.js and the browser, it's crucial to understand which Node.js native modules require polyfills to function correctly in the browser.
+
+Install polyfill of crypto library and it’s dependent polyfill libraries(these dependent libraries are required to be installed to make crypto work)
+
+<CodeSnippet language="bash">
+{`npm install buffer vm-browserify stream-browserify --save`}
+</ CodeSnippet>
+
+Add a fallback library for crypto library, under resolve section in `webpack.config.web.ts`
+
+<CodeSnippet language="ts" filename="webpack.config.web.ts">
+{`resolve: {
+    extensions: [".tsx", ".ts", ".js"],
+    fallback: {
+    // Polyfill for 'crypto' and it's dependent polyfill modules
+      "buffer": require.resolve("buffer/"),
+      "stream": require.resolve("stream-browserify"),
+      "vm": require.resolve("vm-browserify"),
+      "crypto": require.resolve("crypto-browserify")  
+    }
+  }
+`}
+</ CodeSnippet>
+
+Basically what we are doing here is, we are telling webpack to use `crypto-browserify` instead of `crypto` native library, similarly for other polyfill dependent libraries
+
+Now again execute the `npm run build-web` , bundle file will be generated successfully
+
+
+
+## Step 6: Test the bundle generated for web
+
+Since the HTML file includes our web version of Webpack bundle. Open the html in a browser and check the console to see the outputs from your TypeScript code.
+
+Congratulations! You've successfully configured Webpack to bundle your TypeScript project for both web and node.js environments. Now, your application is more versatile and ready for deployment across different platforms. Experiment with adding more complex functionalities and optimizations to your Webpack configuration to further enhance your project.

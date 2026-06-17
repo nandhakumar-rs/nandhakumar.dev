@@ -12,19 +12,15 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'cdn.hashnode.com',
-        port: '',
       },
       {
         protocol: 'https',
         hostname: 'dev-to-uploads.s3.amazonaws.com',
-        port: '',
       },
       {
         protocol: 'https',
         hostname: 'cdn-images-1.medium.com',
-        port: '',
       },
-      
     ],
   },
 }

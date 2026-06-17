@@ -1,10 +1,6 @@
-import { readdirSync, readFileSync } from 'fs'
-import path from 'path'
-import PostShort from '../components/post-short.component'
-import matter from 'gray-matter'
-import readingTime from 'reading-time'
+import PostList from '../components/post-list.component'
 import Head from 'next/head'
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import { FiSearch } from 'react-icons/fi'
 export default function HomePage(props: any) {
   const { posts } = props
@@ -41,10 +37,15 @@ export default function HomePage(props: any) {
         <title>Nandhakumar | Posts</title>
       </Head>
       <div>
-        <p className=" text-3xl font-semibold text-app-primary-100 my-8">
-          I Write about UI, UX, Programming,
-          <br /> My Learnings & Experiences in my journey!
-        </p>
+        <div className="my-8">
+          <p className="text-3xl font-semibold text-app-primary-100">
+            Building software, exploring AI, and documenting everything I learn.
+          </p>
+          <p className="text-lg text-app-neutral-700 mt-3">
+            From technical deep-dives and experiments to products and lessons
+            learned along the way.
+          </p>
+        </div>
 
         <div className="max-w-lg">
           <div className='h-10 w-full rounded-md overflow-hidden flex items-center  bg-app-primary-800 p-2  '>
@@ -57,15 +58,7 @@ export default function HomePage(props: any) {
             />
           </div>
 
-          {searchResults.map((post: any, index: any) => {
-            return (
-              <PostShort
-                key={index}
-                data={post}
-                readingTime={post.readingTime}
-              />
-            )
-          })}
+          <PostList posts={searchResults} />
         </div>
       </div>
     </div>
@@ -73,27 +66,8 @@ export default function HomePage(props: any) {
 }
 
 export const getStaticProps = async () => {
-  const files = readdirSync(path.join('src', 'posts'))
-
-  const posts = files.map((filename) => {
-    const mdMetaData = readFileSync(path.join('src', 'posts', filename))
-    const { data, content } = matter(mdMetaData)
-    return {
-      ...data,
-      readingTime: readingTime(content).text,
-      slug: filename.replace('.mdx', ''),
-      content,
-    }
-  })
-
-  posts.sort((a: any, b: any) => {
-    if (new Date(a.publishedAt).getTime() < new Date(b.publishedAt).getTime())
-      return 1
-    if (new Date(a.publishedAt).getTime() > new Date(b.publishedAt).getTime())
-      return -1
-
-    return 0
-  })
+  const { getAllPosts } = await import('../lib/posts')
+  const posts = getAllPosts()
 
   return { props: { posts } }
 }

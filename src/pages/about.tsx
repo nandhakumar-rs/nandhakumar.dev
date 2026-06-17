@@ -1,6 +1,4 @@
 import Head from 'next/head'
-import Image from 'next/image'
-import profile from '../../public/profile.png'
 import HrefLink from '../components/mdx/href-link.component'
 import CONSTANT from '../constant'
 import FAQ from '../components/common/faq.component'
@@ -12,53 +10,75 @@ export default function AboutPage() {
         <title>Nandhakumar | About</title>
       </Head>
       <section>
-        <div className="flex gap-6 items-end max-md:flex-col max-md:items-start">
-          <Image
-            className="h-28 w-28 rounded-sm"
-            height={800}
-            width={800}
-            src={profile}
-            alt="Nandhakumar's Display Picture"
-          />
-          <div>
-            <p className="text-app-primary-100 text-2xl font-bold">Hi there!</p>
-            <p className="text-app-primary-100 text-3xl font-bold">
-              I‘m Nandhakumar 👋
+        <div>
+          <p className="text-app-primary-100 text-3xl font-bold">
+            Hi, I&apos;m Nandhakumar 👋
+          </p>
+          <div className="text-app-neutral-700 mt-2 text-base flex items-center gap-3">
+            <p>
+              Full Stack Engineer | AI Automation Builder | Systems Thinker
             </p>
-            <div className="text-app-neutral-700 mt-2 text-base flex items-center gap-3">
-              <p> UI UX Designer | Full Stack Engineer | Freelancer</p>
-            </div>
           </div>
         </div>
+
         <p className="mt-4 text-app-neutral-700 text-lg">
-          I never thought I would become a developer, I don’t even know what I
-          am going to become, or where I am going to work. Nothing.
+          I&apos;m a Full Stack Engineer focused on building software systems,
+          automation solutions, and AI-powered workflows that help businesses
+          operate more efficiently and solve real-world problems.
         </p>
         <p className="mt-4 text-app-neutral-700 text-lg">
-          Fortunately, My mom was a developer. She inspired me to get into
-          coding and app development. Also, I got some good mentors, who
-          directed me on a path to where I am now.
+          Over the past 7+ years, I&apos;ve worked across startups and enterprise
+          environments, designing and developing web applications, mobile apps,
+          APIs, internal tools, cloud solutions, and scalable backend systems.
+          Throughout my career, I&apos;ve enjoyed working across the entire product
+          lifecycle—from understanding business requirements and designing
+          solutions to building, deploying, and maintaining production-ready
+          applications.
         </p>
         <p className="mt-4 text-app-neutral-700 text-lg">
-          I started my career as a Full Stack Developer, specializing in
-          javascript-based frameworks like React, Angular, Vue, etc… I am
-          helping many agencies and small & large-scale business owners to build
-          high-quality applications to solve their problems by providing
-          solutions as best as I could.
+          Recently, my interests have expanded beyond traditional software
+          development into AI automation, intelligent workflows, agent
+          architectures, and machine learning. I&apos;m fascinated by how modern AI
+          systems can augment human work, automate repetitive processes, and
+          unlock entirely new ways of solving problems.
         </p>
         <p className="mt-4 text-app-neutral-700 text-lg">
-          In addition, I am also interested in UI/UX design. So whenever I get
-          some time, practice UI/UX. I have helped a couple of clients in UI/UX
-          design as well.
+          I believe great software is not about writing more code—it&apos;s about
+          understanding the right problem and building the simplest, most
+          reliable solution to solve it. Whether it&apos;s a web application, an
+          internal business tool, an automation workflow, or an AI-powered
+          system, I enjoy creating technology that delivers meaningful value.
         </p>
         <p className="mt-4 text-app-neutral-700 text-lg">
-          I usually spend more time leveling up my skills, so that I can build
-          more performant apps in less time.
+          This website serves as my digital journal and public notebook. Here
+          you&apos;ll find my notes, experiments, projects, technical learnings,
+          architecture explorations, and lessons learned as I continue growing as
+          an engineer and builder. Rather than presenting polished conclusions, I
+          prefer documenting the journey itself—the ideas, discoveries,
+          challenges, and insights that come along the way.
         </p>
         <p className="mt-4 text-app-neutral-700 text-lg">
-          Apart from work, I read books to improve myself and understand
-          different perspectives of people. Love to take part in some sports
-          activities as well like badminton, running, and strength training.{' '}
+          My current areas of interest include:
+        </p>
+        <ul className="list-disc pl-6 text-app-neutral-700 text-lg space-y-1 mt-2">
+          <li>Full Stack Engineering</li>
+          <li>System Design & Software Architecture</li>
+          <li>AI Agents & Workflow Automation</li>
+          <li>LangGraph & Agentic Systems</li>
+          <li>Machine Learning Fundamentals</li>
+          <li>Scalable Backend Engineering</li>
+          <li>SaaS & Product Development</li>
+        </ul>
+        <p className="mt-4 text-app-neutral-700 text-lg">
+          Outside of technology, I enjoy reading, fitness, running, strength
+          training, and exploring ideas that help me better understand people,
+          systems, and the world around me.
+        </p>
+        <p className="mt-4 text-app-neutral-700 text-lg">
+          If you&apos;d like to discuss software engineering, AI automation, product
+          ideas, or potential collaborations, feel free to reach out. I&apos;m always
+          happy to connect with fellow builders, engineers, founders, and curious
+          learners.
         </p>
         <p className="mt-4 text-app-neutral-700 text-lg">
           If you want to get in touch, you can reach me over{' '}

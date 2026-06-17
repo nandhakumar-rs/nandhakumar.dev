@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { FC } from 'react'
-import Tags from './common/tag.component'
+import { formatPostCardDate } from '../lib/date'
 
 interface IPostShortProps {
   data: any
@@ -16,14 +16,13 @@ const PostShort: FC<IPostShortProps> = ({ data, readingTime }) => {
     <article className="mt-8 group">
       <Link href={`/post/${data.slug}`}>
         <div className="text-app-neutral-700 text-base flex items-center gap-3">
-          <p>{data.publishedAt}</p>
+          <p>{formatPostCardDate(data.publishedAt)}</p>
           <div className="h-1 w-1 bg-app-neutral-700 rounded-full"></div>
           <p>{readingTime}</p>
         </div>
         <h1 className="text-app-neutral-600 text-xl font-bold mt-1 mb-2 group-hover:underline">
           {data.title}
         </h1>
-        <Tags tags={data.tags} />
       </Link>
     </article>
   )

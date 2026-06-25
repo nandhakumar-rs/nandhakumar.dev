@@ -7,7 +7,9 @@ import { slugifyTag, formatTagName } from './slugify'
 export { slugifyTag, formatTagName }
 
 export function getAllPosts() {
-  const files = readdirSync(path.join('src', 'posts'))
+  const files = readdirSync(path.join('src', 'posts')).filter((filename) =>
+    filename.endsWith('.mdx'),
+  )
 
   const posts = files.map((filename) => {
     const mdMetaData = readFileSync(path.join('src', 'posts', filename))

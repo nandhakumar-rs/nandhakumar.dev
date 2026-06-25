@@ -5,6 +5,7 @@ import { serialize } from 'next-mdx-remote/serialize'
 import Post from '../../components/post.component'
 import readingTime from 'reading-time'
 import Head from 'next/head'
+import { getPostMdxScope } from '../../lib/post-mdx-scope'
 
 export default function PostPage({
   data,
@@ -52,7 +53,9 @@ export default function PostPage({
 }
 
 export const getStaticPaths = async () => {
-  const files = readdirSync(path.join('src', 'posts'))
+  const files = readdirSync(path.join('src', 'posts')).filter((filename) =>
+    filename.endsWith('.mdx'),
+  )
   const paths = files.map((filename) => {
     return { params: { slug: filename.replace('.mdx', '') } }
   })
@@ -62,7 +65,9 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async ({ params: { slug } }: any) => {
   const matterData = readFileSync(path.join('src', 'posts', `${slug}.mdx`))
   const { data, content } = matter(matterData)
-  const mdxSource = await serialize(content)
+  const mdxSource = await serialize(content, {
+    scope: getPostMdxScope(slug),
+  })
   return {
     props: {
       data: { ...data, readingTime: readingTime(content).text },

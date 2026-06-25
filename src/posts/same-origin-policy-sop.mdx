@@ -1,0 +1,116 @@
+---
+title: 'Same-Origin Policy (SoP)'
+publishedAt: 'Jun 25, 2026'
+description: 'Learn how browsers define an origin, when two URLs are cross-origin, and what resources JavaScript can access across origins by default.'
+thumbnailUrl: ''
+tags: ['javascript', 'web', 'browser', 'security', 'cors']
+---
+
+Same-Origin Policy (SoP) is a set of rules that protects access to resources and data belonging to other origins within the browser environment.
+
+## Origin
+
+<Img
+  src="https://cdn.nandhakumar.me/Notes/same-origin-policy/origin.jpeg"
+  alt="Diagram showing how scheme, domain, and port form a browser origin"
+/>
+
+An origin consists of:
+
+- **Scheme (Protocol)**
+- **Domain**
+- **Port**
+
+Example:
+
+<CodeSnippet language="text" code="https://www.google.com:443/products" />
+
+- **Scheme / Protocol:** `https`
+- **Domain:** `www.google.com`
+- **Port:** `443`
+- **Path:** `/products`
+
+We often don't see the port because it is mapped automatically based on the protocol.
+
+For example:
+
+- HTTPS → 443
+- HTTP → 80
+
+---
+
+## When is it considered Cross-Origin?
+
+### 1. If the port is different
+
+**Origin 1**
+
+<CodeSnippet language="text" code="https://www.google.com:7700" />
+
+**Origin 2**
+
+<CodeSnippet language="text" code="https://www.google.com:8800" />
+
+---
+
+### 2. If the subdomain (host) is different
+
+**Origin 1**
+
+<CodeSnippet language="text" code="https://www.google.com" />
+
+**Origin 2**
+
+<CodeSnippet language="text" code="https://app.google.com" />
+
+---
+
+### 3. If the domain is different
+
+**Origin 1**
+
+<CodeSnippet language="text" code="https://www.google.com" />
+
+**Origin 2**
+
+<CodeSnippet language="text" code="https://www.gmail.com" />
+
+---
+
+### 4. If the scheme (protocol) is different
+
+**Origin 1**
+
+<CodeSnippet language="text" code="https://www.google.com" />
+
+**Origin 2**
+
+<CodeSnippet language="text" code="ftp://www.google.com" />
+
+---
+
+## What can be accessed across origins by default?
+
+<NotionTable name="same-origin-access" />
+
+
+This is why we configure **CORS** on the backend.
+
+We whitelist trusted origins so that JavaScript running from those origins is allowed to read the API response.
+
+Whenever an API request is sent to a cross-origin server, the browser still sends the request and receives the response.
+
+However, if the server does not allow the requesting origin through CORS, JavaScript will not be able to read the response.
+
+This is **browser-enforced Same-Origin Policy**.
+
+---
+
+This is also why one browser tab cannot directly access the data of another tab if they belong to different origins.
+
+If we open the **same origin** in multiple tabs, the origin's data (such as cookies and local storage) is shared between them.
+
+Same-Origin Policy is enforced **only by browsers**.
+
+
+> **Key takeaway:** Same-Origin Policy protects sensitive browser data (cookies, storage, DOM, API responses, etc.) from being accessed by JavaScript running from another origin.

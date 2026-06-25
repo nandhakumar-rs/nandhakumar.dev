@@ -10,9 +10,11 @@ import HrefLink from './mdx/href-link.component'
 import PostFootnote from './post-footnote.component'
 import Tags from './common/tag.component'
 import Blockquote from './mdx/blockquote.component'
+import NotionTable from './mdx/notion-table.component'
 
 const Components = {
   CodeSnippet,
+  NotionTable,
   h1: H1,
   h2: H2,
   h3: H3,

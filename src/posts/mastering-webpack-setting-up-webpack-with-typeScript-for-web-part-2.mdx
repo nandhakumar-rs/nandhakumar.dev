@@ -51,7 +51,7 @@ const config: Configuration = {
 
 export default config;
 `}
-</ CodeSnippet>
+</CodeSnippet>
 
 Notes:
 - The `[name].js` in the filename field tells Webpack to name the output file based on the name of the entry point. For instance, since your entry point is named `bundle`, the output file will be `bundle.web.js`.
@@ -72,7 +72,7 @@ Create a new tsconfig file for web version named `tsconfig.web.json`  and add th
   }
 }
 `}
-</ CodeSnippet>
+</CodeSnippet>
 Notes:
 - Here, we are extending the base `tsconfig.json` to avoid repeating configurations. We set the module to `ES6` to utilize the latest JavaScript features in the browser.
 - Additionally `module` is set to `ES6` , to use the latest features of JS in the browser environment
@@ -97,7 +97,7 @@ Add index.html file in the root directory, and add the bundle script that will b
   </body>
 </html>
 `}
-</ CodeSnippet>
+</CodeSnippet>
 
 ## Step 4: Add build script for web
 
@@ -110,7 +110,7 @@ Add build script for the web version in `package.json` file
     "build-web": "webpack --config webpack.config.web.ts",
   },
 `}
-</ CodeSnippet>
+</CodeSnippet>
 
 Note: 
 - `--config webpack.config.web.ts` - is added to mention that we need to use `webpack.config.web.ts` configuration when bundling
@@ -134,7 +134,7 @@ If you want to include a polyfill, you need to:
 If you don't want to include a polyfill, you can use an empty module like this:
         resolve.fallback: { "crypto": false }
 `}
-</ CodeSnippet>
+</CodeSnippet>
 
 > **Why Polyfill?**
 > Polyfills are used to emulate the functionality of APIs or components that are available in some environments but missing in others, typically in web browsers that do not support certain modern web standards. When developing applications that need to work both in Node.js and the browser, it's crucial to understand which Node.js native modules require polyfills to function correctly in the browser.
@@ -143,7 +143,7 @@ Install polyfill of crypto library and it’s dependent polyfill libraries(these
 
 <CodeSnippet language="bash">
 {`npm install buffer vm-browserify stream-browserify --save`}
-</ CodeSnippet>
+</CodeSnippet>
 
 Add a fallback library for crypto library, under resolve section in `webpack.config.web.ts`
 
@@ -159,7 +159,7 @@ Add a fallback library for crypto library, under resolve section in `webpack.con
     }
   }
 `}
-</ CodeSnippet>
+</CodeSnippet>
 
 Basically what we are doing here is, we are telling webpack to use `crypto-browserify` instead of `crypto` native library, similar for other polyfill-dependent libraries
 

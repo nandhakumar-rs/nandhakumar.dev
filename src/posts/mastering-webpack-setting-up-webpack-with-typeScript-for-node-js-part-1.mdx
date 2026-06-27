@@ -40,14 +40,14 @@ Enough of the theory, now let's jump into setting up Webpack with TypeScript
 
 <CodeSnippet language="bash">
 {`npm init -y`}
-</ CodeSnippet>
+</CodeSnippet>
 Note: The `-y` flag automatically populates the package.json file with default values.
 
 ## Step 2: Install Required Development Dependencies
 
 <CodeSnippet language="bash">
 {`npm i -D typescript @types/node webpack webpack-cli ts-node ts-loader @types/webpack`}
-</ CodeSnippet>
+</CodeSnippet>
 Notes:
 - `-D` flag is to indicate these dependencies are not needed in the production environment but are essential during development
 - `typescript`  - Essential for converting TypeScript code to JavaScript.
@@ -62,7 +62,7 @@ Notes:
 
 <CodeSnippet language="bash">
 {`tsc --init`}
-</ CodeSnippet>
+</CodeSnippet>
 This command generates a `tsconfig.json` with a set of default compiler options commonly used in most TypeScript projects. It is customizable as per your project requirements.
 
 ## Step 4: Create `webpack.config.ts` in the Root Directory
@@ -100,7 +100,7 @@ const config: Configuration = {
 };
 export default config;
 `}
-</ CodeSnippet>
+</CodeSnippet>
 
 ## Step 5: Define the Entry Point
 
@@ -113,7 +113,7 @@ export const generateHash = (input: string): string => {
   return crypto.createHash("sha256").update(input).digest("hex");
 };
 `}
-</ CodeSnippet>
+</CodeSnippet>
 
 <CodeSnippet language="ts" filename="src/index.ts">
 {`import { generateHash } from './utils';
@@ -124,7 +124,7 @@ console.log("Node Works!")
 const hash = generateHash("Webpack is Working!")
 console.log('SHA-256 Hash:', hash)
 `}
-</ CodeSnippet>
+</CodeSnippet>
 
 ## Step 6: Add Custom Scripts in `package.json`
 
@@ -134,7 +134,7 @@ console.log('SHA-256 Hash:', hash)
   "build": "webpack",
 }
 `}
-</ CodeSnippet>
+</CodeSnippet>
 
 ## Step 7: Execute `npm run build`
 

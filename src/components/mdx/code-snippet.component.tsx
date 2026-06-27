@@ -3,9 +3,22 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { codeSnippetRegistry } from '../../lib/code-snippet-registry'
 
 const CodeSnippet = (props: any) => {
-  const { code, name, children, filename, showLineNumbers, language, ...rest } =
-    props
-  const content = (name ? codeSnippetRegistry[name] : undefined) ?? code ?? children
+  const {
+    code,
+    name,
+    children,
+    filename,
+    showLineNumbers,
+    language,
+    dynamicSnippets,
+    ...rest
+  } = props
+  const content =
+    (name
+      ? codeSnippetRegistry[name] ?? dynamicSnippets?.[name]
+      : undefined) ??
+    code ??
+    children
 
   return (
     <div className="relative my-8">

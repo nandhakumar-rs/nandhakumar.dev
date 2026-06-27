@@ -12,8 +12,10 @@ import Tags from './common/tag.component'
 import Blockquote from './mdx/blockquote.component'
 import NotionTable from './mdx/notion-table.component'
 
-const Components = {
-  CodeSnippet,
+const createComponents = (codeSnippets: Record<string, string> = {}) => ({
+  CodeSnippet: (props: any) => (
+    <CodeSnippet {...props} dynamicSnippets={codeSnippets} />
+  ),
   NotionTable,
   h1: H1,
   h2: H2,
@@ -31,10 +33,17 @@ const Components = {
   li: LI,
   a: HrefLink,
   blockquote: Blockquote,
-}
+})
 
-const Post = ({ data, content, mdxSource, readingTime, slug }: any) => {
-  console.log(data)
+const Post = ({
+  data,
+  content,
+  mdxSource,
+  readingTime,
+  slug,
+  codeSnippets = {},
+}: any) => {
+  const components = createComponents(codeSnippets)
   return (
     <article className="mt-8">
       <div className="text-app-neutral-700 flex items-center gap-3">
@@ -53,7 +62,7 @@ const Post = ({ data, content, mdxSource, readingTime, slug }: any) => {
       )}
       <HR />
       <div className="text-app-neutral-700 text-base mt-2">
-        <MDXRemote {...mdxSource} components={Components}></MDXRemote>
+        <MDXRemote {...mdxSource} components={components}></MDXRemote>
         <HR />
         <PostFootnote slug={slug} />
       </div>

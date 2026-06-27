@@ -6,6 +6,7 @@ import Post from '../../components/post.component'
 import readingTime from 'reading-time'
 import Head from 'next/head'
 import { getPostMdxScope } from '../../lib/post-mdx-scope'
+import { preprocessCodeSnippets } from '../../lib/mdx-preprocess'
 
 export default function NotePage({
   data,
@@ -13,6 +14,7 @@ export default function NotePage({
   mdxSource,
   readingTime,
   slug,
+  codeSnippets,
 }: any) {
   return (
     <section>
@@ -46,6 +48,7 @@ export default function NotePage({
         content={content}
         mdxSource={mdxSource}
         readingTime={readingTime}
+        codeSnippets={codeSnippets}
       />
     </section>
   )
@@ -64,7 +67,9 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async ({ params: { slug } }: any) => {
   const matterData = readFileSync(path.join('src', 'posts', `${slug}.mdx`))
   const { data, content } = matter(matterData)
-  const mdxSource = await serialize(content, {
+  const { content: processedContent, codeSnippets } =
+    preprocessCodeSnippets(content)
+  const mdxSource = await serialize(processedContent, {
     scope: getPostMdxScope(slug),
   })
   return {
@@ -73,6 +78,7 @@ export const getStaticProps = async ({ params: { slug } }: any) => {
       content,
       mdxSource,
       slug,
+      codeSnippets,
     },
   }
 }

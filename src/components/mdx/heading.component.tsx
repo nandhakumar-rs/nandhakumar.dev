@@ -9,7 +9,7 @@ export const H1 = (props: any) => {
 
 export const H2 = (props: any) => {
   return (
-    <h2 className="text-xl font-bold text-app-neutral-600 mt-12 mb-6" {...props}>
+    <h2 className="text-lg font-bold text-app-neutral-600 mt-12 mb-6" {...props}>
       {props.children}
     </h2>
   );
@@ -17,7 +17,7 @@ export const H2 = (props: any) => {
 
 export const H3 = (props: any) => {
   return (
-    <h3 className="text-lg font-bold text-app-neutral-600" {...props}>
+    <h3 className="text-base font-bold text-app-neutral-600" {...props}>
       {props.children}
     </h3>
   );

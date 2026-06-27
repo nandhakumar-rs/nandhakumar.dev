@@ -14,7 +14,7 @@ const PostShort: FC<IPostShortProps> = ({ data, readingTime }) => {
 
   return (
     <article className="mt-8 group">
-      <Link href={`/post/${data.slug}`}>
+      <Link href={`/notes/${data.slug}`}>
         <div className="text-app-neutral-700 text-base flex items-center gap-3">
           <p>{formatPostCardDate(data.publishedAt)}</p>
           <div className="h-1 w-1 bg-app-neutral-700 rounded-full"></div>

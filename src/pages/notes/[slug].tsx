@@ -7,18 +7,17 @@ import readingTime from 'reading-time'
 import Head from 'next/head'
 import { getPostMdxScope } from '../../lib/post-mdx-scope'
 
-export default function PostPage({
+export default function NotePage({
   data,
   content,
   mdxSource,
   readingTime,
   slug,
 }: any) {
-  console.log(data)
   return (
     <section>
       <Head>
-        <title>Post | {data?.title || ''}</title>
+        <title>Note | {data?.title || ''}</title>
 
         <meta name="title" content={data?.title} />
         <meta name="description" content={data?.description} />
@@ -26,7 +25,7 @@ export default function PostPage({
         <meta property="og:type" content="website" />
         <meta
           property="og:url"
-          content={`https://www.nandhakumar.io/post/${slug}`}
+          content={`https://www.nandhakumar.io/notes/${slug}`}
         />
         <meta property="og:title" content={data?.title} />
         <meta property="og:description" content={data?.description} />
@@ -35,7 +34,7 @@ export default function PostPage({
         <meta property="twitter:card" content="summary_large_image" />
         <meta
           property="twitter:url"
-          content={`https://www.nandhakumar.io/post/${slug}`}
+          content={`https://www.nandhakumar.io/notes/${slug}`}
         />
         <meta property="twitter:title" content={data?.title} />
         <meta property="twitter:description" content={data?.description} />

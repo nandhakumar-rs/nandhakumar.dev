@@ -34,7 +34,7 @@ export default function HomePage(props: any) {
   return (
     <div>
       <Head>
-        <title>Nandhakumar | Posts</title>
+        <title>Nandhakumar | Notes</title>
       </Head>
       <div>
         <div className="my-8">
@@ -52,7 +52,7 @@ export default function HomePage(props: any) {
             <FiSearch className='text-app-primary-100' />
             <input
               value={searchTerm}
-              placeholder="Search Posts ..."
+              placeholder="Search Notes ..."
               className="w-full h-full outline-none p-2 font-normal bg-app-primary-800  placeholder-app-primary-400 text-app-primary-100"
               onChange={onSearchChange}
             />

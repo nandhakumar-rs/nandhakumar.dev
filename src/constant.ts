@@ -15,7 +15,7 @@ const CONSTANT = {
 
   ROUTES: [
     {
-      label: "Posts",
+      label: "Notes",
       href: "/",
     },
     {

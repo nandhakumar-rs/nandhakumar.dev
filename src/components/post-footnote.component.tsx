@@ -17,11 +17,11 @@ const PostFootnote = ({ slug }: {slug: string}) => {
       </P>
 
       <P>
-        If you find this post helpful{' '}
+        If you find this note helpful{' '}
         <HrefLink
-          href={`https://twitter.com/intent/tweet/?text=${'Nandhakumar Wrote this Article'}&url=${`https://nandhakumar.io/post/${slug}&via=nandhakumar_io`}`}
+          href={`https://twitter.com/intent/tweet/?text=${'Nandhakumar Wrote this Article'}&url=${`https://nandhakumar.io/notes/${slug}&via=nandhakumar_io`}`}
         >
-          <b>Tweet this Post</b>
+          <b>Tweet this Note</b>
         </HrefLink>
       </P>
 

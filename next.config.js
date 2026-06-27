@@ -7,6 +7,16 @@ const nextConfig = {
     GTM_ID: process.env.GTM_ID,
   },
 
+  async redirects() {
+    return [
+      {
+        source: '/post/:slug',
+        destination: '/notes/:slug',
+        permanent: true,
+      },
+    ]
+  },
+
   images: {
     remotePatterns: [
       {

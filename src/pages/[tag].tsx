@@ -16,7 +16,7 @@ export default function TagPage({ tagName, posts }: any) {
           href="/"
           className="text-app-neutral-700 hover:underline text-base"
         >
-          Back to all posts
+          Back to all notes
         </Link>
         <p className="text-3xl font-semibold text-app-primary-100 my-8">
           {displayName}

@@ -52,7 +52,7 @@ const Post = ({ data, content, mdxSource, readingTime, slug }: any) => {
         ''
       )}
       <HR />
-      <div className="text-app-neutral-700 text-xl mt-2">
+      <div className="text-app-neutral-700 text-base mt-2">
         <MDXRemote {...mdxSource} components={Components}></MDXRemote>
         <HR />
         <PostFootnote slug={slug} />

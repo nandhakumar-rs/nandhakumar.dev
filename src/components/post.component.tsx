@@ -46,12 +46,12 @@ const Post = ({
   const components = createComponents(codeSnippets)
   return (
     <article className="mt-8">
-      <div className="text-app-neutral-700 flex items-center gap-3">
+      <div className="flex items-center gap-3 text-sm text-app-neutral-700">
         <p>{data.publishedAt}</p>
-        <div className="h-1 w-1 bg-app-neutral-700 rounded-full"></div>
+        <span className="h-1 w-1 rounded-full bg-app-neutral-700" />
         <p>{data.readingTime}</p>
       </div>
-      <h1 className="text-app-primary-100 text-4xl font-bold mt-1 mb-4">
+      <h1 className="mt-2 mb-4 text-3xl font-bold text-app-primary-100 sm:text-4xl">
         {data.title}
       </h1>
       <Tags tags={data.tags} />
@@ -61,7 +61,7 @@ const Post = ({
         ''
       )}
       <HR />
-      <div className="text-app-neutral-700 text-base mt-2">
+      <div className="mt-2 text-base text-app-neutral-700">
         <MDXRemote {...mdxSource} components={components}></MDXRemote>
         <HR />
         <PostFootnote slug={slug} />

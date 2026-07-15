@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
+import { FiArrowLeft } from 'react-icons/fi'
 import PostList from '../components/post-list.component'
 import { formatTagName } from '../lib/slugify'
 
@@ -14,17 +15,16 @@ export default function TagPage({ tagName, posts }: any) {
       <div>
         <Link
           href="/"
-          className="text-app-neutral-700 hover:underline text-base"
+          className="mt-8 inline-flex items-center gap-1.5 text-base text-app-neutral-700 transition-colors hover:text-app-primary-100"
         >
+          <FiArrowLeft aria-hidden="true" />
           Back to all notes
         </Link>
-        <p className="text-3xl font-semibold text-app-primary-100 my-8">
+        <h1 className="my-6 text-2xl font-semibold text-app-primary-100 sm:text-3xl">
           {displayName}
-        </p>
+        </h1>
 
-        <div className="max-w-lg">
-          <PostList posts={posts} />
-        </div>
+        <PostList posts={posts} />
       </div>
     </div>
   )

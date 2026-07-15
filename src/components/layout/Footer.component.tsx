@@ -5,8 +5,8 @@ import Icon from '../icons'
 
 const Footer = () => {
   return (
-    <footer className="bg-app-primary-900 p-5 border-t border-app-neutral-800">
-      <div className=" max-w-screen-md my-0 mx-auto max-md:mx-5 flex justify-between items-center max-md:flex-col max-md:text-center max-md:gap-6">
+    <footer className="border-t border-app-primary-700 bg-app-primary-900 px-5 py-5 sm:px-6">
+      <div className="mx-auto w-full max-w-[960px] flex justify-between items-center max-md:flex-col max-md:text-center max-md:gap-6">
         <div className="flex gap-7">
           {CONSTANT.SOCIAL_LINKS.map((link, index) => (
             <Link

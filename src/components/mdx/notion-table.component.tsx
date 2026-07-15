@@ -37,10 +37,10 @@ const NotionTable: FC<NotionTableProps> = ({
   const boldColumnSet = new Set(boldColumns)
 
   return (
-    <div className="w-full my-8 overflow-x-auto rounded-lg border border-app-primary-500 border-opacity-40">
+    <div className="w-full my-8 overflow-x-auto rounded-lg border border-app-primary-700">
       <table className="w-full border-collapse">
         <thead>
-          <tr className="border-b border-app-primary-500 border-opacity-40 bg-app-primary-800">
+          <tr className="border-b border-app-primary-700 bg-app-primary-800">
             {(resolvedHeaders ?? []).map((header, headerIndex) => (
               <th
                 key={`header-${headerIndex}`}
@@ -55,7 +55,7 @@ const NotionTable: FC<NotionTableProps> = ({
           {(resolvedRows ?? []).map((row, rowIndex) => (
             <tr
               key={`row-${rowIndex}`}
-              className="border-b border-app-primary-500 border-opacity-40"
+              className="border-b border-app-primary-700 last:border-b-0"
             >
               {row.map((cell, cellIndex) => (
                 <td

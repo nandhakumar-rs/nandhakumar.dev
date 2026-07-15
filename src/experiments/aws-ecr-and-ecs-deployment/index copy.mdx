@@ -1,0 +1,284 @@
+---
+title: "Building a Simple LLM Chat Application"
+slug: "llm-chat-application"
+description: "Building a conversational LLM application with React and FastAPI, then containerizing it and deploying it through Amazon ECR and AWS App Runner."
+status: "in-progress"
+category: "LLM Application"
+latestVersion: "v6"
+featured: true
+coverImage: "./images/cover.svg"
+architectureImage: "./images/architecture.svg"
+repositoryUrl: "https://github.com/nandhakumar-rs/llm-chat-ops-mini"
+technologies:
+  - Next.js
+  - FastAPI
+  - Docker
+  - Amazon ECR
+  - Amazon ECS
+updatedAt: "2026-07-14"
+---
+
+<ExperimentOverview>
+
+I am experimenting with building a complete LLM chat application using React and FastAPI.
+
+The purpose is to understand how an LLM application moves from a simple local prototype to a containerized application deployed on AWS. I want to learn how to structure versioned iterations, add streaming and observability, and deploy with minimal operational overhead.
+
+The final goal is a working chat application with conversation history, streaming responses, containerized services, and basic evaluation metrics — all documented version by version.
+
+<ExperimentTimeline>
+
+  <ExperimentVersion
+    version="v6"
+    title="Adding observability and evaluation"
+    status="in-progress"
+    summary="Placeholder — instrumentation and eval metrics are not yet implemented."
+    gitBranchUrl="https://github.com/example/llm-chat-application/tree/v6"
+    date="2026-07-14"
+  >
+    This version explores structured logging, request tracing, and basic evaluation of LLM response quality.
+
+    - Add structured logging for API requests
+    - Track latency and token usage per request
+    - Define a small evaluation dataset (placeholder)
+    - Compare response quality across model versions
+
+    <ExperimentCallout title="Placeholder content" variant="note">
+      Metrics and evaluation results below are sample placeholders — not production measurements.
+    </ExperimentCallout>
+
+    <MetricGrid
+      metrics={[
+        { label: "Average latency", value: "1.8s", note: "Placeholder" },
+        { label: "P95 latency", value: "3.2s", note: "Placeholder" },
+        { label: "Successful requests", value: "99.4%", note: "Placeholder" }
+      ]}
+    />
+
+    <ExperimentImage
+      src="./images/version-placeholder.svg"
+      alt="Observability dashboard placeholder"
+      caption="Placeholder — replace with actual observability dashboard screenshot"
+    />
+  </ExperimentVersion>
+
+  <ExperimentVersion
+    version="v5"
+    title="Deploying with Amazon ECR and AWS App Runner"
+    status="completed"
+    gitBranchUrl="https://github.com/example/llm-chat-application/tree/v5"
+    date="2026-07-10"
+  >
+    This version pushes Docker images to Amazon ECR and deploys the application using AWS App Runner.
+
+    - Push frontend and backend images to ECR
+    - Create App Runner services for each container
+    - Configure environment variables and health checks
+    - Verify end-to-end deployment
+
+    <ExperimentImage
+      src="./images/version-placeholder.svg"
+      alt="AWS App Runner deployment placeholder"
+      caption="Placeholder — replace with App Runner deployment screenshot"
+    />
+  </ExperimentVersion>
+
+  <DeploymentBlock title="Deployment: ECR + App Runner">
+    After v5, the application was deployed to AWS. The images are pushed to Amazon ECR and served through App Runner.
+
+    - Build and tag frontend and backend images
+    - Push both images to Amazon ECR
+    - Create an App Runner service per image
+
+    <GuideLink
+      url="https://cdn.nandhakumar.me/experiments/llm-ops-chat-mini/aws-ecs-fargate-backend-deployment-guide.md"
+      title="AWS Backend deployment guide"
+      description="Step-by-step ECR + App Runner walkthrough with diagrams"
+    />
+      <GuideLink
+      url="https://cdn.nandhakumar.me/experiments/llm-ops-chat-mini/aws-ecs-fargate-frontend-deployment-guide.md"
+      title="AWS Frontend deployment guide"
+      description="Step-by-step ECR + ESC de"
+    />
+  </DeploymentBlock>
+
+  <ExperimentVersion
+    version="v4"
+    title="Dockerizing the frontend and backend"
+    status="completed"
+    gitBranchUrl="https://github.com/example/llm-chat-application/tree/v4"
+    date="2026-07-05"
+  >
+    This version containerizes both the React frontend and FastAPI backend with multi-stage Docker builds.
+
+    - Create Dockerfile for FastAPI backend
+    - Create Dockerfile for React frontend with nginx
+    - Add docker-compose for local development
+    - Test containers locally before cloud deployment
+  </ExperimentVersion>
+
+  <ExperimentVersion
+    version="v3"
+    title="Conversation history and streaming"
+    status="completed"
+    gitBranchUrl="https://github.com/example/llm-chat-application/tree/v3"
+    date="2026-06-28"
+  >
+    This version adds conversation history persistence and streaming LLM responses to the React interface.
+
+    - Store conversation messages in memory (later: database)
+    - Implement Server-Sent Events for streaming
+    - Update React UI to render tokens as they arrive
+    - Handle connection errors gracefully
+  </ExperimentVersion>
+
+  <ExperimentVersion
+    version="v2"
+    title="Adding a React chat interface"
+    status="completed"
+    gitBranchUrl="https://github.com/example/llm-chat-application/tree/v2"
+    date="2026-06-20"
+  >
+    This version introduces the React user interface and connects it to the FastAPI backend.
+
+    - Build a minimal chat UI with message input and display
+    - Connect to the FastAPI `/chat` endpoint
+    - Handle loading and error states
+    - Style the interface to match experiment goals
+
+    <ExperimentImage
+      src="./images/version-placeholder.svg"
+      alt="React chat interface placeholder"
+      caption="Placeholder — replace with React chat UI screenshot"
+    />
+  </ExperimentVersion>
+
+  <ExperimentVersion
+    version="v1"
+    title="Basic FastAPI LLM endpoint"
+    status="completed"
+    gitBranchUrl="https://github.com/example/llm-chat-application/tree/v1"
+    date="2026-06-15"
+  >
+    The first version creates a simple API endpoint that sends a prompt to an LLM and returns the response.
+
+    - Set up FastAPI project structure
+    - Create a `/chat` POST endpoint
+    - Integrate with an LLM provider API
+    - Return JSON response with the generated text
+  </ExperimentVersion>
+
+</ExperimentTimeline>
+
+</ExperimentOverview>
+
+<ExperimentArchitecture>
+
+The application follows a simple three-tier architecture: React frontend, FastAPI backend, and an external LLM provider.
+
+<ArchitectureDiagram
+  src="./images/architecture.svg"
+  alt="Architecture of the LLM chat application"
+  caption="React communicates with FastAPI, which sends requests to the LLM provider. Placeholder diagram — replace with final architecture."
+/>
+
+In later versions, both services are containerized and deployed independently through AWS App Runner, with images stored in Amazon ECR.
+
+</ExperimentArchitecture>
+
+<ExperimentTools>
+
+<ToolGrid
+  tools={[
+    {
+      name: "React",
+      icon: "/icons/react.svg",
+      category: "Frontend",
+      description: "Builds the chat interface."
+    },
+    {
+      name: "FastAPI",
+      icon: "/icons/fastapi.svg",
+      category: "Backend",
+      description: "Provides the API layer for chat and streaming."
+    },
+    {
+      name: "Docker",
+      icon: "/icons/docker.svg",
+      category: "Infrastructure",
+      description: "Packages the frontend and backend into containers."
+    },
+    {
+      name: "Amazon ECR",
+      icon: "/icons/aws-ecr.svg",
+      category: "Deployment",
+      description: "Stores the Docker images."
+    },
+    {
+      name: "AWS App Runner",
+      icon: "/icons/aws-app-runner.svg",
+      category: "Deployment",
+      description: "Runs the containerized application."
+    }
+  ]}
+/>
+
+</ExperimentTools>
+
+<ExperimentResults>
+
+<ExperimentCallout title="Placeholder results" variant="warning">
+  All metrics, videos, and screenshots in this section are placeholders for demonstration purposes.
+</ExperimentCallout>
+
+<ExperimentVideo
+  src="/experiments/llm-chat-application/demo.mp4"
+  poster="./images/demo-poster.svg"
+  caption="Placeholder demo video — replace with actual application demo"
+/>
+
+<MetricGrid
+  metrics={[
+    { label: "Average latency", value: "1.8s", note: "Placeholder" },
+    { label: "P95 latency", value: "3.2s", note: "Placeholder" },
+    { label: "Cost per 1K requests", value: "$0.42", note: "Placeholder estimate" },
+    { label: "Eval accuracy", value: "87%", note: "Placeholder benchmark" }
+  ]}
+/>
+
+<ResultGallery
+  items={[
+    {
+      src: "./images/version-placeholder.svg",
+      alt: "Chat interface result placeholder",
+      caption: "Placeholder — final chat interface screenshot"
+    },
+    {
+      src: "./images/version-placeholder.svg",
+      alt: "Deployment result placeholder",
+      caption: "Placeholder — deployed application screenshot"
+    }
+  ]}
+/>
+
+### Lessons learned
+
+- Start with the simplest API endpoint before building UI complexity
+- Streaming significantly improves perceived latency for chat applications
+- Containerizing early makes deployment iterations faster
+- Observability should be planned before production deployment
+
+### Known limitations
+
+- Conversation history is not yet persisted to a database
+- Evaluation metrics are placeholder values
+- No authentication or rate limiting implemented
+
+### Next steps
+
+- Persist conversation history to a database
+- Add real evaluation benchmarks
+- Implement authentication and rate limiting
+- Replace all placeholder media with actual screenshots and demo video
+
+</ExperimentResults>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" fill="none">
+  <rect width="1200" height="675" fill="#162025"/>
+  <rect x="80" y="80" width="1040" height="515" rx="12" stroke="#535D63" stroke-width="2" stroke-dasharray="8 8"/>
+  <text x="600" y="310" fill="#CCCFD1" font-family="DM Sans, sans-serif" font-size="36" text-anchor="middle">LLM Chat Application</text>
+  <text x="600" y="360" fill="#595D5F" font-family="DM Sans, sans-serif" font-size="20" text-anchor="middle">Cover image placeholder</text>
+</svg>

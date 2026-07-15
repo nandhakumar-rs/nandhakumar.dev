@@ -8,12 +8,12 @@ export interface IMdxImage {
 
 export const MdxImage: FC<IMdxImage> = (props) => {
   return (
-      <Image
-        width={1080}
-        height={1080}
-        src={props.src}
-        alt={props.alt}
-        className="object-contain w-auto my-12 rounded-lg mx-auto"
-      />
+    <Image
+      width={1080}
+      height={1080}
+      src={props.src}
+      alt={props.alt}
+      className="mx-auto my-10 w-auto max-w-full rounded-lg border border-app-primary-700 object-contain"
+    />
   )
 }

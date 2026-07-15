@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" fill="none">
+  <rect width="1200" height="800" fill="#162025"/>
+  <rect x="100" y="120" width="220" height="120" rx="8" fill="#16242B" stroke="#535D63"/>
+  <text x="210" y="190" fill="#F3FBFF" font-family="DM Sans, sans-serif" font-size="18" text-anchor="middle">React UI</text>
+  <rect x="490" y="120" width="220" height="120" rx="8" fill="#16242B" stroke="#535D63"/>
+  <text x="600" y="190" fill="#F3FBFF" font-family="DM Sans, sans-serif" font-size="18" text-anchor="middle">FastAPI</text>
+  <rect x="880" y="120" width="220" height="120" rx="8" fill="#16242B" stroke="#535D63"/>
+  <text x="990" y="190" fill="#F3FBFF" font-family="DM Sans, sans-serif" font-size="18" text-anchor="middle">LLM Provider</text>
+  <line x1="320" y1="180" x2="490" y2="180" stroke="#535D63" stroke-width="2"/>
+  <line x1="710" y1="180" x2="880" y2="180" stroke="#535D63" stroke-width="2"/>
+  <text x="600" y="420" fill="#595D5F" font-family="DM Sans, sans-serif" font-size="20" text-anchor="middle">Architecture diagram placeholder</text>
+</svg>

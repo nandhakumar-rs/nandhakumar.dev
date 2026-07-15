@@ -1,0 +1,71 @@
+flowchart LR
+    U["User Browser"]
+
+    subgraph EDGE["Edge Layer"]
+        ALB["Application Load Balancer<br/>Public URL"]
+        LRULES["Listener Rules<br/>/ -> Frontend<br/>/api/* -> Backend"]
+    end
+
+    subgraph FRONTEND["Frontend Layer"]
+        FTG["Frontend Target Group<br/>Port 3000"]
+        FES["Frontend ECS Service"]
+        FFT["Fargate Task<br/>Next.js Container"]
+        FECR["Frontend Image<br/>Amazon ECR"]
+        FCW["CloudWatch Logs<br/>Frontend"]
+    end
+
+    subgraph BACKEND["Backend Layer"]
+        BTG["Backend Target Group<br/>Port 8000"]
+        BES["Backend ECS Service"]
+        BFT["Fargate Task<br/>FastAPI Container"]
+        BECR["Backend Image<br/>Amazon ECR"]
+        BCW["CloudWatch Logs<br/>Backend"]
+    end
+
+    subgraph AI["LLM Layer"]
+        LLM["LiteLLM<br/>Provider Abstraction"]
+        PROVIDER["OpenAI-Compatible<br/>LLM Provider"]
+    end
+
+    subgraph SECURITY["Security And Config"]
+        SG1["ALB Security Group<br/>Allow HTTP 80"]
+        SG2["ECS Security Group<br/>Allow 3000/8000 from ALB"]
+        SSM["SSM Parameter Store<br/>OPENAI_API_KEY"]
+        IAM["ecsTaskExecutionRole<br/>ECR Pull + SSM Read + Logs"]
+    end
+
+    U --> ALB
+    ALB --> LRULES
+
+    LRULES -->|"Default route /"| FTG
+    LRULES -->|"API route /api/*"| BTG
+
+    FTG --> FES --> FFT
+    FECR -.->|"Image pulled by ECS"| FFT
+    FFT --> FCW
+
+    BTG --> BES --> BFT
+    BECR -.->|"Image pulled by ECS"| BFT
+    BFT --> BCW
+    BFT --> LLM --> PROVIDER
+
+    SSM -.->|"Secret injected at runtime"| BFT
+    IAM -.-> FES
+    IAM -.-> BES
+    SG1 -.-> ALB
+    SG2 -.-> FFT
+    SG2 -.-> BFT
+
+    classDef user fill:#0D1117,stroke:#94A3B8,color:#F3FBFF,stroke-width:1.5px
+    classDef edge fill:#0E2A33,stroke:#38BDF8,color:#F3FBFF,stroke-width:1.5px
+    classDef frontend fill:#10233A,stroke:#60A5FA,color:#F3FBFF,stroke-width:1.5px
+    classDef backend fill:#1E1B4B,stroke:#A78BFA,color:#F3FBFF,stroke-width:1.5px
+    classDef ai fill:#06312A,stroke:#34D399,color:#F3FBFF,stroke-width:1.5px
+    classDef security fill:#2B1508,stroke:#F59E0B,color:#F3FBFF,stroke-width:1.5px
+
+    class U user
+    class ALB,LRULES edge
+    class FTG,FES,FFT,FECR,FCW frontend
+    class BTG,BES,BFT,BECR,BCW backend
+    class LLM,PROVIDER ai
+    class SG1,SG2,SSM,IAM security

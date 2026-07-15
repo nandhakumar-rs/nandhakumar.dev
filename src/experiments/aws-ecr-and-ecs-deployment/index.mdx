@@ -1,0 +1,248 @@
+---
+title: "AWS ECR and ECS deployment"
+slug: "aws-ecr-and-ecs-deployment"
+description: "Deploying a conversational LLM application to AWS using Amazon ECR and Amazon ECS"
+status: "completed"
+category: "AWS"
+latestVersion: "v7"
+featured: true
+architectureImage: "./images/architecture.mmd"
+repositoryUrl: "https://github.com/nandhakumar-rs/llm-chat-ops-mini"
+technologies:
+  - Next.js
+  - FastAPI
+  - Docker
+  - Amazon ECR
+  - Amazon ECS
+  - Amazon CloudWatch
+  - Amazon SSM
+---
+
+<ExperimentOverview>
+
+This experiment documents how to dockerize and deploy a simple conversational LLM chat application built with Next.js and FastAPI to AWS using Amazon ECR and Amazon ECS.
+
+<ExperimentTimeline>
+
+ <DeploymentBlock title="Deployment: ECR + ECS">
+  After v7, the application was deployed to AWS.
+
+  - Built the backend Docker image separately.\n
+    Backend and frontend are different apps with different runtimes, ports, dependencies, logs, and scaling needs.
+
+  - Built the frontend Docker image separately.
+    This lets us update or redeploy the frontend without touching the backend.
+
+  - Built images for `linux/amd64`.
+    Mac M2 builds `arm64` images by default, but our ECS Fargate task was configured for `Linux/X86_64`.
+
+  - Created an ECR repository for the backend.
+    ECS needs an AWS-accessible registry to pull the backend image from.
+
+  - Pushed the backend Docker image to ECR.
+    This makes the backend image available for ECS deployment.
+
+  - Created an ECR repository for the frontend.
+    Keeps frontend and backend images as separate deployable artifacts.
+
+  - Pushed the frontend Docker image to ECR.
+    This makes the frontend image available for ECS deployment.
+
+  - Created an ECS cluster.
+    Acts as the logical workspace where frontend and backend services run.
+
+  - Used the same ECS cluster for frontend and backend.
+    Both services belong to the same application environment.
+
+  - Created a backend ECS task definition.
+    Defines backend image, CPU, memory, port `8000`, environment variables, secrets, and logs.
+
+  - Created a frontend ECS task definition.
+    Defines frontend image, CPU, memory, port `3000`, and logs.
+
+  - Stored `OPENAI_API_KEY` in SSM Parameter Store.
+    Keeps the secret outside code, Git, Docker images, and plain task definition variables.
+
+  - Added SSM read permission to the ECS execution role.
+    Allows ECS to inject the OpenAI API key into the backend container at runtime.
+
+  - Created CloudWatch log groups.
+    Stores backend and frontend container logs for debugging.
+
+  - Created an Application Load Balancer.
+    Provides one public URL for the deployed application.
+
+  - Created a backend target group.
+    Routes backend API traffic to the FastAPI ECS task.
+
+  - Created a frontend target group.
+    Routes frontend page traffic to the Next.js ECS task.
+
+  - Created security groups.
+    Allows public traffic to the ALB and allows only the ALB to reach ECS containers.
+
+  - Created the backend ECS service.
+    Keeps the FastAPI backend container running.
+
+  - Created ALB listener rules for backend paths.
+    Routes API paths like `/chat*`, `/health`, or preferably `/api/*` to the backend target group.
+
+  - Made the frontend target group the default ALB route.
+    Routes normal browser page requests to the Next.js frontend.
+
+  - Created the frontend ECS service.
+    Keeps the Next.js frontend container running.
+
+  - Used the same ALB for frontend and backend.
+    Gives both apps the same base URL and avoids CORS issues.
+
+  - Tested the backend API.
+    Verified `/health` and `/chat/stream` through the public ALB URL.
+
+  - Tested the frontend app.
+    Opened the ALB URL in the browser and confirmed the frontend can call the backend.
+
+  - Added start and stop commands.
+    Set ECS service `desired-count` to `0` when not using the app to stop Fargate compute cost.
+
+  - Ready to use as a deployed LLM chat experiment.
+
+    <GuideLink
+      url="https://cdn.nandhakumar.me/experiments/llm-ops-chat-mini/aws-ecs-fargate-backend-deployment-guide.md"
+      title="Backend deployment guide"
+      description="Architecture and step-by-step guide to deploy the backend application"
+    />
+    <GuideLink
+      url="https://cdn.nandhakumar.me/experiments/llm-ops-chat-mini/aws-ecs-fargate-frontend-deployment-guide.md"
+      title="Frontend deployment guide"
+      description="Architecture and step-by-step guide to deploy the frontend application"
+    />
+  </DeploymentBlock>
+
+    <ExperimentVersion
+    version="v7"
+    title="Dockerization"
+    status="completed"
+    gitBranchUrl="https://github.com/nandhakumar-rs/llm-chat-ops-mini/tree/v7/dockerize-frontend-and-backend"
+  >
+    - Added a Dockerfile for the backend.
+    - Added a Dockerfile for the frontend using a two-stage build:
+      - Build stage for compiling the application.
+      - Runtime stage for serving the application.
+    - Added `docker-compose.yml` to run both the frontend and backend together.
+    - Configured environment variables for Docker Compose.
+    - Ready to deploy.
+
+  </ExperimentVersion>
+
+  <ExperimentVersion
+    version="v6"
+    title="Chat UI"
+    status="completed"
+    gitBranchUrl="https://github.com/nandhakumar-rs/llm-chat-ops-mini/tree/v6/chat-ui"
+  >
+    - Created a new Next.js app.
+    - Added Shadcn UI for UI components.
+    - Built a simple chat UI using existing Shadcn UI components.
+    - Integrated the `/chat/stream` API with a readable stream on the client.
+
+  </ExperimentVersion>
+
+  <ExperimentVersion
+    version="v5"
+    title="Chat Stream"
+    status="completed"
+    gitBranchUrl="https://github.com/nandhakumar-rs/llm-chat-ops-mini/tree/v5/chat-stream"
+  >
+  - Created the `/chat/stream` API route.
+  - Added streaming LLM generation to the LLM service.
+  - Integrated LLM streaming into the `/chat/stream` API.
+  - Streaming also supports the in-memory conversation store.
+
+  </ExperimentVersion>
+
+  <ExperimentVersion
+    version="v4"
+    title="In-Memory Conversation Store"
+    status="completed"
+    gitBranchUrl="https://github.com/nandhakumar-rs/llm-chat-ops-mini/tree/v4/in-memory-conversation-store"
+  >
+    - Created an in-memory store for conversation history.
+    - Updated the LLM service to read history from the in-memory store.
+    - Now every new request creates a new conversation.
+    - Requests with a `conversationId` will resume the conversation.
+
+  </ExperimentVersion>
+
+
+  <ExperimentVersion
+    version="v3"
+    title="Prompt Configuration"
+    status="completed"
+    gitBranchUrl="https://github.com/nandhakumar-rs/llm-chat-ops-mini/tree/v3/prompt-configuration"
+  >
+
+  In this version, I separated responsibilities across all layers; each layer is now independent.
+
+    - Separated the system prompt from the LLM service
+    - Added latency measurements to the LLM service to track how long the LLM takes to generate completions
+    - Updated the chat response schema to include:
+      - Prompt Version
+      - Id
+      - Latency
+      - Model
+    
+  </ExperimentVersion>
+
+  <ExperimentVersion
+    version="v2"
+    title="LLM Integration"
+    status="completed"
+    gitBranchUrl="https://github.com/nandhakumar-rs/llm-chat-ops-mini/tree/v2/llm-integration"
+  >
+
+    - Added the LiteLLM package. I initially considered OpenAI directly, but LiteLLM supports multiple LLM providers.
+    - Created a `.env` file and added the OpenAI API key and model variables
+    - Created an LLM service to generate text completions
+    - Created an LLM error service to handle LLM-related errors
+    - Integrated the LLM service into the `/chat` API
+    - The `/chat` API now returns text completions in a JSON response.
+
+  </ExperimentVersion>
+
+  <ExperimentVersion
+    version="v1"
+    title="Chat API Route"
+    status="completed"
+    gitBranchUrl="https://github.com/nandhakumar-rs/llm-chat-ops-mini/tree/v1/chat-api"
+  >
+
+    - Added a `/chat` API route
+    - Created schemas for chat request and response using pydantic
+
+  </ExperimentVersion>
+
+  <ExperimentVersion
+    version="v0"
+    title="Initial Setup - FastAPI Backend"
+    status="completed"
+    gitBranchUrl="https://github.com/nandhakumar-rs/llm-chat-ops-mini/tree/v0/fast-api-setup"
+  >
+    - Initialized the backend project with the uv package manager
+    - Added the following dependencies:
+      - fastapi
+      - uvicorn (`To run FastAPI`)
+      - python-dotenv (`To load the .env file`)
+      - pydantic (`For schema design`)
+    - Created a `/health` GET endpoint to check server health
+  </ExperimentVersion>
+
+</ExperimentTimeline>
+
+</ExperimentOverview>
+
+<ExperimentArchitecture>
+
+<ExperimentArchitectureDiagram />
+
+</ExperimentArchitecture>

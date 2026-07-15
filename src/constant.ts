@@ -19,6 +19,10 @@ const CONSTANT = {
       href: "/",
     },
     {
+      label: "Experiments",
+      href: "/experiments",
+    },
+    {
       label: "About",
       href: "/about",
     },

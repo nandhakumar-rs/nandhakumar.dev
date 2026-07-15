@@ -14,8 +14,8 @@ const PostList: FC<IPostListProps> = ({ posts }) => {
       {groupedPosts.map(({ year, posts: yearPosts }, index) => (
         <section key={year}>
           <h2
-            className={`text-2xl font-bold text-app-primary-100 ${
-              index === 0 ? 'mt-4' : 'mt-10'
+            className={`border-b border-app-primary-700 pb-2 text-lg font-bold text-app-neutral-700 ${
+              index === 0 ? 'mt-6' : 'mt-12'
             }`}
           >
             {year}

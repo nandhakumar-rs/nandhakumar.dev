@@ -8,7 +8,7 @@ interface IBlockquoteProps {
 const Blockquote: FC<IBlockquoteProps> = ({ type = 'default', children }) => {
   return (
     <blockquote
-      className={`text-base bg-black bg-opacity-30 text-app-neutral-600 border-l-4 border-app-primary-500 px-6 py-1 `}
+      className="my-6 rounded-lg border border-l-4 border-app-primary-700 border-l-app-primary-500 bg-app-primary-800 px-5 py-2 text-base leading-relaxed text-app-neutral-600"
     >
       {children}
     </blockquote>

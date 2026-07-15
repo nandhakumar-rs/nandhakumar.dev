@@ -15,14 +15,14 @@ const HrefLink: FC<IHrefProps> = ({
   children,
 }) => {
   return (
-      <Link
-        className=" underline cursor-pointer text-app-neutral-600 text"
-        href={href}
-        rel={rel}
-        target={target}
-      > 
-        {children}
-      </Link>
+    <Link
+      className="cursor-pointer rounded text-app-primary-100 underline underline-offset-2 transition-colors hover:text-app-neutral-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-app-primary-100 focus-visible:ring-offset-2 focus-visible:ring-offset-app-primary-900"
+      href={href}
+      rel={rel}
+      target={target}
+    >
+      {children}
+    </Link>
   )
 }
 

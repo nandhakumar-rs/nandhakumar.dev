@@ -2,14 +2,7 @@ import { FC, ReactNode, useCallback, useEffect, useState } from 'react'
 import Image from 'next/image'
 import { FiX } from 'react-icons/fi'
 
-interface LightboxProps {
-  src: string
-  alt: string
-  isOpen: boolean
-  onClose: () => void
-}
-
-const Lightbox: FC<LightboxProps> = ({ src, alt, isOpen, onClose }) => {
+export function useDismissableOverlay(isOpen: boolean, onClose: () => void) {
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
       if (event.key === 'Escape') onClose()
@@ -28,6 +21,17 @@ const Lightbox: FC<LightboxProps> = ({ src, alt, isOpen, onClose }) => {
       document.body.style.overflow = ''
     }
   }, [isOpen, handleKeyDown])
+}
+
+interface LightboxProps {
+  src: string
+  alt: string
+  isOpen: boolean
+  onClose: () => void
+}
+
+const Lightbox: FC<LightboxProps> = ({ src, alt, isOpen, onClose }) => {
+  useDismissableOverlay(isOpen, onClose)
 
   if (!isOpen) return null
 

@@ -27,82 +27,82 @@ This experiment documents how to dockerize and deploy a simple conversational LL
  <DeploymentBlock title="Deployment: ECR + ECS">
   After v7, the application was deployed to AWS.
 
-  - Built the backend Docker image separately.\n
+  - Built the backend Docker image separately.<br />
     Backend and frontend are different apps with different runtimes, ports, dependencies, logs, and scaling needs.
 
-  - Built the frontend Docker image separately.
+  - Built the frontend Docker image separately.<br />
     This lets us update or redeploy the frontend without touching the backend.
 
-  - Built images for `linux/amd64`.
+  - Built images for `linux/amd64`.<br />
     Mac M2 builds `arm64` images by default, but our ECS Fargate task was configured for `Linux/X86_64`.
 
-  - Created an ECR repository for the backend.
+  - Created an ECR repository for the backend.<br />
     ECS needs an AWS-accessible registry to pull the backend image from.
 
-  - Pushed the backend Docker image to ECR.
+  - Pushed the backend Docker image to ECR.<br />
     This makes the backend image available for ECS deployment.
 
-  - Created an ECR repository for the frontend.
+  - Created an ECR repository for the frontend.<br />
     Keeps frontend and backend images as separate deployable artifacts.
 
-  - Pushed the frontend Docker image to ECR.
+  - Pushed the frontend Docker image to ECR.<br />
     This makes the frontend image available for ECS deployment.
 
-  - Created an ECS cluster.
+  - Created an ECS cluster.<br />
     Acts as the logical workspace where frontend and backend services run.
 
-  - Used the same ECS cluster for frontend and backend.
+  - Used the same ECS cluster for frontend and backend.<br />
     Both services belong to the same application environment.
 
-  - Created a backend ECS task definition.
+  - Created a backend ECS task definition.<br />
     Defines backend image, CPU, memory, port `8000`, environment variables, secrets, and logs.
 
-  - Created a frontend ECS task definition.
+  - Created a frontend ECS task definition.<br />
     Defines frontend image, CPU, memory, port `3000`, and logs.
 
-  - Stored `OPENAI_API_KEY` in SSM Parameter Store.
+  - Stored `OPENAI_API_KEY` in SSM Parameter Store.<br />
     Keeps the secret outside code, Git, Docker images, and plain task definition variables.
 
-  - Added SSM read permission to the ECS execution role.
+  - Added SSM read permission to the ECS execution role.<br />
     Allows ECS to inject the OpenAI API key into the backend container at runtime.
 
-  - Created CloudWatch log groups.
+  - Created CloudWatch log groups.<br />
     Stores backend and frontend container logs for debugging.
 
-  - Created an Application Load Balancer.
+  - Created an Application Load Balancer.<br />
     Provides one public URL for the deployed application.
 
-  - Created a backend target group.
+  - Created a backend target group.<br />
     Routes backend API traffic to the FastAPI ECS task.
 
-  - Created a frontend target group.
+  - Created a frontend target group.<br />
     Routes frontend page traffic to the Next.js ECS task.
 
-  - Created security groups.
+  - Created security groups.<br />
     Allows public traffic to the ALB and allows only the ALB to reach ECS containers.
 
-  - Created the backend ECS service.
+  - Created the backend ECS service.<br />
     Keeps the FastAPI backend container running.
 
-  - Created ALB listener rules for backend paths.
+  - Created ALB listener rules for backend paths.<br />
     Routes API paths like `/chat*`, `/health`, or preferably `/api/*` to the backend target group.
 
-  - Made the frontend target group the default ALB route.
+  - Made the frontend target group the default ALB route.<br />
     Routes normal browser page requests to the Next.js frontend.
 
-  - Created the frontend ECS service.
+  - Created the frontend ECS service.<br />
     Keeps the Next.js frontend container running.
 
-  - Used the same ALB for frontend and backend.
+  - Used the same ALB for frontend and backend.<br />
     Gives both apps the same base URL and avoids CORS issues.
 
-  - Tested the backend API.
+  - Tested the backend API.<br />
     Verified `/health` and `/chat/stream` through the public ALB URL.
 
-  - Tested the frontend app.
+  - Tested the frontend app.<br />
     Opened the ALB URL in the browser and confirmed the frontend can call the backend.
 
-  - Added start and stop commands.
+  - Added start and stop commands.<br />
     Set ECS service `desired-count` to `0` when not using the app to stop Fargate compute cost.
 
   - Ready to use as a deployed LLM chat experiment.

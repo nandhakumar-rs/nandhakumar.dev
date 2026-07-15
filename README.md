@@ -32,20 +32,3 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-
-
-
-Screenshot-1 Now it looks good, but i can barely see text and the overall diagram, can you please improve visibility here, either need a expand icon on the bottom right and expand it or else with better user experience need to improve the visibility, very hard to read at the moment
-
-Screenshot-2 In the deployment block, actually in the markdown, in the list I have moved the text to next line, but the line appears to be displayed in same like
-
-I was expecting it to be like this
-- item
-   short description
-
-make changes to view in this format. it doesn't mean all the listicle should be like this, but this is also one format I am expecting to have, other kind of format which I think it is already there
-
-- single line listicle
--multi list listicle
-
-we need to keep these as well

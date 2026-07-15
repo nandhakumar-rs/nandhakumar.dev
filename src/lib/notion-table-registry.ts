@@ -1,4 +1,10 @@
 import {
+  benchmarkTableHeadersExport,
+  gemma3270mBenchmarkRows,
+  qwen306bBenchmarkRows,
+  qwen317bBenchmarkRows,
+} from '../experiments/local-sml-benchmark/benchmark.data'
+import {
   accessTableHeaders,
   accessTableRows,
 } from '../posts/data/same-origin-policy-sop.data'
@@ -13,6 +19,18 @@ export type NotionTableData = {
 }
 
 export const notionTableRegistry: Record<string, NotionTableData> = {
+  'slm-benchmark-gemma3-270m': {
+    headers: benchmarkTableHeadersExport,
+    rows: gemma3270mBenchmarkRows,
+  },
+  'slm-benchmark-qwen3-0.6b': {
+    headers: benchmarkTableHeadersExport,
+    rows: qwen306bBenchmarkRows,
+  },
+  'slm-benchmark-qwen3-1.7b': {
+    headers: benchmarkTableHeadersExport,
+    rows: qwen317bBenchmarkRows,
+  },
   'same-origin-access': {
     headers: accessTableHeaders,
     rows: accessTableRows,

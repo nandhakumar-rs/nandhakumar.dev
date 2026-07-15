@@ -1,0 +1,149 @@
+---
+title: "Local SLM Benchmark"
+slug: "local-sml-benchmark"
+description: "Comparing small language models locally and benchmarking their metrics"
+status: "in-progress"
+category: "LLM"
+latestVersion: "v2"
+featured: true
+updatedAt: "2026-07-15"
+technologies:
+  - Ollama
+  - FastAPI
+  - uv
+  - httpx
+  - Pydantic
+---
+
+<ExperimentOverview>
+
+This experiment compares small language models (SLMs) running locally, with a focus on measuring and benchmarking practical metrics side by side.
+
+The goal is to understand how different SLMs behave under the same local setup — latency, throughput, resource usage, and output quality — so the trade-offs are clear before picking a model for a real workload.
+
+Architecture, tooling, and detailed results will be documented as the experiment progresses.
+
+<ExperimentTimeline>
+
+  <ExperimentVersion
+    version="v2"
+    title="Benchmarking models"
+    status="completed"
+    date="2026-07-15"
+  >
+    Created five prompts to test against three models (`gemma3:270m`, `qwen3:0.6b`, `qwen3:1.7b`).
+
+    Built a benchmark runner that calculates metrics and converts raw Ollama timings into readable values for each response.
+
+    Added a `/benchmark/models` endpoint that generates responses for each model and returns a summary.
+
+    This produced 15 responses (5 prompts × 3 models). After conversion, the benchmark results look like this:
+
+    **Prompts**
+
+    1. P1 — Explain what a local language model is in simple words.
+    2. P2 — Explain the difference between an LLM and an SLM.
+    3. P3 — Give 3 benefits of running AI models locally.
+    4. P4 — Write a short Python function to add two numbers.
+    5. P5 — Summarize why privacy matters in enterprise AI.
+
+    **Gemma3:270m**
+
+    <NotionTable name="slm-benchmark-gemma3-270m" />
+
+    **Qwen3:0.6b**
+
+    <NotionTable name="slm-benchmark-qwen3-0.6b" />
+
+    **Qwen3:1.7b**
+
+    <NotionTable name="slm-benchmark-qwen3-1.7b" />
+
+    <GuideLink
+      url="https://cdn.nandhakumar.me/experiments/local-slm-benchmark/benchmark.json"
+      title="Full benchmark JSON"
+      description="Open the complete benchmark response with all model outputs and metrics"
+    />
+
+  </ExperimentVersion>
+
+  <ExperimentVersion
+    version="v1"
+    title="FastAPI setup wrapping the Ollama client"
+    status="completed"
+    date="2026-07-15"
+  >
+    Initialized the project with the uv package manager and added:
+
+    - `fastapi`
+    - `uvicorn`(to run the FastAPI server)
+    - `httpx`(to call the external Ollama API)
+    - `pydantic`(for schemas and validation)
+
+    Created two endpoints:
+
+    - `/models` — returns all models pulled in Ollama
+    - `/generate` — generates a completion for a given model
+
+    Tested the `/generate` API. With Pydantic, responses are returned in a structured shape:
+
+    <CodeSnippet language="json">
+{`{
+  "model": "qwen3:0.6b",
+  "response": "**SLM** stands for \\"Software Life Cycle\\" or \\"System Life Cycle.\\" It's a way to describe the life of a software project or system. Here's a simple explanation:\\n\\n1. **Planning**: Decide what the software needs to do and who will use it.  \\n2. **Design**: Create the structure and features of the software.  \\n3. **Development**: Build the actual code and test it.  \\n4. **Testing**: Make sure the software works correctly.  \\n5. **Deployment**: Put it on a system or website.  \\n6. **Maintenance**: Keep it running and updated if needed.  \\n\\nEach phase is important, and they all work together to make a software work well.",
+  "done": true,
+  "metrics": {
+    "total_duration": 9313696667,
+    "load_duration": 2046065584,
+    "prompt_eval_count": 20,
+    "prompt_eval_duration": 43910000,
+    "eval_count": 444,
+    "eval_duration": 7209532000
+  }
+}`}
+    </CodeSnippet>
+
+  </ExperimentVersion>
+
+  <ExperimentVersion
+    version="v0"
+    title="Pull and smoke-test local models"
+    status="completed"
+    date="2026-07-15"
+  >
+    Pulled three models sized for a useful local comparison:
+
+    - `gemma3:270m` — tiny
+    - `qwen3:0.6b` — small
+    - `qwen3:1.7b` — medium
+
+    Smoke-tested text generation through the Ollama generate API. Example request with `qwen3:0.6b`:
+
+    <CodeSnippet language="bash">
+{`curl http://localhost:11434/api/generate -d '{
+  "model": "qwen3:0.6b",
+  "prompt": "Explain what SLM means in simple words.",
+  "stream": false
+}'`}
+    </CodeSnippet>
+
+    Generation worked. The response included timing and evaluation metrics like these:
+
+    <CodeSnippet language="json">
+{`{
+  "total_duration": 5024767958,
+  "load_duration": 163457292,
+  "prompt_eval_count": 20,
+  "prompt_eval_duration": 49942000,
+  "eval_count": 428,
+  "eval_duration": 4801058000
+}`}
+    </CodeSnippet>
+
+    Comparing these metrics across models is the primary goal of this experiment.
+
+  </ExperimentVersion>
+
+</ExperimentTimeline>
+
+</ExperimentOverview>

@@ -20,7 +20,6 @@ const ExperimentVersion: FC<ExperimentVersionProps> = ({
   gitBranchUrl,
   gitTagUrl,
   pullRequestUrl,
-  date,
   isLatest,
   children,
 }) => {
@@ -57,9 +56,6 @@ const ExperimentVersion: FC<ExperimentVersionProps> = ({
           </div>
           {summary && (
             <p className="mt-1 text-sm text-app-neutral-700">{summary}</p>
-          )}
-          {date && (
-            <p className="mt-1 text-xs text-app-neutral-700">{date}</p>
           )}
         </div>
 

@@ -1,5 +1,7 @@
-import { FC, useCallback, useEffect, useState } from 'react'
+import { FC, useCallback, useEffect, useMemo, useState } from 'react'
 import { FiX } from 'react-icons/fi'
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import oneDark from 'react-syntax-highlighter/dist/cjs/styles/prism/one-dark'
 import MarkdownRenderer from './markdown-renderer.component'
 
 interface GuideModalProps {
@@ -11,9 +13,27 @@ interface GuideModalProps {
 
 const guideCache = new Map<string, string>()
 
+function isJsonUrl(url: string): boolean {
+  try {
+    const pathname = new URL(url).pathname
+    return pathname.endsWith('.json')
+  } catch {
+    return url.endsWith('.json')
+  }
+}
+
+function formatJson(text: string): string {
+  try {
+    return JSON.stringify(JSON.parse(text), null, 2)
+  } catch {
+    return text
+  }
+}
+
 const GuideModal: FC<GuideModalProps> = ({ url, title, isOpen, onClose }) => {
-  const [markdown, setMarkdown] = useState<string>('')
+  const [content, setContent] = useState<string>('')
   const [status, setStatus] = useState<'idle' | 'loading' | 'error'>('idle')
+  const isJson = useMemo(() => isJsonUrl(url), [url])
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
@@ -39,7 +59,7 @@ const GuideModal: FC<GuideModalProps> = ({ url, title, isOpen, onClose }) => {
 
     const cached = guideCache.get(url)
     if (cached !== undefined) {
-      setMarkdown(cached)
+      setContent(cached)
       setStatus('idle')
       return
     }
@@ -54,7 +74,7 @@ const GuideModal: FC<GuideModalProps> = ({ url, title, isOpen, onClose }) => {
       })
       .then((text) => {
         guideCache.set(url, text)
-        setMarkdown(text)
+        setContent(text)
         setStatus('idle')
       })
       .catch((error) => {
@@ -67,6 +87,8 @@ const GuideModal: FC<GuideModalProps> = ({ url, title, isOpen, onClose }) => {
 
   if (!isOpen) return null
 
+  const formattedJson = isJson ? formatJson(content) : content
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-stretch justify-center bg-black/80 p-0 sm:items-center sm:p-6"
@@ -76,7 +98,7 @@ const GuideModal: FC<GuideModalProps> = ({ url, title, isOpen, onClose }) => {
       onClick={onClose}
     >
       <div
-        className="flex h-full w-full max-w-3xl flex-col overflow-hidden bg-app-primary-900 shadow-xl sm:h-auto sm:max-h-[90vh] sm:rounded-lg sm:border sm:border-app-primary-700"
+        className="flex h-full w-full max-w-[960px] flex-col overflow-hidden bg-app-primary-900 shadow-xl sm:h-auto sm:max-h-[90vh] sm:rounded-lg sm:border sm:border-app-primary-700"
         onClick={(event) => event.stopPropagation()}
       >
         <div className="sticky top-0 flex items-center justify-between gap-3 border-b border-app-primary-700 bg-app-primary-900 px-5 py-4">
@@ -95,12 +117,12 @@ const GuideModal: FC<GuideModalProps> = ({ url, title, isOpen, onClose }) => {
 
         <div className="overflow-y-auto px-5 py-6 sm:px-8">
           {status === 'loading' && (
-            <p className="text-sm text-app-neutral-700">Loading guide...</p>
+            <p className="text-sm text-app-neutral-700">Loading...</p>
           )}
           {status === 'error' && (
             <div className="text-sm text-app-neutral-700">
               <p className="font-semibold text-app-neutral-600">
-                Could not load this guide.
+                Could not load this file.
               </p>
               <p className="mt-1">
                 The file may be unavailable or blocked by CORS.{' '}
@@ -116,8 +138,18 @@ const GuideModal: FC<GuideModalProps> = ({ url, title, isOpen, onClose }) => {
               </p>
             </div>
           )}
-          {status === 'idle' && markdown && (
-            <MarkdownRenderer markdown={markdown} baseUrl={url} />
+          {status === 'idle' && content && isJson && (
+            <SyntaxHighlighter
+              language="json"
+              style={oneDark}
+              className="rounded-md text-sm"
+              useInlineStyles
+            >
+              {formattedJson}
+            </SyntaxHighlighter>
+          )}
+          {status === 'idle' && content && !isJson && (
+            <MarkdownRenderer markdown={content} baseUrl={url} />
           )}
         </div>
       </div>

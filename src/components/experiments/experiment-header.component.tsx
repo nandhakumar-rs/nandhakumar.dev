@@ -7,8 +7,7 @@ interface ExperimentHeaderProps {
 }
 
 const ExperimentHeader: FC<ExperimentHeaderProps> = ({ experiment }) => {
-  const { title, description, status, latestVersion, updatedAt, category } =
-    experiment
+  const { title, description, status, latestVersion, category } = experiment
 
   return (
     <header className="mt-8">
@@ -19,12 +18,6 @@ const ExperimentHeader: FC<ExperimentHeaderProps> = ({ experiment }) => {
           <>
             <span className="h-1 w-1 rounded-full bg-app-neutral-700" />
             <span className="font-mono">Latest: {latestVersion}</span>
-          </>
-        )}
-        {updatedAt && (
-          <>
-            <span className="h-1 w-1 rounded-full bg-app-neutral-700" />
-            <span>Updated {updatedAt}</span>
           </>
         )}
       </div>

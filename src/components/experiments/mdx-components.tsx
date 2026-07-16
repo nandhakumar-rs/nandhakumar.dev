@@ -12,6 +12,7 @@ import ArchitectureDiagram from './architecture-diagram.component'
 import ExperimentArchitectureDiagram from './experiment-architecture-diagram.component'
 import BeforeAfter from './before-after.component'
 import DeploymentBlock from './deployment-block.component'
+import ObservationBlock from './observation-block.component'
 import ExperimentCallout from './experiment-callout.component'
 import GuideLink from './guide-link.component'
 import ExperimentImage from './experiment-image.component'
@@ -68,6 +69,7 @@ export function createExperimentComponents(
     BeforeAfter,
     ExperimentCallout,
     DeploymentBlock,
+    ObservationBlock,
     GuideLink,
   }
 }

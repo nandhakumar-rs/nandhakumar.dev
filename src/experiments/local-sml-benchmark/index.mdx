@@ -2,15 +2,17 @@
 title: "Local SLM Benchmark"
 slug: "local-sml-benchmark"
 description: "Comparing small language models locally and benchmarking their metrics"
-status: "in-progress"
+status: "completed"
 category: "LLM"
-latestVersion: "v2"
+latestVersion: "v6"
 featured: true
-updatedAt: "2026-07-15"
+architectureImage: "./images/architecture.mmd"
+updatedAt: "2026-07-16"
 repositoryUrl: "https://github.com/nandhakumar-rs/local-slm-benchmark"
 technologies:
   - Ollama
   - FastAPI
+  - LiteLLM
   - uv
   - httpx
   - Pydantic
@@ -26,6 +28,114 @@ Architecture, tooling, and detailed results will be documented as the experiment
 
 <ExperimentTimeline>
 
+  <ObservationBlock title="Overall observation">
+
+    - Compared gemma3:270m, qwen3:0.6b, and qwen3:1.7b.
+    - Measured speed using latency and tokens/sec.
+    - Measured quality using GPT-based evaluation.
+    - Generated reusable benchmark/report files.
+
+    This experiment was useful because the same benchmark flow can be reused to test any local model with different prompts. Comparing models this way helps choose the best model for a particular use case.
+      - `qwen3:0.6b` has the highest tokens/sec.
+      - `gemma3:270m` has the lowest average response duration.
+      - `qwen3:1.7b` has the highest response quality, but it costs more in terms of response duration.
+
+    Because my system has limited RAM and disk space, I could not test larger models in this version. In a future version, after upgrading my system, I can repeat the same benchmark with bigger models.
+
+    **System configuration**
+    - Device: MacBook Air M2
+    - RAM: 8 GB
+    - Storage: 256 GB SSD
+
+  </ObservationBlock>
+
+  <ExperimentVersion
+    version="v6"
+    title="LLM Markdown report generation"
+    status="completed"
+    gitBranchUrl="https://github.com/nandhakumar-rs/local-slm-benchmark/tree/v6/llm-markdown-report"
+  >
+    - Updated the report generator to use an LLM for Markdown report generation.
+    - Used `openai/gpt-4o-mini` through LiteLLM for report generation.
+
+    The LLM-generated report contains similar metrics as the static report, but the explanation is more polished and readable.
+
+    <GuideLink
+      url="https://cdn.nandhakumar.me/experiments/local-slm-benchmark/benchmark_report-v2.json"
+      title="LLM Markdown report (v2)"
+      description="Frontier model-generated benchmark report from summary results"
+    />
+
+  </ExperimentVersion>
+
+  <ExperimentVersion
+    version="v5"
+    title="Summary and Markdown report"
+    status="completed"
+    gitBranchUrl="https://github.com/nandhakumar-rs/local-slm-benchmark/tree/v5/summary-and-static-markdown-report"
+  >
+    - Created a `/summary` API to generate `summary.json` and `report.md` from the benchmark and quality score results.
+    - Combined `benchmark.json` and `quality_scores.json` to compare each model using both speed and quality.
+    - Calculations are straightforward,
+      - The fastest model is selected using average tokens per second.
+      - The highest-quality model is selected using average quality score.
+
+    - `summary.json` acts as the source of truth for the final comparison.
+
+    The current Markdown report is generated using fixed template logic, so it feels more static.
+    In the next version, I will use a frontier LLM to generate a more natural Markdown report from `summary.json`.
+
+    <GuideLink
+      url="https://cdn.nandhakumar.me/experiments/local-slm-benchmark/summary-v1.json"
+      title="Summary JSON (v1)"
+      description="Final model comparison using speed and quality metrics"
+    />
+    <GuideLink
+      url="https://cdn.nandhakumar.me/experiments/local-slm-benchmark/benchmark_report-v1.json"
+      title="Static Markdown report (v1)"
+      description="Template-generated benchmark report from summary results"
+    />
+
+  </ExperimentVersion>
+
+  <ExperimentVersion
+    version="v4"
+    title="Use frontier model to evaluate SLM benchmark"
+    status="completed"
+  >
+    - Added the LiteLLM dependency.
+    - Set up LLM completions with a frontier model (`GPT-4o-mini`), including a Pydantic schema for structured output.
+    - Evaluated each response from all three models stored in `benchmark.json`.
+    - Created a `/quality/evaluate` API to generate `quality_scores.json` with scores for:
+      - `correctness`
+      - `clarity`
+      - `instruction_following`
+      - `overall_quality`
+
+    <GuideLink
+      url="https://cdn.nandhakumar.me/experiments/local-slm-benchmark/benchmark-v2.json"
+      title="Benchmark JSON (v2)"
+      description="Benchmark responses with model outputs and timing metrics"
+    />
+    <GuideLink
+      url="https://cdn.nandhakumar.me/experiments/local-slm-benchmark/quality_scores-v1.json"
+      title="Quality scores JSON (v1)"
+      description="Frontier model evaluation scores for each benchmark response"
+    />
+
+  </ExperimentVersion>
+
+  <ExperimentVersion
+    version="v3"
+    title="Auto-save benchmark file"
+    status="completed"
+    gitBranchUrl="https://github.com/nandhakumar-rs/local-slm-benchmark/tree/v3/auto-save-benchmark"
+  >
+    - Added a method to save the benchmark file once the benchmark runner completes.
+    - Tested with the `/benchmark/models` API.
+
+  </ExperimentVersion>
+
   <ExperimentVersion
     version="v2"
     title="Benchmarking models"
@@ -33,33 +143,45 @@ Architecture, tooling, and detailed results will be documented as the experiment
     date="2026-07-15"
     gitBranchUrl="https://github.com/nandhakumar-rs/local-slm-benchmark/tree/v2/benchmark-models"
   >
-    Created five prompts to test against three models (`gemma3:270m`, `qwen3:0.6b`, `qwen3:1.7b`).
-
-    Built a benchmark runner that calculates metrics and converts raw Ollama timings into readable values for each response.
-
-    Added a `/benchmark/models` endpoint that generates responses for each model and returns a summary.
+    - Created five prompts to test against three models (`gemma3:270m`, `qwen3:0.6b`, `qwen3:1.7b`).
+    - Built a benchmark runner that calculates metrics and converts raw Ollama timings into readable values for each response.
+    - Added a `/benchmark/models` endpoint that generates responses for each model and returns a summary.
 
     This produced 15 responses (5 prompts × 3 models). After conversion, the benchmark results look like this:
-
+    
     **Prompts**
-
     1. P1 — Explain what a local language model is in simple words.
     2. P2 — Explain the difference between an LLM and an SLM.
     3. P3 — Give 3 benefits of running AI models locally.
     4. P4 — Write a short Python function to add two numbers.
     5. P5 — Summarize why privacy matters in enterprise AI.
-
+   
+   
     **Gemma3:270m**
 
     <NotionTable name="slm-benchmark-gemma3-270m" />
+
+    ---
 
     **Qwen3:0.6b**
 
     <NotionTable name="slm-benchmark-qwen3-0.6b" />
 
+    ---
+
     **Qwen3:1.7b**
 
     <NotionTable name="slm-benchmark-qwen3-1.7b" />
+
+    <ExperimentCallout title="Observations from the benchmark" variant="note">
+      - `gemma3:270m` appears fastest in this run, but its output token count is smaller.
+      - `qwen3:0.6b` gives a strong middle-ground result. Compared with the other two models, it has a decent output token count and good speed.
+      - `qwen3:1.7b` is the slowest, but it produces more output tokens.
+
+      I can see a cold start for `qwen3:0.6b` with load duration `8537.19 ms` (`8.54 s`) and `qwen3:1.7b` with load duration `3614.03 ms` (`3.61 s`).
+
+      Since I used `gemma3:270m` before generating the benchmark, there is no clear cold start observation for it.
+    </ExperimentCallout>
 
     <GuideLink
       url="https://cdn.nandhakumar.me/experiments/local-slm-benchmark/benchmark.json"
@@ -76,17 +198,15 @@ Architecture, tooling, and detailed results will be documented as the experiment
     date="2026-07-15"
     gitBranchUrl="https://github.com/nandhakumar-rs/local-slm-benchmark/tree/v1/fast-api-setup"
   >
-    Initialized the project with the uv package manager and added:
+    - Initialized the project with the uv package manager and added,
+      - `fastapi`
+      - `uvicorn`(to run the FastAPI server)
+      - `httpx`(to call the external Ollama API)
+      - `pydantic`(for schemas and validation)
 
-    - `fastapi`
-    - `uvicorn`(to run the FastAPI server)
-    - `httpx`(to call the external Ollama API)
-    - `pydantic`(for schemas and validation)
-
-    Created two endpoints:
-
-    - `/models` — returns all models pulled in Ollama
-    - `/generate` — generates a completion for a given model
+    - Created two endpoints,
+      - `/models` — returns all models pulled in Ollama
+      - `/generate` — generates a completion for a given model
 
     Tested the `/generate` API. With Pydantic, responses are returned in a structured shape:
 
@@ -114,11 +234,10 @@ Architecture, tooling, and detailed results will be documented as the experiment
     status="completed"
     date="2026-07-15"
   >
-    Pulled three models sized for a useful local comparison:
-
-    - `gemma3:270m` — tiny
-    - `qwen3:0.6b` — small
-    - `qwen3:1.7b` — medium
+    - Pulled three models sized for a useful local comparison,
+      - `gemma3:270m` — tiny
+      - `qwen3:0.6b` — small
+      - `qwen3:1.7b` — medium
 
     Smoke-tested text generation through the Ollama generate API. Example request with `qwen3:0.6b`:
 
@@ -150,3 +269,9 @@ Architecture, tooling, and detailed results will be documented as the experiment
 </ExperimentTimeline>
 
 </ExperimentOverview>
+
+<ExperimentArchitecture>
+
+<ExperimentArchitectureDiagram />
+
+</ExperimentArchitecture>

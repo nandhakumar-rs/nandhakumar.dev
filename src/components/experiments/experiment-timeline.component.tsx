@@ -6,9 +6,10 @@ import {
   ReactElement,
   ReactNode,
 } from 'react'
-import { FiUploadCloud } from 'react-icons/fi'
+import { FiEye, FiUploadCloud } from 'react-icons/fi'
 import ExperimentVersion from './experiment-version.component'
 import DeploymentBlock from './deployment-block.component'
+import ObservationBlock from './observation-block.component'
 
 interface ExperimentTimelineProps {
   children: ReactNode
@@ -52,6 +53,20 @@ const ExperimentTimeline: FC<ExperimentTimelineProps> = ({ children }) => {
                   aria-hidden="true"
                 >
                   <FiUploadCloud />
+                </span>
+                {child}
+              </li>
+            )
+          }
+
+          if (element.type === ObservationBlock) {
+            return (
+              <li key={index} className="relative pl-8">
+                <span
+                  className="absolute left-[11px] top-1 flex h-5 w-5 -translate-x-1/2 items-center justify-center rounded-full border border-app-primary-500 bg-app-primary-800 text-[10px] text-app-primary-100"
+                  aria-hidden="true"
+                >
+                  <FiEye />
                 </span>
                 {child}
               </li>

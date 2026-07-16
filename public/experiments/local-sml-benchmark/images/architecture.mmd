@@ -1,0 +1,80 @@
+flowchart LR
+  subgraph USER["User Layer"]
+    U["Developer<br/>Runs Experiment"]
+    CLI["curl / Browser<br/>FastAPI Docs"]
+  end
+
+  subgraph API["FastAPI Experiment API"]
+    APP["FastAPI App<br/>Local Backend"]
+    MODELS["GET /models<br/>List Local Models"]
+    GEN["POST /generate<br/>Single Model Call"]
+    BENCH["POST /benchmark/models<br/>Run Benchmark"]
+    QEVAL["POST /quality/evaluate<br/>Score Answers"]
+    SUMMARY["GET /summary<br/>Build Summary + Report"]
+  end
+
+  subgraph OLLAMA["Local Ollama Runtime"]
+    OAPI["Ollama API<br/>localhost:11434"]
+    GM["gemma3:270m<br/>Tiny Baseline"]
+    Q06["qwen3:0.6b<br/>Small Model"]
+    Q17["qwen3:1.7b<br/>Higher Quality"]
+  end
+
+  subgraph FILES["Generated Experiment Files"]
+    BJSON["benchmark.json<br/>Speed Metrics"]
+    QJSON["quality_scores.json<br/>LLM Judge Scores"]
+    SJSON["summary.json<br/>Final Comparison"]
+    RMD["benchmark_report.md<br/>Markdown Report"]
+  end
+
+  subgraph EVAL["LLM Evaluation Layer"]
+    LITE["LiteLLM<br/>Provider Abstraction"]
+    GPT["GPT-4o-mini<br/>Quality + Report Writer"]
+  end
+
+  subgraph SEC["Local Config"]
+    ENV[".env<br/>OPENAI_API_KEY"]
+  end
+
+  U --> CLI
+  CLI --> APP
+  APP --> MODELS
+  APP --> GEN
+  APP --> BENCH
+  APP --> QEVAL
+  APP --> SUMMARY
+
+  MODELS -->|"Read installed models"| OAPI
+  GEN -->|"Generate one response"| OAPI
+  BENCH -->|"Same prompts x 3 models"| OAPI
+
+  OAPI --> GM
+  OAPI --> Q06
+  OAPI --> Q17
+
+  BENCH -->|"Save benchmark result"| BJSON
+  QEVAL -->|"Read answers"| BJSON
+  QEVAL -->|"Judge each answer"| LITE
+  LITE --> GPT
+  QEVAL -->|"Save quality scores"| QJSON
+
+  SUMMARY -->|"Read speed metrics"| BJSON
+  SUMMARY -->|"Read quality scores"| QJSON
+  SUMMARY -->|"Save combined summary"| SJSON
+  SUMMARY -->|"Generate report"| LITE
+  SUMMARY -->|"Save markdown"| RMD
+
+  ENV -.->|"API key for evaluator"| LITE
+
+  class U,CLI user
+  class APP,MODELS,GEN,BENCH,QEVAL,SUMMARY backend
+  class OAPI,GM,Q06,Q17,LITE,GPT ai
+  class BJSON,QJSON,SJSON,RMD backend
+  class ENV security
+
+  classDef user fill:#0D1117,stroke:#94A3B8,color:#F3FBFF,stroke-width:1.5px
+  classDef edge fill:#0E2A33,stroke:#38BDF8,color:#F3FBFF,stroke-width:1.5px
+  classDef frontend fill:#10233A,stroke:#60A5FA,color:#F3FBFF,stroke-width:1.5px
+  classDef backend fill:#1E1B4B,stroke:#A78BFA,color:#F3FBFF,stroke-width:1.5px
+  classDef ai fill:#06312A,stroke:#34D399,color:#F3FBFF,stroke-width:1.5px
+  classDef security fill:#2B1508,stroke:#F59E0B,color:#F3FBFF,stroke-width:1.5px

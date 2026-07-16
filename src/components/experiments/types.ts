@@ -91,6 +91,11 @@ export interface DeploymentBlockProps {
   children?: ReactNode
 }
 
+export interface ObservationBlockProps {
+  title?: string
+  children?: ReactNode
+}
+
 export interface GuideLinkProps {
   url: string
   title: string

@@ -3,7 +3,7 @@ import {
   gemma3270mBenchmarkRows,
   qwen306bBenchmarkRows,
   qwen317bBenchmarkRows,
-} from '../experiments/local-sml-benchmark/benchmark.data'
+} from '../experiments/local-slm-benchmark/benchmark.data'
 import {
   accessTableHeaders,
   accessTableRows,

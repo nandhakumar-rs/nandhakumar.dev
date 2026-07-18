@@ -1,0 +1,179 @@
+---
+title: "Fine-tuning an SLM for Customer Support"
+slug: "fine-tuning-slm-customer-support"
+description: "Fine-tune a baseline small language model for customer support using SFT, DPO, LoRA, and QLoRA, then deploy to AWS SageMaker"
+status: "in-progress"
+category: "LLM"
+latestVersion: "v2"
+featured: true
+updatedAt: "2026-07-18"
+repositoryUrl: "https://github.com/nandhakumar-rs/fine-tuned-slm-customer-support"
+technologies:
+  - AWS SageMaker
+  - Hugging Face
+  - SQLite
+  - PyTorch
+  - Transformers
+  - uv
+---
+
+<ExperimentOverview>
+
+This experiment fine-tunes a baseline small language model for customer support. The end use case is a customer support ReAct agent, but the focus here is the fine-tuning pipeline — not agent orchestration.
+
+The goal is to take a baseline model through supervised fine-tuning (SFT), direct preference optimization (DPO), and parameter-efficient methods like LoRA and QLoRA, then deploy the fine-tuned model to AWS SageMaker.
+
+Tools, architecture, and versioned progress will be documented as the experiment moves forward.
+
+<ExperimentTimeline>
+
+  <ExperimentVersion
+    version="v2"
+    title="Evaluation harness: base model baseline"
+    status="completed"
+    gitBranchUrl="https://github.com/nandhakumar-rs/fine-tuned-slm-customer-support/tree/v2/evaluation-harness-baseline-model"
+  >
+    Initially planned to use `Qwen/Qwen2.5-1.5B-Instruct`.
+
+    Since my local machine has limited memory, I switched to `Qwen/Qwen2.5-0.5B-Instruct`.
+
+    This is an instruction-tuned model, meaning it is already trained to follow user instructions better than a raw base model. That makes it a good starting point for the customer-support JSON extraction task.
+
+    **Dependencies added**
+
+    - `torch` — deep learning runtime to load and run the model
+    - `transformers` — loads the tokenizer and causal language model from Hugging Face
+      - the tokenizer converts text into token IDs
+      - the model generates output tokens, which are decoded back into text
+
+    **Implementation**
+
+    - Created a script to load the base model from Hugging Face
+    - Used the fixed prompt version `support_extract_v1`
+    - Generated JSON outputs for all 20 support cases created earlier
+    - Saved the generated outputs for evaluation
+    - Ran the evaluator against the generated outputs
+
+    **Baseline results**
+
+    - JSON valid rate: `100%` — the model always produced parseable JSON
+    - Schema valid rate: `65.00%` — 13 out of 20 outputs followed the required schema, valid field types, and allowed enum values
+    - Field accuracy: `47.50%` — on average, only around 3–4 fields out of 8 matched the expected values
+    - Exact match rate: `0%` — none of the outputs matched all 8 expected fields exactly
+    - Extra text rate: `0%` — the model did not add extra explanation outside the JSON
+
+    **Observation**
+
+    For a first baseline, this is useful.
+
+    The model already understands how to return JSON, but it does not reliably understand our customer-support schema, labels, and action-selection rules yet.
+
+    This gives us a clear baseline to compare against after SFT and DPO fine-tuning.
+
+    <GuideLink
+      url="https://cdn.nandhakumar.me/experiments/fine-tuned-slm-customer-support/base_model_evaluation_report_detailed.md"
+      title="Base model evaluation report"
+      description="Human-readable baseline evaluation summary for all 20 support cases"
+    />
+    <GuideLink
+      url="https://cdn.nandhakumar.me/experiments/fine-tuned-slm-customer-support/base_model_evaluation_report_detailed.json"
+      title="Base model evaluation JSON"
+      description="Machine-readable baseline evaluation results for all 20 support cases"
+    />
+
+  </ExperimentVersion>
+
+  <ExperimentVersion
+    version="v1"
+    title="Evaluation harness: verify evaluator"
+    status="completed"
+    gitBranchUrl="https://github.com/nandhakumar-rs/fine-tuned-slm-customer-support/tree/v1/evaluation-harness-evaluator"
+  >
+    - Copied support cases into the `data/eval/` directory.
+    - Created five sample model outputs to verify whether the evaluator works as expected.
+    - The sample outputs intentionally include:
+      - correct JSON output
+      - valid JSON with extra text
+      - valid JSON with a wrong field value
+      - non-JSON text
+      - missing outputs for the remaining cases
+    - The evaluator performs simple rule-based checks:
+      - checks whether the model output is valid JSON
+      - checks whether all required fields are present
+      - checks whether field values match the expected values
+      - checks whether the model added extra text outside JSON
+    - Field accuracy is calculated using the eight required fields:
+      - `intent`
+      - `order_id`
+      - `issue_type`
+      - `urgency`
+      - `sentiment`
+      - `requested_action`
+      - `missing_fields`
+      - `next_action`
+    - Example: if 7 out of 8 fields match, field accuracy is `87.5%`.
+    - Finally, the evaluator generates:
+      - a JSON report for machine-readable results
+      - a Markdown report for a human-readable summary
+
+    In a future version, I will use the base model to generate outputs for all evaluation cases and run the same evaluator to capture baseline metrics.
+
+    <GuideLink
+      url="https://cdn.nandhakumar.me/experiments/fine-tuned-slm-customer-support/evaluation_report.md"
+      title="Evaluator Markdown report"
+      description="Human-readable evaluation summary from the verification run"
+    />
+
+  </ExperimentVersion>
+
+  <ExperimentVersion
+    version="v0"
+    title="Project setup and domain foundation"
+    status="completed"
+    gitBranchUrl="https://github.com/nandhakumar-rs/fine-tuned-slm-customer-support/tree/v0/project-setup"
+  >
+    - Initialized the project with the `uv` package manager.
+    - Created the required project folders for data, scripts, docs, evaluation, training, reports, and storage.
+    - Created a SQLite setup script to create mock customer-support tables:
+      - `customers`
+      - `orders`
+      - `refund_policies`
+      - `support_tickets`
+    - Seeded mock data for customers, orders, and refund policies.
+    - Kept `support_tickets` empty because tickets will be created later by the ReAct agent.
+    - Created a database verification script to confirm mock data was created correctly.
+    - Prepared `support_cases.jsonl` as the ground-truth dataset for customer-support extraction.
+    - Documented the domain schema under `docs/domain-schema.md`.
+
+    This version sets up the foundation for the fine-tuning experiment:
+
+    - SQLite stores mock application data for future agent tools.
+    - JSONL stores labeled examples for evaluation and fine-tuning.
+    - The domain schema defines the exact structured output expected from the model.
+
+    The SQLite database is for agent tools, while JSONL files are for model training and evaluation.
+
+    **Example support case**
+
+    <CodeSnippet language="json">
+{`{
+  "id": "case_001",
+  "message": "My order 8271 arrived broken. I want a refund.",
+  "expected": {
+    "intent": "refund_request",
+    "order_id": "8271",
+    "issue_type": "damaged_item",
+    "urgency": "normal",
+    "sentiment": "frustrated",
+    "requested_action": "refund",
+    "missing_fields": [],
+    "next_action": "lookup_order"
+  }
+}`}
+    </CodeSnippet>
+
+  </ExperimentVersion>
+
+</ExperimentTimeline>
+
+</ExperimentOverview>

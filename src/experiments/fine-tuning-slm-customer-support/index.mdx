@@ -4,13 +4,15 @@ slug: "fine-tuning-slm-customer-support"
 description: "Fine-tune a baseline small language model for customer support using SFT, DPO, LoRA, and QLoRA, then deploy to AWS SageMaker"
 status: "in-progress"
 category: "LLM"
-latestVersion: "v2"
+latestVersion: "v4"
 featured: true
 updatedAt: "2026-07-18"
 repositoryUrl: "https://github.com/nandhakumar-rs/fine-tuned-slm-customer-support"
 technologies:
   - AWS SageMaker
   - Hugging Face
+  - LoRA
+  - PEFT
   - SQLite
   - PyTorch
   - Transformers
@@ -26,6 +28,88 @@ The goal is to take a baseline model through supervised fine-tuning (SFT), direc
 Tools, architecture, and versioned progress will be documented as the experiment moves forward.
 
 <ExperimentTimeline>
+
+  <ExperimentVersion
+    version="v4"
+    title="Train SFT LoRA adapter"
+    status="completed"
+    gitBranchUrl="https://github.com/nandhakumar-rs/fine-tuned-slm-customer-support/tree/v4/sft-lora-adapter"
+  >
+    - Created `train_lora_sft.py` to train a LoRA adapter on top of `Qwen/Qwen2.5-0.5B-Instruct`.
+    - Used `support_cases.jsonl` as the source dataset.
+    - Split the prepared SFT dataset into:
+      - 16 samples for training
+      - 4 samples for validation
+
+    **Dependencies added**
+
+    - `datasets` — Hugging Face library used to structure the training data so it can be processed by the Trainer
+    - `peft` — used to configure LoRA and attach LoRA adapters to the base model during training
+
+    **Training setup**
+
+    - Set `max_length=512`
+      - each training item can have a maximum of 512 tokens
+      - if an item exceeds 512 tokens, extra tokens are truncated
+    - Added padding token using the EOS token
+      - needed because training batches require examples to be padded to the same length
+      - some causal language models do not have a separate PAD token, so EOS is commonly reused as PAD
+
+    **LoRA config**
+
+    - `r=8` — controls the rank/capacity of the small LoRA adapter matrices
+    - `lora_alpha=16` — scaling factor that controls how strongly the LoRA adapter affects the model
+    - `lora_dropout=0.05` — drops 5% of adapter activity during training to help reduce overfitting
+
+    **Training result**
+
+    Executed the training script successfully. The LoRA adapter was generated and saved.
+
+    Training metrics:
+
+    <CodeSnippet language="text">
+{`trainable params: 4,399,104
+all params: 498,431,872
+trainable%: 0.8826`}
+    </CodeSnippet>
+
+  </ExperimentVersion>
+
+  <ExperimentVersion
+    version="v3"
+    title="SFT dataset preparation"
+    status="completed"
+    gitBranchUrl="https://github.com/nandhakumar-rs/fine-tuned-slm-customer-support/tree/v3/sft-data-preparation"
+  >
+    Created a script to prepare the dataset for supervised fine-tuning (SFT).
+
+    Converted the 20 support cases into chat-style training rows.
+
+    Split the dataset into:
+
+    - 16 training rows
+    - 4 validation rows
+
+    Stored the SFT dataset in JSONL format, where each line is one independent JSON object. JSONL is commonly used for LLM datasets because it is easy to stream, inspect, append, split, and process with training tools.
+
+    **Why an SFT dataset is needed**
+
+    The goal of SFT is to show the model examples of the desired behavior.
+
+    In this project, each SFT example has:
+
+    - **User message** — prompt asking the model to extract support-ticket JSON
+    - **Assistant message** — correct expected JSON output
+
+    This teaches the model what the final response should look like for the customer-support extraction task.
+
+    **Why validation data is needed**
+
+    The training set is used to update the model or LoRA adapter weights.
+
+    The validation set is used to monitor whether the model is learning the task without only memorizing the training examples.
+
+  </ExperimentVersion>
 
   <ExperimentVersion
     version="v2"

@@ -78,7 +78,7 @@ export interface BeforeAfterProps {
   caption?: string
 }
 
-export type ExperimentCalloutVariant = 'info' | 'warning' | 'success' | 'note'
+export type ExperimentCalloutVariant = 'info' | 'warning' | 'success' | 'note' | 'observation'
 
 export interface ExperimentCalloutProps {
   title?: string

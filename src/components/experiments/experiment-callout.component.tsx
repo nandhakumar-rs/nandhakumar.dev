@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { FiAlertTriangle, FiCheckCircle, FiInfo } from 'react-icons/fi'
+import { FiAlertTriangle, FiCheckCircle, FiEye, FiInfo } from 'react-icons/fi'
 import { IconType } from 'react-icons'
 import { ExperimentCalloutProps, ExperimentCalloutVariant } from './types'
 
@@ -16,6 +16,11 @@ const VARIANT_CONFIG: Record<
     container: 'border-app-primary-700 border-l-app-primary-500 bg-black/20',
     icon: 'text-app-neutral-600',
     Icon: FiInfo,
+  },
+  observation: {
+    container: 'border-app-primary-700 border-l-app-primary-500 bg-black/20',
+    icon: 'text-app-neutral-600',
+    Icon: FiEye,
   },
   warning: {
     container: 'border-app-primary-700 border-l-app-danger-900 bg-app-primary-800',

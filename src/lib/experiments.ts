@@ -25,6 +25,8 @@ export interface ExperimentFrontmatter {
   category?: string
   latestVersion?: string
   featured?: boolean
+  order?: number
+  hidden?: boolean
   architectureImage?: string
   repositoryUrl?: string
   technologies?: string[]
@@ -69,6 +71,15 @@ function resolveVisual(src: string | undefined, slug: string): ResolvedVisual {
   return { imageResolved: resolveAsset(src, slug), chart: null }
 }
 
+function isHiddenExperiment(slug: string): boolean {
+  try {
+    const { frontmatter } = parseExperimentFile(slug)
+    return frontmatter.hidden === true
+  } catch {
+    return false
+  }
+}
+
 function getExperimentSlugs(): string[] {
   if (!existsSync(EXPERIMENTS_DIR)) return []
 
@@ -78,6 +89,7 @@ function getExperimentSlugs(): string[] {
       existsSync(path.join(EXPERIMENTS_DIR, entry.name, 'index.mdx')),
     )
     .map((entry) => entry.name)
+    .filter((slug) => !isHiddenExperiment(slug))
 }
 
 function parseExperimentFile(slug: string) {
@@ -113,6 +125,12 @@ export function getAllExperiments(): ExperimentMeta[] {
   experiments.sort((a, b) => {
     if (a.featured && !b.featured) return -1
     if (!a.featured && b.featured) return 1
+
+    if (a.featured && b.featured) {
+      const aOrder = a.order ?? Number.POSITIVE_INFINITY
+      const bOrder = b.order ?? Number.POSITIVE_INFINITY
+      if (aOrder !== bOrder) return aOrder - bOrder
+    }
 
     const aDate = a.updatedAt ? new Date(a.updatedAt).getTime() : 0
     const bDate = b.updatedAt ? new Date(b.updatedAt).getTime() : 0

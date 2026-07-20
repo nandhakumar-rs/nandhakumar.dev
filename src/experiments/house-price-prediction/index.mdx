@@ -1,0 +1,189 @@
+---
+title: "House Price Prediction"
+slug: "house-price-prediction"
+description: "Understanding regression fundamentals, starting with synthetic data and progressing to the UCI Real Estate dataset"
+status: "in-progress"
+category: "Machine Learning"
+latestVersion: "v4"
+featured: false
+order: 3
+updatedAt: "2026-07-20"
+repositoryUrl: "https://github.com/nandhakumar-rs/house-price-prediction"
+technologies:
+  - Python
+  - scikit-learn
+  - uv
+---
+
+<ExperimentOverview>
+
+This experiment explores the fundamentals of regression through house price prediction.
+
+The plan is to start with a synthetic dataset to understand core concepts — features, targets, train/test splits, and model evaluation — then gradually move to a real-world dataset (UCI Real Estate).
+
+Tools, architecture, and versioned progress will be documented as the experiment moves forward.
+
+<ExperimentTimeline>
+
+  <ExperimentVersion
+    version="v4"
+    title="Training model with gradient descent"
+    status="completed"
+    gitBranchUrl="https://github.com/nandhakumar-rs/house-price-prediction/tree/v4/gradient-decent"
+  >
+    Created `train_gradient_descent.py` to calculate and update weight and bias automatically based on epochs.
+
+    Created `training.py`, which has the required calculations to compute gradients and update weight and bias.
+
+    Chose `5000` epochs, which means the full dataset will be looked at `5000` times to adjust the weight and bias.
+
+    Learning rate is `0.0000001`.
+
+    After `5000` epochs:
+
+    - Weight is `3537.05`
+    - Bias is `3.21`
+
+    With this weight and bias, the predictions are:
+
+    <CodeSnippet language="text">
+{`area_sqft,actual_price,predicted_price,error,squared_error
+500,1800000,1768528,31472,990473566
+600,2100000,2122233,-22233,494315627
+700,2500000,2475938,24062,578969738
+800,2800000,2829643,-29643,878719899
+900,3200000,3183348,16652,277282110
+1000,3500000,3537053,-37053,1372940371
+1100,3900000,3890758,9242,85410682
+1200,4200000,4244463,-44463,1976977044
+1300,4600000,4598168,1832,3355455
+1400,5000000,4951873,48127,2316187916
+
+mean_squared_error=897463241`}
+    </CodeSnippet>
+
+    <ExperimentCallout title="Observation" variant="observation">
+      - MSE has reduced from `1250000000` to `897463241`, which is good.
+      - Bias is still very small because the raw `area_sqft` values are large, so the weight update has a much stronger effect than the bias update.
+
+      This training and evaluation flow will be used as the baseline before moving to the UCI Real Estate dataset.
+    </ExperimentCallout>
+
+  </ExperimentVersion>
+
+  <ExperimentVersion
+    version="v3"
+    title="Manual tuning with weight and bias"
+    status="completed"
+    gitBranchUrl="https://github.com/nandhakumar-rs/house-price-prediction/tree/v3/manual-model-fine-tuning"
+  >
+    Created `tune_weight_bias.py` to adjust weight and bias manually, calculate MSE, and find which values give the minimum MSE.
+
+    After tuning with different weight and bias values, a weight of `3500` and a bias of `50000` gives the minimum MSE of `1250000000`.
+
+    With gradient descent in the next version, weight and bias will be calculated automatically. Hope to see a lower MSE.
+
+    <CodeSnippet language="text">
+{`weight,bias,mean_squared_error
+3400,0,19400000000
+3500,0,2250000000
+3600,0,4800000000
+3500,50000,1250000000
+3450,75000,1612500000
+3550,50500,4875250000
+3550,51000,4938500000
+
+best_weight=3500
+best_bias=50000
+best_mean_squared_error=1250000000`}
+    </CodeSnippet>
+
+  </ExperimentVersion>
+
+  <ExperimentVersion
+    version="v2"
+    title="Prediction error and mean squared error"
+    status="completed"
+    gitBranchUrl="https://github.com/nandhakumar-rs/house-price-prediction/tree/v2/prediction-error-and-msr"
+  >
+    Created `metrics.py` to calculate:
+
+    - prediction error
+    - squared error
+    - mean squared error (MSE)
+
+    Created `evaluate_predictions.py` to calculate the error values for each item in the CSV dataset.
+
+    The lower the MSE value, the more accurate the predictions.
+
+    At the moment, MSE is `2250000000`, which is large because the house-price values are large and the errors are squared.
+
+    <CodeSnippet language="text">
+{`area_sqft,actual_price,predicted_price,error,squared_error
+500,1800000,1750000,50000,2500000000
+600,2100000,2100000,0,0
+700,2500000,2450000,50000,2500000000
+800,2800000,2800000,0,0
+900,3200000,3150000,50000,2500000000
+1000,3500000,3500000,0,0
+1100,3900000,3850000,50000,2500000000
+1200,4200000,4200000,0,0
+1300,4600000,4550000,50000,2500000000
+1400,5000000,4900000,100000,10000000000
+
+mean_squared_error=2250000000`}
+    </CodeSnippet>
+
+  </ExperimentVersion>
+
+  <ExperimentVersion
+    version="v1"
+    title="Manual prediction with weight and bias"
+    status="completed"
+    gitBranchUrl="https://github.com/nandhakumar-rs/house-price-prediction/tree/v1/manual-prediction-with-weight-bias"
+  >
+    Created `model.py` with a simple formula of `y = wx + b`:
+
+    - `w` — weight; per sq.ft price is incremented by `3500`
+    - `b` — bias; kept at `0` for now
+    - `x` — input; house area in sq.ft
+
+    Created `predict_prices.py` to run the model against each item in the dataset.
+
+    Some of the predicted prices are close to the actual prices.
+
+    <CodeSnippet language="text">
+{`area_sqft,actual_price,predicted_price
+500,1800000,1750000
+600,2100000,2100000
+700,2500000,2450000
+800,2800000,2800000
+900,3200000,3150000
+1000,3500000,3500000
+1100,3900000,3850000
+1200,4200000,4200000
+1300,4600000,4550000
+1400,5000000,4900000`}
+    </CodeSnippet>
+
+  </ExperimentVersion>
+
+  <ExperimentVersion
+    version="v0"
+    title="Project setup and sample house price CSV dataset"
+    status="completed"
+    gitBranchUrl="https://github.com/nandhakumar-rs/house-price-prediction/tree/v0/project-setup-and-house-price-dataset"
+  >
+    Initialized the project using the `uv` package manager.
+
+    Created a raw CSV dataset with 10 sample house prices.
+
+    Created `data_loader.py` to load the dataset.
+
+    Created `inspect_dataset.py` to load the data and view the minimum, maximum, and mean values of the house prices and square feet.
+
+  </ExperimentVersion>
+
+</ExperimentTimeline>
+
+</ExperimentOverview>

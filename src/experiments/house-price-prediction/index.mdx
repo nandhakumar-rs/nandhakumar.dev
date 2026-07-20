@@ -4,13 +4,15 @@ slug: "house-price-prediction"
 description: "Understanding regression fundamentals, starting with synthetic data and progressing to the UCI Real Estate dataset"
 status: "in-progress"
 category: "Machine Learning"
-latestVersion: "v4"
+latestVersion: "v8"
 featured: false
 order: 3
-updatedAt: "2026-07-20"
+updatedAt: "2026-07-21"
 repositoryUrl: "https://github.com/nandhakumar-rs/house-price-prediction"
 technologies:
   - Python
+  - pandas
+  - openpyxl
   - scikit-learn
   - uv
 ---
@@ -26,23 +28,249 @@ Tools, architecture, and versioned progress will be documented as the experiment
 <ExperimentTimeline>
 
   <ExperimentVersion
+    version="v8"
+    title="Training model with multiple features"
+    status="completed"
+    gitBranchUrl="https://github.com/nandhakumar-rs/house-price-prediction/tree/v8/train-test-mulitple-feature-dataset"
+  >
+    - Chose one more feature, `house_age`, in addition to `convenience_stores` as input features, with `house_price_per_unit_area` as the prediction target.
+
+    - Updated `model.py` to add a new method for prediction with multiple features.
+
+    - Updated `data_split.py` to add a new method to split train and test data from a multiple-feature dataset.
+
+    - Created `training_multiple.py` to calculate gradients and update weights for multiple features and bias.
+
+    - Created `train_test_uci_multiple_features.py` to run training and testing with:
+      - learning rate: `0.001`
+      - epochs tested: `5000`, `10000`, and `20000`
+
+    **5000 epochs**
+
+    At `5000` epochs, train MSE and test MSE became worse compared to single-feature training.
+
+    `house_age_weight` was still positive, which did not look right because normally as house age increases, price may decrease.
+
+    Both feature weights were still changing clearly, so the model had not fully converged yet.
+
+    <CodeSnippet language="text">
+{`final_house_age_weight=0.0334
+final_convenience_stores_weight=3.7010
+final_bias=20.1136
+final_train_mse=148.1289
+final_test_mse=114.6253`}
+    </CodeSnippet>
+
+    **10000 epochs**
+
+    At `10000` epochs, the result improved.
+
+    `house_age_weight` became negative, which makes more sense.
+
+    Train MSE and test MSE improved compared to v7 single-feature training.
+
+    <CodeSnippet language="text">
+{`final_house_age_weight=-0.1584
+final_convenience_stores_weight=3.0769
+final_bias=27.5312
+final_train_mse=124.2255
+final_test_mse=92.2336`}
+    </CodeSnippet>
+
+    **20000 epochs**
+
+    At `20000` epochs, the model improved further.
+
+    The weights were still changing, but with smaller differences.
+
+    Stopped at `20000` epochs because the model was getting close to convergence.
+
+    <NotionTable name="house-price-multi-feature-comparison" />
+
+    - Final v8 result is better than v7.
+    - Adding `house_age` helped, but only after training for more epochs.
+    - This shows that multiple-feature training may need more time to converge.
+
+    In the next version, feature scaling can help gradient descent converge faster and more cleanly.
+
+  </ExperimentVersion>
+
+  <ExperimentVersion
+    version="v7"
+    title="Split train and test dataset"
+    status="completed"
+    gitBranchUrl="https://github.com/nandhakumar-rs/house-price-prediction/tree/v7/split-train-test-dataset"
+  >
+    - Split the dataset into training and testing sets.
+
+    - This helps measure prediction error on unseen data — examples that were not used during training.
+
+    - Split ratio:
+
+      - `80%` training data
+      - `20%` testing data
+
+    - Created `data_split.py` to return the split data.
+
+    - Created `train_test_uci_single_feature.py` to train the model on training data, test it against test data, and measure MSE.
+
+    The learned formula is still similar to the previous version, with only a minor decimal change:
+
+    <CodeSnippet language="text">
+{`predicted_price = 2.6226 * convenience_stores + 27.3746`}
+    </CodeSnippet>
+
+    This means for every `1` extra nearby convenience store, the predicted house price per unit area increases by around `2.62`.
+
+    <CodeSnippet language="text">
+{`feature=convenience_stores
+target=house_price_per_unit_area
+train_rows=332
+test_rows=82
+
+epoch,weight,bias,train_mse
+1,3.5092,0.7584,668.1311
+1000,2.6270,27.3474,129.8893
+2000,2.6226,27.3746,129.8890
+3000,2.6226,27.3746,129.8890
+4000,2.6226,27.3746,129.8890
+5000,2.6226,27.3746,129.8890
+
+final_weight=2.6226
+final_bias=27.3746
+final_train_mse=129.8890
+final_test_mse=102.6373`}
+    </CodeSnippet>
+
+    - Still testing with only one feature.
+
+    - Interestingly, MSE on the test dataset is lower than MSE on the train dataset. This happened because the test dataset is smaller and may contain examples that are easier for this simple model to predict.
+
+  </ExperimentVersion>
+
+  <ExperimentVersion
+    version="v6"
+    title="Train UCI dataset with one feature"
+    status="completed"
+    gitBranchUrl="https://github.com/nandhakumar-rs/house-price-prediction/tree/v6/train-model-with-uci-dataset"
+  >
+    - As a first step, picked `convenience_stores` as the input feature and `house_price_per_unit_area` as the output target.
+
+    - Created `train_uci_single_feature.py` and used the existing gradient descent calculations with:
+      - `5000` epochs
+      - `0.01` learning rate — larger than the sample dataset because `convenience_stores` has small values
+
+    - Executed the script and found weight `2.6377` and bias `27.1811`.
+
+    The learned formula is:
+
+    <CodeSnippet language="text">
+{`predicted_price = 2.6377 * convenience_stores + 27.1811`}
+    </CodeSnippet>
+
+    This means for every `1` extra nearby convenience store, the predicted house price per unit area increases by around `2.64`.
+
+    <CodeSnippet language="text">
+{`feature=convenience_stores
+target=house_price_per_unit_area
+
+epoch,weight,bias,mean_squared_error
+1,3.5666,0.7596,643.5294
+1000,2.6431,27.1477,124.4724
+2000,2.6377,27.1811,124.4720
+3000,2.6377,27.1811,124.4720
+4000,2.6377,27.1811,124.4720
+5000,2.6377,27.1811,124.4720
+
+final_weight=2.6377
+final_bias=27.1811
+final_mean_squared_error=124.4720`}
+    </CodeSnippet>
+
+    The mean squared error dropped until around 1000 epochs and then became almost constant.
+
+    This means the model has reached the best values it can find using only `convenience_stores`.
+
+    Since house price depends on more than one feature, the next version can improve this by using multiple input features.
+
+  </ExperimentVersion>
+
+  <ExperimentVersion
+    version="v5"
+    title="Load UCI Real Estate dataset"
+    status="completed"
+    gitBranchUrl="https://github.com/nandhakumar-rs/house-price-prediction/tree/v5/load-uci-dataset"
+  >
+    - Added the following dependencies:
+      - `pandas` — to view and manipulate table data in Python
+      - `openpyxl` — to load Excel data and use it with Python
+
+    - Created `uci_data_loader.py` to load data from the Excel dataset.
+
+    - Created `inspect_uci_dataset.py` to get the data from the loader and inspect it using pandas.
+
+    - Confirmed the dataset has `414` rows and `7` columns.
+
+    - Confirmed there are no missing values in the dataset.
+
+    - Confirmed the target column is `house_price_per_unit_area`.
+
+    <CodeSnippet language="text">
+{`dataset=uci_real_estate_valuation
+rows=414
+columns=7
+
+column_names
+- transaction_date
+- house_age
+- distance_to_mrt_m
+- convenience_stores
+- latitude
+- longitude
+- house_price_per_unit_area
+
+missing_values
+transaction_date=0
+house_age=0
+distance_to_mrt_m=0
+convenience_stores=0
+latitude=0
+longitude=0
+house_price_per_unit_area=0
+
+target_summary
+min=7.60
+max=117.50
+mean=37.98
+
+first_5_rows
+ transaction_date  house_age  distance_to_mrt_m  convenience_stores  latitude  longitude  house_price_per_unit_area
+      2012.916667       32.0           84.87882                  10  24.98298  121.54024                       37.9
+      2012.916667       19.5          306.59470                   9  24.98034  121.53951                       42.2
+      2013.583333       13.3          561.98450                   5  24.98746  121.54391                       47.3
+      2013.500000       13.3          561.98450                   5  24.98746  121.54391                       54.8
+      2012.833333        5.0          390.56840                   5  24.97937  121.54245                       43.1`}
+    </CodeSnippet>
+
+  </ExperimentVersion>
+
+  <ExperimentVersion
     version="v4"
     title="Training model with gradient descent"
     status="completed"
     gitBranchUrl="https://github.com/nandhakumar-rs/house-price-prediction/tree/v4/gradient-decent"
   >
-    Created `train_gradient_descent.py` to calculate and update weight and bias automatically based on epochs.
+    - Created `train_gradient_descent.py` to calculate and update weight and bias automatically based on epochs.
 
-    Created `training.py`, which has the required calculations to compute gradients and update weight and bias.
+    - Created `training.py`, which has the required calculations to compute gradients and update weight and bias.
 
-    Chose `5000` epochs, which means the full dataset will be looked at `5000` times to adjust the weight and bias.
+    - Chose `5000` epochs, which means the full dataset will be looked at `5000` times to adjust the weight and bias.
 
-    Learning rate is `0.0000001`.
+    - Learning rate is `0.0000001`.
 
-    After `5000` epochs:
-
-    - Weight is `3537.05`
-    - Bias is `3.21`
+    - After `5000` epochs:
+      - Weight is `3537.05`
+      - Bias is `3.21`
 
     With this weight and bias, the predictions are:
 
@@ -77,9 +305,9 @@ mean_squared_error=897463241`}
     status="completed"
     gitBranchUrl="https://github.com/nandhakumar-rs/house-price-prediction/tree/v3/manual-model-fine-tuning"
   >
-    Created `tune_weight_bias.py` to adjust weight and bias manually, calculate MSE, and find which values give the minimum MSE.
+    - Created `tune_weight_bias.py` to adjust weight and bias manually, calculate MSE, and find which values give the minimum MSE.
 
-    After tuning with different weight and bias values, a weight of `3500` and a bias of `50000` gives the minimum MSE of `1250000000`.
+    - After tuning with different weight and bias values, a weight of `3500` and a bias of `50000` gives the minimum MSE of `1250000000`.
 
     With gradient descent in the next version, weight and bias will be calculated automatically. Hope to see a lower MSE.
 
@@ -106,15 +334,13 @@ best_mean_squared_error=1250000000`}
     status="completed"
     gitBranchUrl="https://github.com/nandhakumar-rs/house-price-prediction/tree/v2/prediction-error-and-msr"
   >
-    Created `metrics.py` to calculate:
+    - Created `metrics.py` to calculate:
+      - prediction error
+      - squared error
+      - mean squared error (MSE)
+    - Created `evaluate_predictions.py` to calculate the error values for each item in the CSV dataset.
 
-    - prediction error
-    - squared error
-    - mean squared error (MSE)
-
-    Created `evaluate_predictions.py` to calculate the error values for each item in the CSV dataset.
-
-    The lower the MSE value, the more accurate the predictions.
+    - The lower the MSE value, the more accurate the predictions.
 
     At the moment, MSE is `2250000000`, which is large because the house-price values are large and the errors are squared.
 
@@ -142,13 +368,12 @@ mean_squared_error=2250000000`}
     status="completed"
     gitBranchUrl="https://github.com/nandhakumar-rs/house-price-prediction/tree/v1/manual-prediction-with-weight-bias"
   >
-    Created `model.py` with a simple formula of `y = wx + b`:
+    - Created `model.py` with a simple formula of `y = wx + b`:
+      - `w` — weight; per sq.ft price is incremented by `3500`
+      - `b` — bias; kept at `0` for now
+      - `x` — input; house area in sq.ft
 
-    - `w` — weight; per sq.ft price is incremented by `3500`
-    - `b` — bias; kept at `0` for now
-    - `x` — input; house area in sq.ft
-
-    Created `predict_prices.py` to run the model against each item in the dataset.
+    - Created `predict_prices.py` to run the model against each item in the dataset.
 
     Some of the predicted prices are close to the actual prices.
 
@@ -174,13 +399,13 @@ mean_squared_error=2250000000`}
     status="completed"
     gitBranchUrl="https://github.com/nandhakumar-rs/house-price-prediction/tree/v0/project-setup-and-house-price-dataset"
   >
-    Initialized the project using the `uv` package manager.
+    - Initialized the project using the `uv` package manager.
 
-    Created a raw CSV dataset with 10 sample house prices.
+    - Created a raw CSV dataset with 10 sample house prices.
 
-    Created `data_loader.py` to load the dataset.
+    - Created `data_loader.py` to load the dataset.
 
-    Created `inspect_dataset.py` to load the data and view the minimum, maximum, and mean values of the house prices and square feet.
+    - Created `inspect_dataset.py` to load the data and view the minimum, maximum, and mean values of the house prices and square feet.
 
   </ExperimentVersion>
 

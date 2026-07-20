@@ -1,4 +1,8 @@
 import {
+  multiFeatureComparisonHeaders,
+  multiFeatureComparisonRows,
+} from '../experiments/house-price-prediction/comparison.data'
+import {
   benchmarkTableHeadersExport,
   gemma3270mBenchmarkRows,
   qwen306bBenchmarkRows,
@@ -19,6 +23,10 @@ export type NotionTableData = {
 }
 
 export const notionTableRegistry: Record<string, NotionTableData> = {
+  'house-price-multi-feature-comparison': {
+    headers: multiFeatureComparisonHeaders,
+    rows: multiFeatureComparisonRows,
+  },
   'slm-benchmark-gemma3-270m': {
     headers: benchmarkTableHeadersExport,
     rows: gemma3270mBenchmarkRows,

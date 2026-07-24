@@ -4,10 +4,10 @@ slug: "house-price-prediction"
 description: "Understanding regression fundamentals, starting with synthetic data and progressing to the UCI Real Estate dataset"
 status: "in-progress"
 category: "Machine Learning"
-latestVersion: "v8"
+latestVersion: "v11"
 featured: false
 order: 3
-updatedAt: "2026-07-21"
+updatedAt: "2026-07-24"
 repositoryUrl: "https://github.com/nandhakumar-rs/house-price-prediction"
 technologies:
   - Python
@@ -26,6 +26,172 @@ The plan is to start with a synthetic dataset to understand core concepts — fe
 Tools, architecture, and versioned progress will be documented as the experiment moves forward.
 
 <ExperimentTimeline>
+
+  <ExperimentVersion
+    version="v11"
+    title="Training model with scikit-learn"
+    status="completed"
+    gitBranchUrl="https://github.com/nandhakumar-rs/house-price-prediction/tree/v11/sklearn-regression"
+  >
+    - Created `train_test_uci_sklearn.py` to train and test the model using the `scikit-learn` library.
+
+    - Used all features from the UCI Real Estate dataset.
+
+    - Used the same feature scaling logic from v10.
+
+    - Used `LinearRegression` from scikit-learn to calculate the best weight and bias directly.
+
+    Compared to v10, the results are very close with scikit-learn.
+
+    <NotionTable name="house-price-sklearn-method-comparison" />
+
+    The weights are also almost identical.
+
+    <NotionTable name="house-price-sklearn-weights-comparison" />
+
+    This confirms that the from-scratch gradient descent implementation is working correctly.
+
+    The tiny difference in test MSE is normal. It can happen because v10 stops after `5000` epochs, while scikit-learn directly solves for the best linear regression values.
+
+    Since the values are extremely close, v10 training has already reached almost the same solution as scikit-learn.
+
+  </ExperimentVersion>
+
+  <ExperimentVersion
+    version="v10"
+    title="Training model with all features"
+    status="completed"
+    gitBranchUrl="https://github.com/nandhakumar-rs/house-price-prediction/tree/v10/train-model-with-all-feature"
+  >
+    - Added all available input features from the UCI Real Estate dataset:
+
+      - `transaction_date`
+      - `house_age`
+      - `distance_to_mrt_m`
+      - `convenience_stores`
+      - `latitude`
+      - `longitude`
+
+    - Created `train_test_uci_all_features.py` to train and test the model with all features.
+
+    - Used feature scaling before training, same as the previous version.
+
+    - Scaling values are calculated only from the training dataset to avoid test data leakage.
+
+    - Trained the model with a learning rate of `0.01` and `5000` epochs.
+
+    <CodeSnippet language="text">
+{`features=transaction_date,house_age,distance_to_mrt_m,convenience_stores,latitude,longitude
+target=house_price_per_unit_area
+train_rows=332
+test_rows=82
+
+scaling_values
+transaction_date_mean=2013.1611
+transaction_date_std=0.2761
+house_age_mean=18.0572
+house_age_std=11.3310
+distance_to_mrt_m_mean=1101.4793
+distance_to_mrt_m_std=1267.5451
+convenience_stores_mean=4.0211
+convenience_stores_std=2.9600
+latitude_mean=24.9687
+latitude_std=0.0125
+longitude_mean=121.5332
+longitude_std=0.0154
+
+epoch,transaction_date_weight,house_age_weight,distance_to_mrt_m_weight,convenience_stores_weight,latitude_weight,longitude_weight,bias,train_mse
+1,0.0088,-0.0254,-0.0935,0.0776,0.0736,0.0708,0.3792,1594.3597
+1000,1.5369,-2.9022,-5.7086,3.4802,2.4637,0.0820,37.9185,81.8157
+2000,1.5648,-2.8963,-6.3214,3.3700,2.2822,-0.3468,37.9202,81.6736
+3000,1.5713,-2.8946,-6.4619,3.3436,2.2406,-0.4441,37.9202,81.6662
+4000,1.5728,-2.8942,-6.4941,3.3376,2.2310,-0.4664,37.9202,81.6658
+5000,1.5732,-2.8941,-6.5015,3.3362,2.2289,-0.4715,37.9202,81.6658
+
+final_transaction_date_weight=1.5732
+final_house_age_weight=-2.8941
+final_distance_to_mrt_m_weight=-6.5015
+final_convenience_stores_weight=3.3362
+final_latitude_weight=2.2289
+final_longitude_weight=-0.4715
+final_bias=37.9202
+final_train_mse=81.6658
+final_test_mse=60.4505`}
+    </CodeSnippet>
+
+    Compared to v9, MSE reduced significantly.
+
+    <NotionTable name="house-price-all-features-comparison" />
+
+    Since the features are scaled, each weight represents the price change for one standard deviation increase in that feature.
+
+    For example, `distance_to_mrt_m` has a weight of `-6.5015`, which means when distance to MRT increases, the predicted price decreases.
+
+    Adding more features helped the model understand the data better and reduced both train and test MSE.
+
+  </ExperimentVersion>
+
+  <ExperimentVersion
+    version="v9"
+    title="Feature scaling"
+    status="completed"
+    gitBranchUrl="https://github.com/nandhakumar-rs/house-price-prediction/tree/v9/feature-scaling"
+  >
+    The input features have different value ranges, which can cause gradient descent to update some feature weights faster than others.
+
+    Used standardization to bring the features to a similar scale:
+
+    <CodeSnippet language="text">
+{`scaled_value = (value - mean) / standard_deviation`}
+    </CodeSnippet>
+
+    This centers each feature around 0 with a standard deviation of approximately 1, helping gradient descent update the feature weights more evenly.
+
+    - Created `scaler.py` to calculate the mean and standard deviation and scale the features around `0`
+    - Created `train_test_uci_scaled_features.py` to split the dataset, scale the train and test features, train the model, and calculate MSE
+    - Scaling values are calculated only from the training dataset to avoid test data leakage
+    - Trained the model with a learning rate of `0.01` and `5000` epochs
+
+    <CodeSnippet language="text">
+{`features=house_age,convenience_stores
+target=house_price_per_unit_area
+train_rows=332
+test_rows=82
+
+scaling_values
+house_age_mean=18.0572
+house_age_std=11.3310
+convenience_stores_mean=4.0211
+convenience_stores_std=2.9600
+
+epoch,house_age_weight,convenience_stores_weight,bias,train_mse
+1,-0.0254,0.0776,0.3792,1598.1477
+1000,-3.1119,7.9867,37.9185,120.2529
+2000,-3.1123,7.9873,37.9202,120.2529
+3000,-3.1123,7.9873,37.9202,120.2529
+4000,-3.1123,7.9873,37.9202,120.2529
+5000,-3.1123,7.9873,37.9202,120.2529
+
+final_house_age_weight=-3.1123
+final_convenience_stores_weight=7.9873
+final_bias=37.9202
+final_train_mse=120.2529
+final_test_mse=88.5699`}
+    </CodeSnippet>
+
+    **Comparison with v8**
+
+    <NotionTable name="house-price-scaling-comparison" />
+
+    After scaling, the model reached almost the same result in `5000` epochs that the unscaled model reached after `20000` epochs.
+
+    Feature scaling did not reduce the final MSE by a large amount, but it helped gradient descent reach the result faster.
+
+    Since the features are scaled, each weight now represents the price change for one standard deviation increase in that feature.
+
+    In the next version, I will scale and include all the remaining features in the regression model.
+
+  </ExperimentVersion>
 
   <ExperimentVersion
     version="v8"

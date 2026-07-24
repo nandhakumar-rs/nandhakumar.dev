@@ -1,6 +1,14 @@
 import {
+  allFeaturesComparisonHeaders,
+  allFeaturesComparisonRows,
   multiFeatureComparisonHeaders,
   multiFeatureComparisonRows,
+  scalingComparisonHeaders,
+  scalingComparisonRows,
+  sklearnMethodComparisonHeaders,
+  sklearnMethodComparisonRows,
+  sklearnWeightsComparisonHeaders,
+  sklearnWeightsComparisonRows,
 } from '../experiments/house-price-prediction/comparison.data'
 import {
   benchmarkTableHeadersExport,
@@ -23,6 +31,22 @@ export type NotionTableData = {
 }
 
 export const notionTableRegistry: Record<string, NotionTableData> = {
+  'house-price-sklearn-method-comparison': {
+    headers: sklearnMethodComparisonHeaders,
+    rows: sklearnMethodComparisonRows,
+  },
+  'house-price-sklearn-weights-comparison': {
+    headers: sklearnWeightsComparisonHeaders,
+    rows: sklearnWeightsComparisonRows,
+  },
+  'house-price-all-features-comparison': {
+    headers: allFeaturesComparisonHeaders,
+    rows: allFeaturesComparisonRows,
+  },
+  'house-price-scaling-comparison': {
+    headers: scalingComparisonHeaders,
+    rows: scalingComparisonRows,
+  },
   'house-price-multi-feature-comparison': {
     headers: multiFeatureComparisonHeaders,
     rows: multiFeatureComparisonRows,
